@@ -9,4 +9,4 @@ add_executable(bomberman
         src/main.cpp)
 
 target_link_libraries(bomberman
-            Irrlicht)
+                Irrlicht)
