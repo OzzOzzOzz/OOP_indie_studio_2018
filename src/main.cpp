@@ -11,14 +11,15 @@
 
 int main()
 {
-
-	irr::IrrlichtDevice *device = irr::createDevice(irr::video::EDT_OPENGL);
+	irr::IrrlichtDevice *device = irr::createDevice(irr::video::EDT_SOFTWARE, irr::core::dimension2d<irr::u32>(1920, 1080), 16, false, false, false, 0);
 	irr::video::IVideoDriver* video = device->getVideoDriver();
-	irr::scene::ISceneManager* smgr = device->getSceneManager();
+	irr::scene::ISceneManager* sceneManager = device->getSceneManager();
 
-	while(device->run() && device) {
+	while(device->run()) {
 		video->beginScene(true, true, irr::video::SColor(0,0,0,0));
-		smgr->drawAll();
+		sceneManager->drawAll();
 		video->endScene();
 	}
+	device->drop();
+	return 0;
 }
