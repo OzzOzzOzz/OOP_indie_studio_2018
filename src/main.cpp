@@ -6,9 +6,14 @@
 */
 
 #include <iostream>
+#include <irrlicht/irrlicht.h>
+#include <irrlicht/IrrlichtDevice.h>
 
 int main()
 {
-	std::cout << "hey you" << std::endl;
+	irr::IrrlichtDevice *device = irr::createDevice(irr::video::EDT_SOFTWARE, irr::core::dimension2d<__U32_TYPE>(640, 480), 16, true, false, false, 0);
+
+	if (!device)
+		return -1;
 	return 0;
 }
