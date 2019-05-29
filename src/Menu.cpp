@@ -23,5 +23,6 @@ int Menu::menuHandling()
         _video->beginScene(true, true, irr::video::SColor(255,100,101,140));
         _sceneManager->drawAll();
         _video->endScene();
+
         return 0;
 }
