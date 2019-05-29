@@ -16,12 +16,13 @@ class Game {
 		Game(irr::IrrlichtDevice *window);
 		~Game();
 
-                int gameHandling(int whichGame);
+		int gameHandling(int whichGame);
 	protected:
 	private:
 		irr::IrrlichtDevice *_window;
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
+		char **_map;
 };
 
 #endif /* !GAME_HPP_ */
