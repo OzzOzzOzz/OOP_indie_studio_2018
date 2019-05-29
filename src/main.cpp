@@ -1,25 +1,27 @@
 /*
-** EPITECH PROJECT, 2018
-** File Name : main.cpp
+** EPITECH PROJECT, 2019
+** OOP_indie_studio_2018
 ** File description:
-** Maïssa Nouhaud
+** main
 */
 
+#include "Graphics.hpp"
+#include "Game.hpp"
 #include <iostream>
-#include <irrlicht/irrlicht.h>
-#include <irrlicht/IrrlichtDevice.h>
 
 int main()
 {
-	irr::IrrlichtDevice *device = irr::createDevice(irr::video::EDT_SOFTWARE, irr::core::dimension2d<irr::u32>(1920, 1080), 16, false, false, false, 0);
-	irr::video::IVideoDriver* video = device->getVideoDriver();
-	irr::scene::ISceneManager* sceneManager = device->getSceneManager();
+	Graphics *bomberman = new Graphics();
+	int game;
 
-	while(device->run()) {
-		video->beginScene(true, true, irr::video::SColor(0,0,0,0));
-		sceneManager->drawAll();
-		video->endScene();
-	}
-	device->drop();
-	return 0;
+        while(bomberman->getWindow()->run()) {
+        	if (bomberman->getStatus()) {
+			game = bomberman->getMenu()->menuHandling();
+			bomberman->setStatus(false);
+		}
+        	else
+        		bomberman->getGame()->gameHandling(game);
+        }
+        bomberman->getWindow()->drop();
+        return 0;
 }
