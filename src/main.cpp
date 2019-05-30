@@ -15,12 +15,13 @@ int main()
 	int game;
 
         while(bomberman->getWindow()->run()) {
-        	if (bomberman->getStatus()) {
+        	//if (bomberman->getStatus()) {
 			game = bomberman->getMenu()->menuHandling();
-			bomberman->setStatus(false);
+		/*	bomberman->setStatus(false);
 		}
         	else
         		bomberman->getGame()->gameHandling(game);
+        		*/
         }
         bomberman->getWindow()->drop();
         return 0;
