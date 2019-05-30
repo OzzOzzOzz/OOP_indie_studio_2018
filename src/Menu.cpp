@@ -12,6 +12,8 @@ Menu::Menu(irr::IrrlichtDevice *window)
         _window = window;
         _video = _window->getVideoDriver();
         _sceneManager = _window->getSceneManager();
+	_background = _video->getTexture("../assets/menu.png");
+	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0,0));
 }
 
 Menu::~Menu()
@@ -20,9 +22,8 @@ Menu::~Menu()
 
 int Menu::menuHandling()
 {
-        _video->beginScene(true, true, irr::video::SColor(255,100,101,140));
         _sceneManager->drawAll();
-        _video->endScene();
-
+	_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0,0));
+	_video->endScene();
         return 0;
 }

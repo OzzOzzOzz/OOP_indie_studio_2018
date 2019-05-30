@@ -22,6 +22,7 @@ class Menu {
                 irr::IrrlichtDevice *_window;
                 irr::video::IVideoDriver *_video;
                 irr::scene::ISceneManager *_sceneManager;
+                irr::video::ITexture *_background;
 };
 
 #endif /* !MENU_HPP_ */
