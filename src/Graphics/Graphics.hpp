@@ -8,8 +8,8 @@
 #ifndef GRAPHICS_HPP_
 #define GRAPHICS_HPP_
 
-#include "Menu.hpp"
-#include "Game.hpp"
+#include "Menu/Menu.hpp"
+#include "Game/Game.hpp"
 
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>

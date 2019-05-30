@@ -5,8 +5,8 @@
 ** main
 */
 
-#include "Graphics.hpp"
-#include "Game.hpp"
+#include "Graphics/Graphics.hpp"
+#include "Game/Game.hpp"
 #include <iostream>
 
 int main()
