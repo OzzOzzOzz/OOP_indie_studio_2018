@@ -10,19 +10,27 @@
 
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>
+#include <iostream>
+
+#include <vector>
+#include <algorithm>
 
 class Menu {
-	public:
-		Menu(irr::IrrlichtDevice *);
-		~Menu();
+public:
+	Menu(irr::IrrlichtDevice *);
+	~Menu();
 
-                int menuHandling();
-	protected:
-	private:
-                irr::IrrlichtDevice *_window;
-                irr::video::IVideoDriver *_video;
-                irr::scene::ISceneManager *_sceneManager;
-                irr::video::ITexture *_background;
+    int menuHandling();
+    void buttonHandling();
+    void initializeButtons();
+
+private:
+	irr::IrrlichtDevice *_window;
+    irr::video::IVideoDriver *_video;
+	irr::scene::ISceneManager *_sceneManager;
+	irr::video::ITexture *_background;
+
+	std::vector<irr::gui::IGUIButton *> _buttons;
 };
 
 #endif /* !MENU_HPP_ */

@@ -14,15 +14,9 @@ int main()
 	Graphics *bomberman = new Graphics();
 	int game;
 
-        while(bomberman->getWindow()->run()) {
-        	//if (bomberman->getStatus()) {
-			game = bomberman->getMenu()->menuHandling();
-		/*	bomberman->setStatus(false);
-		}
-        	else
-        		bomberman->getGame()->gameHandling(game);
-        		*/
-        }
-        bomberman->getWindow()->drop();
-        return 0;
+	while(bomberman->getWindow()->run()) {
+		game = bomberman->getMenu()->menuHandling();
+	}
+	bomberman->getWindow()->drop();
+    return 0;
 }
