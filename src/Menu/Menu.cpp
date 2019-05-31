@@ -34,18 +34,21 @@ void Menu::initializeButtons()
 
 int Menu::menuHandling()
 {
+	int ret = 0;
 	_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 	_sceneManager->drawAll();
 	_window->getGUIEnvironment()->drawAll();
-	buttonHandling();
+	ret = buttonHandling();
 	_video->endScene();
-    return 0;
+    return (ret);
 }
 
-void Menu::buttonHandling()
+int Menu::buttonHandling()
 {
-	if (_buttons[0]->isPressed())
+	if (_buttons[0]->isPressed()) {
 		std::cout << "Play button pressed" << std::endl;
+		return (1);
+	}
 	if (_buttons[1]->isPressed())
 		std::cout << "Load Game pressed" << std::endl;
 	if (_buttons[2]->isPressed())

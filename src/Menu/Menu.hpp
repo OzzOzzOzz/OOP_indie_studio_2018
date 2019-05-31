@@ -21,7 +21,7 @@ public:
 	~Menu();
 
     int menuHandling();
-    void buttonHandling();
+    int buttonHandling();
     void initializeButtons();
 
 private:
