@@ -17,12 +17,14 @@ class Game {
 		~Game();
 
 		int gameHandling(int whichGame);
+		void createMap();
 	protected:
 	private:
 		irr::IrrlichtDevice *_window;
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
 		char **_map;
+		irr::scene::IMeshSceneNode* _cube;
 };
 
 #endif /* !GAME_HPP_ */

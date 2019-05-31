@@ -15,10 +15,13 @@ int main()
 	int game = 0;
 
 	while(bomberman->getWindow()->run()) {
-		game = bomberman->getMenu()->menuHandling();
-		std::cout << game << std::endl;
-		if (game == 1)
-		    bomberman->getGame()->gameHandling(0);
+			game = bomberman->getMenu()->menuHandling();
+			if (game == 1)
+				break;
+	}
+	bomberman->getGame()->createMap();
+	while(bomberman->getWindow()->run()) {
+		game = bomberman->getGame()->gameHandling(0);
 	}
 	bomberman->getWindow()->drop();
     return 0;
