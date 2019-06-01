@@ -12,7 +12,7 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _window = window;
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
-	_background = _video->getTexture("../assets/menu/menu.png");
+	_background = _video->getTexture("assets/menu/menu.png");
 	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
 	initializeButtons();
 }
