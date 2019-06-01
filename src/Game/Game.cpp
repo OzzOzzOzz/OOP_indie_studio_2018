@@ -6,6 +6,7 @@
 */
 
 #include "Game.hpp"
+#include "Wall.hpp"
 
 Game::Game(irr::IrrlichtDevice *window)
 {
@@ -29,7 +30,5 @@ int Game::gameHandling(int whichGame)
 
 void Game::createMap()
 {
-	_cube = _sceneManager->addCubeSceneNode(10.0f, 0, -1, irr::core::vector3df(0.0f, 0.0f, 0.0f));
-	_cube->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_cube->setMaterialTexture(0, _video->getTexture("assets/game/planks.png"));
+	Wall *wall = new Wall(_window, true);
 }
