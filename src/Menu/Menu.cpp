@@ -12,7 +12,7 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _window = window;
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
-	_background = _video->getTexture("assets/menu/menu.png");
+	_background = _video->getTexture("assets/menu/main_menu.png");
 	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
 	initializeButtons();
 }
@@ -30,8 +30,6 @@ void Menu::initializeButtons()
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, buttonsText[i]));
 		size += 150;
 	}
-	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, L">"));
-	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, L">"));
 }
 
 int Menu::menuHandling()
