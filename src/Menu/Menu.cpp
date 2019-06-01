@@ -35,6 +35,7 @@ void Menu::initializeButtons()
 int Menu::menuHandling()
 {
 	int ret = 0;
+    _video->beginScene(true, true, irr::video::SColor(255,100,101,140));
 	_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 	_sceneManager->drawAll();
 	_window->getGUIEnvironment()->drawAll();

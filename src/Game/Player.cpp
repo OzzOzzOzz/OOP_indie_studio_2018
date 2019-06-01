@@ -11,8 +11,6 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
 {
     _receiver = receiver;
     _window = window;
-	_position.push_back(x);
-	_position.push_back(y);
     _gamer = window->getSceneManager()->addCubeSceneNode(20.0f, 0, -1, irr::core::vector3df(20.0f, 0.0f, 20.0f));
     _gamer->setMaterialFlag(irr::video::EMF_LIGHTING, false);
     _gamer->setMaterialTexture(0, window->getVideoDriver()->getTexture("assets/game/stone.png"));
@@ -36,9 +34,4 @@ void Player::Move()
     if(_receiver->IsKeyDown(irr::KEY_ESCAPE))
         exit (0);
     _gamer->setPosition(nodePosition);
-}
-
-std::vector<int> Player::getPosition()
-{
-	return (_position);
 }

@@ -16,13 +16,14 @@ class Player {
 public:
 	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y);
 	~Player();
-	std::vector<int> getPosition();
 	void Move();
 private:
-	std::vector<int> _position;
     irr::scene::IMeshSceneNode* _gamer;
     irr::IrrlichtDevice *_window;
     MyEventReceiver *_receiver;
+    irr::scene::IAnimatedMesh *_mesh;
+    irr::scene::IAnimatedMeshSceneNode *_node;
+
 };
 
 #endif
