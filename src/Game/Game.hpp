@@ -11,6 +11,7 @@
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>
 #include <vector>
+#include <cstdlib>
 #include "Wall.hpp"
 
 class Game {
