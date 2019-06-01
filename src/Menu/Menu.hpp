@@ -30,7 +30,10 @@ private:
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
 
-	std::vector<irr::gui::IGUIButton *> _buttons;
+	std::vector<irr::gui::IGUIButton *> _mainButtons;
+	std::vector<irr::gui::IGUIButton *> _loadGameButtons;
+	std::vector<irr::gui::IGUIButton *> _settingsButtons;
+	std::vector<irr::gui::IGUIButton *> _newGameButtons;
 };
 
 #endif /* !MENU_HPP_ */

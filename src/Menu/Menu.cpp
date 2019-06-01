@@ -27,9 +27,11 @@ void Menu::initializeButtons()
 	std::vector<wchar_t *> buttonsText = {L"Play", L"Load Game", L"Settings", L"Exit"};
 
 	for (int i = 0; i < 4; i++) {
-		_buttons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, buttonsText[i]));
+		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, buttonsText[i]));
 		size += 150;
 	}
+	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, L">"));
+	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, L">"));
 }
 
 int Menu::menuHandling()
@@ -46,14 +48,14 @@ int Menu::menuHandling()
 
 int Menu::buttonHandling()
 {
-	if (_buttons[0]->isPressed()) {
+	if (_mainButtons[0]->isPressed()) {
 		std::cout << "Play button pressed" << std::endl;
 		return (1);
 	}
-	if (_buttons[1]->isPressed())
+	if (_mainButtons[1]->isPressed())
 		std::cout << "Load Game pressed" << std::endl;
-	if (_buttons[2]->isPressed())
+	if (_mainButtons[2]->isPressed())
 		std::cout << "Settings button pressed" << std::endl;
-	if (_buttons[3]->isPressed())
+	if (_mainButtons[3]->isPressed())
 		exit (0);
 }
