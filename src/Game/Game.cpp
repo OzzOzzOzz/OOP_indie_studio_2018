@@ -30,5 +30,5 @@ int Game::gameHandling(int whichGame)
 
 void Game::createMap()
 {
-	Wall *wall = new Wall(_window, true);
+	_map.push_back(new Wall(_window, true, irr::core::vector3df(0.0f, 0.0f, 0.0f)));
 }

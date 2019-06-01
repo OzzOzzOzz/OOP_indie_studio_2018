@@ -6,7 +6,7 @@
 */
 #include "Wall.hpp"
 
-Wall::Wall(irr::IrrlichtDevice *window, bool isBreakable)
+Wall::Wall(irr::IrrlichtDevice *window, bool isBreakable, irr::core::vector3df vector)
 {
 	_isBreakable = isBreakable;
 	if (!_isBreakable)
@@ -14,7 +14,7 @@ Wall::Wall(irr::IrrlichtDevice *window, bool isBreakable)
 	else
 		_sprite = "BREAKABLE";
 
-	_cube = window->getSceneManager()->addCubeSceneNode(10.0f, 0, -1, irr::core::vector3df(0.0f, 0.0f, 0.0f));
+	_cube = window->getSceneManager()->addCubeSceneNode(WALL_SIZE, 0, -1, vector);
 	_cube->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_cube->setMaterialTexture(0, window->getVideoDriver()->getTexture("assets/game/planks.png"));
 }

@@ -10,6 +10,8 @@
 
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>
+#include <vector>
+#include "Wall.hpp"
 
 class Game {
 	public:
@@ -23,7 +25,7 @@ class Game {
 		irr::IrrlichtDevice *_window;
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
-		char **_map;
+		std::vector <Wall *> _map;
 };
 
 #endif /* !GAME_HPP_ */
