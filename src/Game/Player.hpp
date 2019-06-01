@@ -9,16 +9,20 @@
 
 #include <vector>
 #include <iostream>
+#include <irrlicht/irrlicht.h>
+#include "../Graphics/eventreceiver.hpp"
 
 class Player {
 public:
-	Player(int x, int y);
+	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y);
 	~Player();
-	void setPosition(int x, int y);
 	std::vector<int> getPosition();
+	void Move();
 private:
 	std::vector<int> _position;
-	std::string _sprite;
+    irr::scene::IMeshSceneNode* _gamer;
+    irr::IrrlichtDevice *_window;
+    MyEventReceiver *_receiver;
 };
 
 #endif
