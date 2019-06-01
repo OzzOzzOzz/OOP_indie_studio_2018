@@ -11,9 +11,11 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
 {
     _receiver = receiver;
     _window = window;
-    _gamer = window->getSceneManager()->addCubeSceneNode(20.0f, 0, -1, irr::core::vector3df(20.0f, 0.0f, 20.0f));
-    _gamer->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-    _gamer->setMaterialTexture(0, window->getVideoDriver()->getTexture("assets/game/stone.png"));
+    _mesh = _window->getSceneManager()->getMesh("assets/game/sydney.md2");
+    _player1 = _window->getSceneManager()->addAnimatedMeshSceneNode( _mesh );
+    _player1->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+    _player1->setMD2Animation(irr::scene::EMAT_STAND);
+    _player1->setMaterialTexture( 0, _window->getVideoDriver()->getTexture("assets/game/sydney.bmp") );
 }
 
 Player::~Player()
@@ -22,7 +24,7 @@ Player::~Player()
 
 void Player::Move()
 {
-    irr::core::vector3df nodePosition = _gamer->getPosition();
+    irr::core::vector3df nodePosition = _player1->getPosition();
     if(_receiver->IsKeyDown(irr::KEY_KEY_Z))
         nodePosition.Z += 2.0f;
     else if(_receiver->IsKeyDown(irr::KEY_KEY_S))
@@ -33,5 +35,5 @@ void Player::Move()
         nodePosition.X += 2.0f;
     if(_receiver->IsKeyDown(irr::KEY_ESCAPE))
         exit (0);
-    _gamer->setPosition(nodePosition);
+    _player1->setPosition(nodePosition);
 }

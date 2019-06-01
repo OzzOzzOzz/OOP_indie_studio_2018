@@ -18,11 +18,10 @@ public:
 	~Player();
 	void Move();
 private:
-    irr::scene::IMeshSceneNode* _gamer;
     irr::IrrlichtDevice *_window;
     MyEventReceiver *_receiver;
     irr::scene::IAnimatedMesh *_mesh;
-    irr::scene::IAnimatedMeshSceneNode *_node;
+    irr::scene::IAnimatedMeshSceneNode *_player1;
 
 };
 
