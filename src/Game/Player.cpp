@@ -29,11 +29,12 @@ void Player::Move()
         nodePosition.Z += 2.0f;
     else if(_receiver->IsKeyDown(irr::KEY_KEY_S))
         nodePosition.Z -= 2.0f;
-
     if(_receiver->IsKeyDown(irr::KEY_KEY_Q))
         nodePosition.X -= 2.0f;
     else if(_receiver->IsKeyDown(irr::KEY_KEY_D))
         nodePosition.X += 2.0f;
+    if(_receiver->IsKeyDown(irr::KEY_ESCAPE))
+        exit (0);
     _gamer->setPosition(nodePosition);
 }
 
