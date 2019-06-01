@@ -26,6 +26,7 @@ class Game {
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
 		std::vector <Wall *> _map;
+		std::vector <Wall *> _floor;
 };
 
 #endif /* !GAME_HPP_ */

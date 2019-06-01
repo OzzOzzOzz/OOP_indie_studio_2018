@@ -10,11 +10,11 @@
 #include <string>
 #include <irrlicht/irrlicht.h>
 
-#define WALL_SIZE 10.0f
+#define WALL_SIZE 20.0f
 
 class Wall{
 public:
-	Wall(irr::IrrlichtDevice *window, bool isBreakable, irr::core::vector3df vector);
+	Wall(irr::IrrlichtDevice *window, bool isBreakable, irr::core::vector3df vector, std::string texture);
 	~Wall();
 private:
 	bool _isBreakable;
