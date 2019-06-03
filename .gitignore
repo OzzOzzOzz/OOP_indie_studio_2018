@@ -1,4 +1,8 @@
 bomberman
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
 a.out
 vgcore.*
 *.o
