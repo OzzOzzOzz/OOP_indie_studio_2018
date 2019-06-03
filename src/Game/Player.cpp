@@ -15,7 +15,8 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1 = _window->getSceneManager()->addAnimatedMeshSceneNode(_mesh);
     _player1->setMaterialFlag(irr::video::EMF_LIGHTING, false);
     _player1->setMD2Animation(irr::scene::EMAT_STAND);
-    _player1->setMaterialTexture(0, _window->getVideoDriver()->getTexture("assets/game/ziggs.png") );
+    _player1->setMaterialTexture(0, _window->getVideoDriver()->getTexture("assets/game/ziggs.png"));
+    _player1->setFrameLoop(0, 95);
 }
 
 Player::~Player()
