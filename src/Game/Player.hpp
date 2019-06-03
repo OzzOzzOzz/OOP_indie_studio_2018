@@ -16,7 +16,7 @@ class Player {
 public:
 	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y);
 	~Player();
-	void Move();
+	int Move();
 private:
     irr::IrrlichtDevice *_window;
     MyEventReceiver *_receiver;
