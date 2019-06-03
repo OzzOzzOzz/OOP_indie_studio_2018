@@ -24,7 +24,7 @@ Menu::~Menu()
 void Menu::initializeButtons()
 {
 	int size = 450;
-	std::vector<wchar_t *> buttonsText = {L"Play", L"Load Game", L"Settings", L"Exit"};
+	std::vector<const wchar_t *> buttonsText = {L"Play", L"Load Game", L"Settings", L"Exit"};
 
 	for (int i = 0; i < 4; i++) {
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1500, size, 1500 + 400, size + 100), nullptr, 0, buttonsText[i]));
@@ -56,4 +56,5 @@ int Menu::buttonHandling()
 		std::cout << "Settings button pressed" << std::endl;
 	if (_mainButtons[3]->isPressed())
 		exit (0);
+	return 0;
 }
