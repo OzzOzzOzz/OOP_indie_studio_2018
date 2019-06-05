@@ -15,6 +15,13 @@
 #include "Wall.hpp"
 #include "Player.hpp"
 
+#define MAP_SIZE 21
+#define CUBE_SIZE 20.0f
+#define WALL_PCT 70
+#define VOID '0'
+#define WALL '1'
+#define BEDROCK '2'
+
 class Game {
 	public:
 		Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
@@ -22,17 +29,20 @@ class Game {
 		int gameHandling(int whichGame);
 		void createMap();
         void MovePlayer();
-        int colision();
         Player *_player;
         Player *_player2;
         irr::EKEY_CODE _key;
 	protected:
 	private:
+		void gen_txt_map();
+	    bool is_spawn_area(int ,int);
+
 		irr::IrrlichtDevice *_window;
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
 		std::vector <Wall *> _map;
 		std::vector <Wall *> _floor;
+		std::vector<std::string> _txt_map;
 		irr::scene::IMetaTriangleSelector *_metaselector;
 		int _nbplayers;
 		int _nbai;

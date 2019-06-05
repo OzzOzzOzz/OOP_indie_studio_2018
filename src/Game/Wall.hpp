@@ -10,7 +10,7 @@
 #include <string>
 #include <irrlicht/irrlicht.h>
 
-#define WALL_SIZE 20.0f
+#define WALL_SIZE 20
 
 class Wall{
 public:
