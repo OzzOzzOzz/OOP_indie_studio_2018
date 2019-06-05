@@ -19,10 +19,9 @@ int main()
 			if (game == 1)
 				break;
 	}
-	bomberman->getGame()->createMap();
 	while(bomberman->getWindow()->run()) {
 		bomberman->getGame()->gameHandling(0);
-		bomberman->getGame()->MovePlayer(0);
+		bomberman->getGame()->MovePlayer();
 	}
 	bomberman->getWindow()->drop();
     return 0;
