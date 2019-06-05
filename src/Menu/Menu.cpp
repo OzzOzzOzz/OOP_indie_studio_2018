@@ -15,6 +15,11 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _background = _video->getTexture("assets/menu/main_menu.png");
     _video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
     initializeButtons();
+	if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
+		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
+		exit (84);
+	}
+	_clickSound.setBuffer(_clickBuffer);
 }
 
 Menu::~Menu()
@@ -47,13 +52,17 @@ int Menu::menuHandling()
 
 int Menu::buttonHandling()
 {
-	if (_mainButtons[0]->isPressed())
+	if (_mainButtons[0]->isPressed()) {
+		_clickSound.play();
 		return (1);
+	}
 	if (_mainButtons[1]->isPressed())
 		std::cout << "Load Game pressed" << std::endl;
 	if (_mainButtons[2]->isPressed())
 		std::cout << "Settings button pressed" << std::endl;
-	if (_mainButtons[3]->isPressed())
+	if (_mainButtons[3]->isPressed()) {
+		_clickSound.play();
 		exit (0);
+	}
 	return 0;
 }

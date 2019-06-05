@@ -20,4 +20,5 @@ add_executable(bomberman
         src/Menu/Menu.hpp)
 
 target_link_libraries(bomberman
-        Irrlicht)
+        Irrlicht
+        sfml-audio)

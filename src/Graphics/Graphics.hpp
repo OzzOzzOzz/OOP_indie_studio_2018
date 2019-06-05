@@ -16,23 +16,21 @@
 #include <vector>
 
 class Graphics {
-	public:
-		Graphics();
-		~Graphics();
+public:
+	Graphics();
+	~Graphics();
 
-                irr::IrrlichtDevice *getWindow() {return _window;}
-                Menu *getMenu() {return _menu;}
-                Game *getGame() {return _game;}
-                bool getStatus() {return _inMenu;}
-
-		void setStatus(bool newStatus) {_inMenu = newStatus;}
-	protected:
-	private:
-                irr::IrrlichtDevice *_window;
-                Menu *_menu;
-                Game *_game;
-                bool _inMenu;
-                MyEventReceiver *_receiver;
+    irr::IrrlichtDevice *getWindow() {return _window;}
+    Menu *getMenu() {return _menu;}
+    Game *getGame() {return _game;}
+    bool getStatus() {return _inMenu;}
+    void setStatus(bool newStatus) {_inMenu = newStatus;}
+private:
+    irr::IrrlichtDevice *_window;
+    Menu *_menu;
+    Game *_game;
+    bool _inMenu;
+    MyEventReceiver *_receiver;
 };
 
-#endif /* !GRAPHICS_HPP_ */
+#endif

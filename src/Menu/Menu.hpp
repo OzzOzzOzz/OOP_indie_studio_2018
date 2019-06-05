@@ -10,6 +10,7 @@
 
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 #include <vector>
@@ -31,9 +32,8 @@ private:
 	irr::video::ITexture *_background;
 
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
-	std::vector<irr::gui::IGUIButton *> _loadGameButtons;
-	std::vector<irr::gui::IGUIButton *> _settingsButtons;
-	std::vector<irr::gui::IGUIButton *> _newGameButtons;
+	sf::SoundBuffer _clickBuffer;
+	sf::Sound _clickSound;
 };
 
 #endif /* !MENU_HPP_ */
