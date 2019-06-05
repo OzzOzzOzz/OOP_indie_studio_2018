@@ -36,7 +36,7 @@ void Menu::initializeButtons()
 {
 	int size = 350;
 
-	for (int i = 0; i < 4; i++, size+= 170)
+	for (int i = 0; i < 4; i++, size += 170)
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
 }
 
