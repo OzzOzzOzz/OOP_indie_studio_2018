@@ -20,5 +20,5 @@ int main()
 		bomberman->getGame()->MovePlayer(0);
 	}
 	bomberman->getWindow()->drop();
-    return 0;
+	return 0;
 }
