@@ -12,15 +12,10 @@
 int main()
 {
 	Graphics *bomberman = new Graphics();
-	int game = 0;
 
-	while(bomberman->getWindow()->run()) {
-			game = bomberman->getMenu()->menuHandling();
-			if (game == 1)
-				break;
-	}
+	bomberman->getMenu()->menuHandling();
 	bomberman->getGame()->createMap();
-	while(bomberman->getWindow()->run()) {
+	while (bomberman->getWindow()->run()) {
 		bomberman->getGame()->gameHandling(0);
 		bomberman->getGame()->MovePlayer(0);
 	}

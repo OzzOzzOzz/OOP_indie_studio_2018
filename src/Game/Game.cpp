@@ -20,16 +20,11 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
 
     _metaselector = _sceneManager->createMetaTriangleSelector();
 
-
     irr::scene::ITriangleSelector *_selector = 0;
 
     _selector = _sceneManager->createOctreeTriangleSelector(_player->getMesh(), _player->getNode());
     _player->getNode()->setTriangleSelector(_selector);
     _metaselector->addTriangleSelector(_selector);
-
-
-
-
 
     if (nbplayers == 2)
         _player2 = new Player(_window, receiver, 0, 0, true);

@@ -19,6 +19,12 @@ Menu::Menu(irr::IrrlichtDevice *window)
 		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
 		exit (84);
 	}
+	if (!_mainMenuMusic.openFromFile("assets/sounds/main_menu_music.ogg")) {
+		std::cerr << "Error while loading main_menu_music.ogg" << std::endl;
+		exit (84);
+	}
+	_mainMenuMusic.setLoop(true);
+	_mainMenuMusic.play();
 	_clickSound.setBuffer(_clickBuffer);
 }
 
@@ -37,32 +43,41 @@ void Menu::initializeButtons()
 	}
 }
 
-int Menu::menuHandling()
+void Menu::menuHandling()
 {
 	int ret = 0;
 
-	_video->beginScene(true, true, irr::video::SColor(255,100,101,140));
-	_window->getGUIEnvironment()->drawAll();
-	_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
-	_sceneManager->drawAll();
-	ret = buttonHandling();
-	_video->endScene();
-    	return (ret);
+	while (_window->run()) {
+		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
+		_window->getGUIEnvironment()->drawAll();
+		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
+		_sceneManager->drawAll();
+		ret = buttonHandling();
+		if (ret == 1)
+			return;
+		_video->endScene();
+	}
 }
 
 int Menu::buttonHandling()
 {
 	if (_mainButtons[0]->isPressed()) {
 		_clickSound.play();
+		_mainMenuMusic.setAttenuation(10);
+		_mainMenuMusic.stop();
 		return (1);
 	}
-	if (_mainButtons[1]->isPressed())
+	if (_mainButtons[1]->isPressed()) {
+		_clickSound.play();
 		std::cout << "Load Game pressed" << std::endl;
-	if (_mainButtons[2]->isPressed())
+	}
+	if (_mainButtons[2]->isPressed()) {
+		_clickSound.play();
 		std::cout << "Settings button pressed" << std::endl;
+	}
 	if (_mainButtons[3]->isPressed()) {
 		_clickSound.play();
 		exit (0);
 	}
-	return 0;
+	return (0);
 }

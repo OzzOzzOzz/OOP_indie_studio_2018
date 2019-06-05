@@ -12,7 +12,6 @@
 #include <irrlicht/IrrlichtDevice.h>
 #include <SFML/Audio.hpp>
 #include <iostream>
-
 #include <vector>
 #include <algorithm>
 
@@ -21,19 +20,18 @@ public:
 	Menu(irr::IrrlichtDevice *);
 	~Menu();
 
-    int menuHandling();
+	void menuHandling();
     int buttonHandling();
     void initializeButtons();
-
 private:
 	irr::IrrlichtDevice *_window;
     irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
-
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
 	sf::SoundBuffer _clickBuffer;
 	sf::Sound _clickSound;
+	sf::Music _mainMenuMusic;
 };
 
-#endif /* !MENU_HPP_ */
+#endif
