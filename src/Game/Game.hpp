@@ -21,11 +21,11 @@ class Game {
 		~Game();
 		int gameHandling(int whichGame);
 		void createMap();
-        void MovePlayer(int id);
+        void MovePlayer();
+        int colision();
         Player *_player;
         Player *_player2;
-
-
+        irr::EKEY_CODE _key;
 	protected:
 	private:
 		irr::IrrlichtDevice *_window;
@@ -36,6 +36,7 @@ class Game {
 		irr::scene::IMetaTriangleSelector *_metaselector;
 		int _nbplayers;
 		int _nbai;
+
 };
 
 #endif /* !GAME_HPP_ */

@@ -15,9 +15,9 @@ int main()
 
 	bomberman->getMenu()->menuHandling();
 	bomberman->getGame()->createMap();
-	while (bomberman->getWindow()->run()) {
+	while(bomberman->getWindow()->run()) {
 		bomberman->getGame()->gameHandling(0);
-		bomberman->getGame()->MovePlayer(0);
+		bomberman->getGame()->MovePlayer();
 	}
 	bomberman->getWindow()->drop();
 	return 0;

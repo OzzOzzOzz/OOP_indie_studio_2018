@@ -14,17 +14,21 @@
 
 class Player {
 public:
-	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2);
+	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2, 	std::vector <Wall *> map);
 	~Player();
 	int Move(int id);
+	int colision();
+	irr::core::vector3df getPosition() {return _player1->getAbsolutePosition();}
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}
     irr::scene::IAnimatedMeshSceneNode *getNode() {return _player1;}
+    irr::EKEY_CODE _previous_dir;
 private:
     irr::IrrlichtDevice *_window;
     MyEventReceiver *_receiver;
     irr::scene::IAnimatedMesh *_mesh;
     irr::scene::IAnimatedMeshSceneNode *_player1;
     std::vector<irr::EKEY_CODE> _keys;
+    std::vector <Wall *> _map;
 };
 
 #endif
