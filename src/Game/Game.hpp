@@ -13,14 +13,19 @@
 #include <vector>
 #include <cstdlib>
 #include "Wall.hpp"
+#include "Player.hpp"
 
 class Game {
 	public:
-		Game(irr::IrrlichtDevice *window);
+		Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
 		~Game();
-
 		int gameHandling(int whichGame);
 		void createMap();
+        void MovePlayer(int id);
+        Player *_player;
+        Player *_player2;
+
+
 	protected:
 	private:
 		irr::IrrlichtDevice *_window;
@@ -28,6 +33,9 @@ class Game {
 		irr::scene::ISceneManager *_sceneManager;
 		std::vector <Wall *> _map;
 		std::vector <Wall *> _floor;
+		irr::scene::IMetaTriangleSelector *_metaselector;
+		int _nbplayers;
+		int _nbai;
 };
 
 #endif /* !GAME_HPP_ */

@@ -22,7 +22,7 @@ int main()
 	bomberman->getGame()->createMap();
 	while(bomberman->getWindow()->run()) {
 		bomberman->getGame()->gameHandling(0);
-		bomberman->getPlayer()->Move();
+		bomberman->getGame()->MovePlayer(0);
 	}
 	bomberman->getWindow()->drop();
     return 0;
