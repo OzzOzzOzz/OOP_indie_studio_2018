@@ -15,9 +15,9 @@ int main()
 	int game = 0;
 
 	while(bomberman->getWindow()->run()) {
-			game = bomberman->getMenu()->menuHandling();
-			if (game == 1)
-				break;
+		game = bomberman->getMenu()->menuHandling();
+		if (game == 1)
+			break;
 	}
 	bomberman->getGame()->createMap();
 	while(bomberman->getWindow()->run()) {
@@ -25,5 +25,5 @@ int main()
 		bomberman->getPlayer()->Move();
 	}
 	bomberman->getWindow()->drop();
-    return 0;
+	return 0;
 }
