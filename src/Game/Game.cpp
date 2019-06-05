@@ -8,12 +8,31 @@
 #include "Game.hpp"
 #include "Wall.hpp"
 
-Game::Game(irr::IrrlichtDevice *window)
+Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai)
 {
+    _nbai = nbai;
+    _nbplayers = nbplayers;
 	_window = window;
 	_video = _window->getVideoDriver();
 	_sceneManager = _window->getSceneManager();
 	_sceneManager->addCameraSceneNode(0, irr::core::vector3df(0.0f, 250.0f, -150.0f), irr::core::vector3df(0.0f, -500.0f, 150.0f));
+    _player = new Player(_window, receiver, 100, 100, false);
+
+    _metaselector = _sceneManager->createMetaTriangleSelector();
+
+
+    irr::scene::ITriangleSelector *_selector = 0;
+
+    _selector = _sceneManager->createOctreeTriangleSelector(_player->getMesh(), _player->getNode());
+    _player->getNode()->setTriangleSelector(_selector);
+    _metaselector->addTriangleSelector(_selector);
+
+
+
+
+
+    if (nbplayers == 2)
+        _player2 = new Player(_window, receiver, 0, 0, true);
 }
 
 Game::~Game()
@@ -37,4 +56,11 @@ void Game::createMap()
 	for (int x = -10; x < 12; x++)
 		for (int i = -10; i < 12; i++)
 			_map.push_back(new Wall(_window, false, irr::core::vector3df(i * 20.0f, -20.0f, x * 20.0f), "assets/game/floor.png"));
+}
+
+void Game::MovePlayer(int id)
+{
+    _player->Move(1);
+    if (_nbplayers == 2)
+        _player2->Move(2);
 }

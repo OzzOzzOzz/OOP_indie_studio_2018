@@ -10,7 +10,6 @@
 
 #include "Menu/Menu.hpp"
 #include "Game/Game.hpp"
-#include "Game/Player.hpp"
 
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/IrrlichtDevice.h>
@@ -24,7 +23,6 @@ class Graphics {
                 irr::IrrlichtDevice *getWindow() {return _window;}
                 Menu *getMenu() {return _menu;}
                 Game *getGame() {return _game;}
-                Player *getPlayer() {return _player;}
                 bool getStatus() {return _inMenu;}
 
 		void setStatus(bool newStatus) {_inMenu = newStatus;}
@@ -33,7 +31,6 @@ class Graphics {
                 irr::IrrlichtDevice *_window;
                 Menu *_menu;
                 Game *_game;
-                Player *_player;
                 bool _inMenu;
                 MyEventReceiver *_receiver;
 };
