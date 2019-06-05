@@ -25,7 +25,7 @@ public:
     void initializeButtons();
 private:
 	irr::IrrlichtDevice *_window;
-    	irr::video::IVideoDriver *_video;
+	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
