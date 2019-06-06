@@ -7,9 +7,8 @@
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
 
-Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2, std::vector <Wall *> map)
+Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2)
 {
-    _map = map;
     _receiver = receiver;
     _window = window;
     _mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
@@ -35,14 +34,13 @@ Player::~Player()
 {
 }
 
-int Player::Move(int id)
+int Player::Move(int id, std::vector <Wall *> map)
 {
     static int i = 0;
     static int n = 0;
 
-    colision();
     irr::core::vector3df nodePosition = _player1->getPosition();
-    if(_receiver->IsKeyDown(_keys[0])  && !colision() && _previous_dir != _keys[0]) {
+    if(_receiver->IsKeyDown(_keys[0])  && !colision(map) && _previous_dir != _keys[0]) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -56,7 +54,7 @@ int Player::Move(int id)
         _previous_dir = _keys[0];
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[1])  && !colision() && _previous_dir != _keys[1]) {
+    else if(_receiver->IsKeyDown(_keys[1])  && !colision(map) && _previous_dir != _keys[1]) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -70,7 +68,7 @@ int Player::Move(int id)
         _previous_dir = _keys[1];
         return (0);
     }
-    if(_receiver->IsKeyDown(_keys[2])  && !colision() && _previous_dir != _keys[2]) {
+    if(_receiver->IsKeyDown(_keys[2])  && !colision(map) && _previous_dir != _keys[2]) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -84,7 +82,7 @@ int Player::Move(int id)
         _previous_dir = _keys[2];
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[3]) && !colision() && _previous_dir != _keys[3]) {
+    else if(_receiver->IsKeyDown(_keys[3]) && !colision(map) && _previous_dir != _keys[3]) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -112,13 +110,13 @@ int Player::Move(int id)
     return (0);
 }
 
-int Player::colision()
+int Player::colision(std::vector <Wall *> map)
 {
-    for (int i = 0; _map.size() > i; i++) {
-        if (_player1->getPosition().X < _map[i]->getPosition().X + 20 &&
-            _player1->getPosition().X  + 20 > _map[i]->getPosition().X  &&
-            _player1->getPosition().Z  < _map[i]->getPosition().Z + 20 &&
-            20 + _player1->getPosition().Z > _map[i]->getPosition().Z) {
+    for (int i = 0; map.size() > i; i++) {
+        if (_player1->getPosition().X < map[i]->getPosition().X + 20 &&
+            _player1->getPosition().X  + 20 > map[i]->getPosition().X  &&
+            _player1->getPosition().Z  < map[i]->getPosition().Z + 20 &&
+            20 + _player1->getPosition().Z > map[i]->getPosition().Z) {
             std::cout << "colision" << std::endl;
             return 1;
         }

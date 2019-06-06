@@ -22,9 +22,9 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver,
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 2) * CUBE_SIZE, 0));
     createMap();
-    _player = new Player(_window, receiver, 100, 100, false, _map);
+    _player = new Player(_window, receiver, 100, 100, false);
     if (nbplayers == 2)
-        _player2 = new Player(_window, receiver, 0, 0, true, _map);
+        _player2 = new Player(_window, receiver, 0, 0, true);
 }
 
 Game::~Game()
@@ -126,9 +126,9 @@ void Game::createMap()
         }
 }
 
-void Game::MovePlayer()
+void Game::MovePlayer(std::vector <Wall *> map)
 {
-    _player->Move(1);
+    _player->Move(1, map);
     if (_nbplayers == 2)
-        _player2->Move(2);
+        _player2->Move(2, map);
 }

@@ -28,7 +28,8 @@ class Game {
 		~Game();
 		int gameHandling(int whichGame);
 		void createMap();
-        void MovePlayer();
+        void MovePlayer(std::vector <Wall *> map);
+        std::vector<Wall *> getMap() {return _map;}
         Player *_player;
         Player *_player2;
         irr::EKEY_CODE _key;
