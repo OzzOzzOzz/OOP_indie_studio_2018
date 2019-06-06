@@ -17,7 +17,9 @@ add_executable(bomberman
         src/Graphics/Graphics.cpp
         src/Graphics/Graphics.hpp
         src/Menu/Menu.cpp
-        src/Menu/Menu.hpp)
+        src/Menu/Menu.hpp
+        src/Menu/GameMenu.cpp
+        src/Menu/GameMenu.hpp)
 
 target_link_libraries(bomberman
         Irrlicht

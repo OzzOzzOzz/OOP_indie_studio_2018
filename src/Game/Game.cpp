@@ -22,12 +22,25 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
             (MAP_SIZE / 2) * CUBE_SIZE, 0));
     createMap();
     _player = new Player(_window, receiver, 100, 100, false);
+    _gameMenu = new GameMenu(_window);
     if (nbplayers == 2)
         _player2 = new Player(_window, receiver, 0, 0, true);
 }
 
 Game::~Game()
 {
+}
+
+void Game::gameLoop()
+{
+	while(_window->run()) {
+		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE))
+			break;
+		gameHandling(0);
+		MovePlayer(_map);
+	}
+	_gameMenu->gameMenuHandling();
+	_window->drop();
 }
 
 int Game::gameHandling(int whichGame)
