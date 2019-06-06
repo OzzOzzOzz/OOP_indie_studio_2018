@@ -36,7 +36,7 @@ private:
 	irr::video::ITexture *_soundEffectBackground;
 
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
-	std::vector<irr::gui::IGUIButton *> _settingsButtons;
+	irr::gui::IGUIButton *_settingsButtonExit;
 	irr::gui::IGUIButton * _musicPlusButton;
 	irr::gui::IGUIButton * _musicLessButton;
 	irr::gui::IGUIButton *_soundPlusButton;

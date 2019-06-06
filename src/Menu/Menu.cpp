@@ -7,6 +7,7 @@
 
 #include "Menu.hpp"
 #include <string>
+#include <unistd.h>
 
 Menu::Menu(irr::IrrlichtDevice *window)
 {
@@ -45,7 +46,7 @@ void Menu::initializeButtons()
 
 	for (int i = 0; i < 4; i++, size += 170)
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
-	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L""));
+	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 	_musicLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 440, 500 + 180, 440 + 50), nullptr, 0, L"");
 	_musicPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 400, 1330 + 130, 400 + 120), nullptr, 0, L"");
 	_soundLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 755, 500 + 180, 755 + 50), nullptr, 0, L"");
@@ -86,8 +87,10 @@ int Menu::buttonHandling()
 	}
 	if (_mainButtons[3]->isPressed()) {
 		_clickSound.play();
-		exit (0);
+		exit(0);
 	}
+	for (std::size_t i = 0; i < _mainButtons.size(); i++)
+		_mainButtons[i]->setPressed(false);
 	return (0);
 }
 
@@ -115,16 +118,16 @@ int Menu::settingsButtonsHandling()
 	static int soundEffect = 100;
 	std::string file;
 
-	if (_settingsButtons[0]->isPressed())
+	if (_settingsButtonExit->isPressed())
 		return 1;
 	if (_musicLessButton->isPressed() && music >= 25) {
 		music -= 25;
-		file = "assets/menu/volume_bar"+std::to_string(music)+".png";
+		file = "assets/menu/volume_bar_"+std::to_string(music)+".png";
 		_musicVolumeBackground = _video->getTexture(file.c_str());
 	}
 	if (_musicPlusButton->isPressed() && music <= 75) {
 		music += 25;
-		file = "assets/menu/volume_bar"+std::to_string(music)+".png";
+		file = "assets/menu/volume_bar_"+std::to_string(music)+".png";
 		_musicVolumeBackground = _video->getTexture(file.c_str());
 	}
 	if (_soundLessButton->isPressed() && soundEffect >= 25) {
@@ -137,5 +140,10 @@ int Menu::settingsButtonsHandling()
 		file = "assets/menu/volume_bar_"+std::to_string(soundEffect)+".png";
 		_soundEffectBackground = _video->getTexture(file.c_str());
 	}
+	_settingsButtonExit->setPressed(false);
+	_musicLessButton->setPressed(false);
+	_musicPlusButton->setPressed(false);
+	_soundLessButton->setPressed(false);
+	_soundPlusButton->setPressed(false);
 	return 0;
 }
