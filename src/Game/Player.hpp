@@ -22,6 +22,7 @@ public:
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}
     irr::scene::IAnimatedMeshSceneNode *getNode() {return _player1;}
     irr::EKEY_CODE _previous_dir;
+	MyEventReceiver *getEventReceiver() {return _receiver;}
 private:
     irr::IrrlichtDevice *_window;
     MyEventReceiver *_receiver;

@@ -15,17 +15,17 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _background = _video->getTexture("assets/menu/main_menu.png");
     _video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
     initializeButtons();
-	if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
-		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
-		exit (84);
-	}
-	if (!_mainMenuMusic.openFromFile("assets/sounds/main_menu_music.ogg")) {
-		std::cerr << "Error while loading main_menu_music.ogg" << std::endl;
-		exit (84);
-	}
-	_mainMenuMusic.setLoop(true);
-	_mainMenuMusic.play();
-	_clickSound.setBuffer(_clickBuffer);
+    if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
+	std::cerr << "Error while loading mouse_click.ogg" << std::endl;
+	exit (84);
+    }
+    if (!_mainMenuMusic.openFromFile("assets/sounds/main_menu_music.ogg")) {
+	std::cerr << "Error while loading main_menu_music.ogg" << std::endl;
+	exit (84);
+    }
+    _mainMenuMusic.setLoop(true);
+    _mainMenuMusic.play();
+    _clickSound.setBuffer(_clickBuffer);
 }
 
 Menu::~Menu()

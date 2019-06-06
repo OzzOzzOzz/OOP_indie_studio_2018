@@ -12,17 +12,30 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
 {
     _nbai = nbai;
     _nbplayers = nbplayers;
-	_window = window;
-	_video = _window->getVideoDriver();
-	_sceneManager = _window->getSceneManager();
-	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE ) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
+    _window = window;
+    _video = _window->getVideoDriver();
+    _sceneManager = _window->getSceneManager();
+    _sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE ) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
     _player = new Player(_window, receiver, 100, 100, false);
+    _gameMenu = new GameMenu(_window);
     if (nbplayers == 2)
         _player2 = new Player(_window, receiver, 0, 0, true);
 }
 
 Game::~Game()
 {
+}
+
+void Game::gameLoop()
+{
+	while(_window->run()) {
+		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE))
+			break;
+		gameHandling(0);
+		MovePlayer(_map);
+	}
+	_gameMenu->gameMenuHandling();
+	_window->drop();
 }
 
 int Game::gameHandling(int whichGame)
@@ -79,7 +92,6 @@ void Game::gen_txt_map()
 
 void Game::createMap()
 {
-//
 	for (int x = 0; x <= MAP_SIZE; x++)
 		for (int y = 0; y <= MAP_SIZE; y++)
 		    _floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));

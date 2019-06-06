@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include "Wall.hpp"
 #include "Player.hpp"
+#include "../Menu/GameMenu.hpp"
 
 #define MAP_SIZE 21
 #define CUBE_SIZE 20.0f
@@ -26,13 +27,17 @@ class Game {
 	public:
 		Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
 		~Game();
+
 		int gameHandling(int whichGame);
+		void gameLoop();
 		void createMap();
         void MovePlayer(std::vector <Wall *> map);
         std::vector<Wall *> getMap() {return _map;}
         Player *_player;
         Player *_player2;
         irr::EKEY_CODE _key;
+        MyEventReceiver *getEventReceiver() {return _player->getEventReceiver();}
+
 	protected:
 	private:
 		void gen_txt_map();
@@ -45,6 +50,7 @@ class Game {
 		std::vector <Wall *> _floor;
 		std::vector<std::string> _txt_map;
 		irr::scene::IMetaTriangleSelector *_metaselector;
+		GameMenu *_gameMenu;
 		int _nbplayers;
 		int _nbai;
 
