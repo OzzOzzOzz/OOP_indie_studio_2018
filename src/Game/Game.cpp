@@ -57,6 +57,7 @@ int Game::gameHandling(int whichGame)
 int Game::saveGame()
 {
 	std::vector<std::string> files = getFilesfromFolder("./saves");
+
 	for (int i = 0; i < files.size(); i++)
 		std::cout << files.at(i) << std::endl;
 	return (0);
