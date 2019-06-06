@@ -117,10 +117,12 @@ void Game::createMap()
     gen_txt_map();
     for (int x = 0; x < MAP_SIZE; x++)
         for (int y = 0; y < MAP_SIZE; y++) {
-            if (_txt_map[x][y] != VOID)
-                _map.push_back(new Wall(_window, false,
-                    irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f),
-                    "assets/game/planks.png"));
+            if (_txt_map[x][y] == BEDROCK) {
+                _map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
+            } else if(_txt_map[x][y] == WALL) {
+                _map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
+
+            }
         }
 }
 
