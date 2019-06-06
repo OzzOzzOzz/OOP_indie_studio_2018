@@ -15,7 +15,6 @@ GameMenu::GameMenu(irr::IrrlichtDevice *window)
 	_background = _video->getTexture("assets/menu/ingame_menu.png");
 	_htpBackground = _video->getTexture("assets/menu/how_to_play.png");
 	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
-	initializeButtons();
 }
 
 GameMenu::~GameMenu()
@@ -34,6 +33,7 @@ void GameMenu::initializeButtons()
 int GameMenu::gameMenuHandling()
 {
 	int ret = 0;
+	initializeButtons();
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));

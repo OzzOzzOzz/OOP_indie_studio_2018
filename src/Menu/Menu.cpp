@@ -13,6 +13,7 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
     _background = _video->getTexture("assets/menu/main_menu.png");
+    _settingsBackground = _video->getTexture("assets/menu/settings_menu.png");
     _video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
     initializeButtons();
     if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
@@ -38,6 +39,7 @@ void Menu::initializeButtons()
 
 	for (int i = 0; i < 4; i++, size += 170)
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
+	_settingsButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L""));
 }
 
 void Menu::menuHandling()
@@ -70,11 +72,34 @@ int Menu::buttonHandling()
 	}
 	if (_mainButtons[2]->isPressed()) {
 		_clickSound.play();
-		std::cout << "Settings button pressed" << std::endl;
+		settings();
 	}
 	if (_mainButtons[3]->isPressed()) {
 		_clickSound.play();
 		exit (0);
 	}
 	return (0);
+}
+
+void Menu::settings()
+{
+	int ret = 0;
+
+	while (_window->run()) {
+		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
+		_window->getGUIEnvironment()->drawAll();
+		_video->draw2DImage(_settingsBackground, irr::core::position2d<irr::s32>(0, 0));
+		_sceneManager->drawAll();
+		ret = settingsButtonsHandling();
+		if (ret == 1)
+			return;
+		_video->endScene();
+	}
+}
+
+int Menu::settingsButtonsHandling()
+{
+	if (_settingsButtons[0]->isPressed())
+		return 1;
+	return 0;
 }

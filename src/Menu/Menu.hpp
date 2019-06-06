@@ -23,12 +23,16 @@ public:
 	void menuHandling();
     int buttonHandling();
     void initializeButtons();
+    void settings();
+    int settingsButtonsHandling();
 private:
 	irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
+	irr::video::ITexture *_settingsBackground;
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
+	std::vector<irr::gui::IGUIButton *> _settingsButtons;
 	sf::SoundBuffer _clickBuffer;
 	sf::Sound _clickSound;
 	sf::Music _mainMenuMusic;
