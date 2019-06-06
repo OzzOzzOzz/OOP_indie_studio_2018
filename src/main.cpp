@@ -4,10 +4,9 @@
 ** File description:
 ** main
 */
-
+#include <iostream>
 #include "Graphics/Graphics.hpp"
 #include "Game/Game.hpp"
-#include <iostream>
 
 int main()
 {

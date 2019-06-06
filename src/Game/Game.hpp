@@ -23,31 +23,32 @@
 #define BEDROCK '2'
 
 class Game {
-	public:
-		Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
-		~Game();
-		int gameHandling(int whichGame);
-		void createMap();
-        void MovePlayer(std::vector <Wall *> map);
-        std::vector<Wall *> getMap() {return _map;}
-        Player *_player;
-        Player *_player2;
-        irr::EKEY_CODE _key;
-	protected:
-	private:
-		void gen_txt_map();
-	    bool is_spawn_area(int ,int);
+public:
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
+	~Game();
 
-		irr::IrrlichtDevice *_window;
-		irr::video::IVideoDriver *_video;
-		irr::scene::ISceneManager *_sceneManager;
-		std::vector <Wall *> _map;
-		std::vector <Wall *> _floor;
-		std::vector<std::string> _txt_map;
-		irr::scene::IMetaTriangleSelector *_metaselector;
-		int _nbplayers;
-		int _nbai;
+	int gameHandling(int whichGame);
+	void createMap();
+    void MovePlayer(std::vector <Wall *> map);
+    std::vector<Wall *> getMap() {return _map;}
+    Player *_player;
+    Player *_player2;
+    irr::EKEY_CODE _key;
+private:
+	bool is_spawn_area(int ,int);
+	void gen_txt_map();
 
+	irr::IrrlichtDevice *_window;
+	irr::video::IVideoDriver *_video;
+	irr::scene::ISceneManager *_sceneManager;
+	std::vector <Wall *> _map;
+	std::vector <Wall *> _floor;
+	std::vector<std::string> _txt_map;
+	irr::scene::IMetaTriangleSelector *_metaselector;
+	std::vector<std::string> getFilesfromFolder(const char *folderName);
+	int saveGame();
+	int _nbplayers;
+	int _nbai;
 };
 
-#endif /* !GAME_HPP_ */
+#endif

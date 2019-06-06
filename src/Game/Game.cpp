@@ -4,7 +4,7 @@
 ** File description:
 ** Game.cpp
 */
-
+#include <dirent.h>
 #include "Game.hpp"
 #include "Wall.hpp"
 
@@ -31,6 +31,34 @@ int Game::gameHandling(int whichGame)
 	_sceneManager->drawAll();
 	_video->endScene();
 	return 2;
+}
+
+std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
+{
+	DIR *dir = opendir(folderName);
+	struct dirent *ent;
+	std::vector<std::string> files;
+
+	if (!dir) {
+		std::cerr << "Could not open saves directory" << std::endl;
+		exit (84);
+	}
+	ent = readdir(dir);
+	while (ent != nullptr) {
+		if (ent->d_name[0] != '.')
+			files.emplace_back(ent->d_name);
+		ent = readdir(dir);
+	}
+	closedir(dir);
+	return (files);
+}
+
+int Game::saveGame()
+{
+	std::vector<std::string> files = getFilesfromFolder("./saves");
+	for (int i = 0; i < files.size(); i++)
+		std::cout << files.at(i) << std::endl;
+	return (0);
 }
 
 bool Game::is_spawn_area(int x, int y)
@@ -79,7 +107,6 @@ void Game::gen_txt_map()
 
 void Game::createMap()
 {
-//
 	for (int x = 0; x <= MAP_SIZE; x++)
 		for (int y = 0; y <= MAP_SIZE; y++)
 		    _floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
