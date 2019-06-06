@@ -74,8 +74,9 @@ void Menu::initializeButtons()
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
 
 	_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(70, 900, 70 + 250, 900 + 120), nullptr, 0, L""));
+	size = 400;
 	for (int i = 0; i < getFilesfromFolder("./saves").size(); i++, size += 170)
-		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(710, size, 710 + 500, size + 120), nullptr, 0, L""));
+		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
 
 	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 	_musicLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 440, 500 + 180, 440 + 50), nullptr, 0, L"");
@@ -128,14 +129,15 @@ int Menu::buttonHandling()
 void Menu::loadGames()
 {
 	int game = 0;
-	int height = 400;
+	int height = 350;
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_loadGamesBackground, irr::core::position2d<irr::s32>(0, 0));
-		for (int i = 0; i < getFilesfromFolder("./saves").size(); i++, height += 150)
-			_video->draw2DImage(_savedGames[i], irr::core::position2d<irr::s32>(1100, height));
+		for (std::size_t i = 0; i < _savedGames.size(); i++, height += 170)
+			_video->draw2DImage(_savedGames[i], irr::core::position2d<irr::s32>(1000, height));
+		height = 400;
 		_sceneManager->drawAll();
 		game = loadGamesButtonsHandling();
 		if (game == -1)
@@ -148,6 +150,11 @@ int Menu::loadGamesButtonsHandling()
 {
 	if (_loadGamesButtons[0]->isPressed())
 		return -1;
+	for(std::size_t i = 0; i < _loadGamesButtons.size(); i++)
+		if (_loadGamesButtons[i]->isPressed())
+			return (i);
+	for(std::size_t i = 0; i < _loadGamesButtons.size(); i++)
+		_loadGamesButtons[i]->setPressed(false);
 	return 0;
 }
 
