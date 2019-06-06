@@ -17,6 +17,7 @@ public:
 	Wall(irr::IrrlichtDevice *window, bool isBreakable, irr::core::vector3df vector, std::string texture);
 	~Wall();
 	irr::core::vector3df getPosition() {return _cube->getAbsolutePosition();}
+
 private:
 	bool _isBreakable;
 	std::string _sprite;

@@ -15,7 +15,7 @@
 #include "Wall.hpp"
 #include "Player.hpp"
 
-#define MAP_SIZE 21
+#define MAP_SIZE 21.0f
 #define CUBE_SIZE 20.0f
 #define WALL_PCT 70
 #define VOID '0'
@@ -36,6 +36,7 @@ public:
     irr::EKEY_CODE _key;
 private:
 	bool is_spawn_area(int ,int);
+	std::vector<std::string> gen_sub_map();
 	void gen_txt_map();
 
 	irr::IrrlichtDevice *_window;
