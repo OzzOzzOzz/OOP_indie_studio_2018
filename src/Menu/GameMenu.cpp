@@ -40,10 +40,13 @@ int GameMenu::gameMenuHandling()
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		ret = buttonsHandling();
-		if (ret == 1 || ret == 2)
+		if (ret == 1 || ret == 2) {
+			_mainButtons.clear();
 			return ret;
+		}
 		_video->endScene();
 	}
+	_mainButtons.clear();
 	return(ret);
 }
 
