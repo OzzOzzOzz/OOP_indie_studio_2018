@@ -18,7 +18,7 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver,
     _sceneManager = _window->getSceneManager();
     _sceneManager->addCameraSceneNode(0,
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
-            (MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE),
+            (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE),
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 2) * CUBE_SIZE, 0));
     createMap();
