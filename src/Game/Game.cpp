@@ -32,13 +32,17 @@ Game::~Game()
 
 void Game::gameLoop()
 {
+	int ret;
+
 	while(_window->run()) {
-		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE))
-			break;
+		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE)) {
+			ret = _gameMenu->gameMenuHandling();
+			if (ret == 2)
+				saveGame();
+		}
 		gameHandling(0);
 		MovePlayer(_map);
 	}
-	_gameMenu->gameMenuHandling();
 	_window->drop();
 }
 
@@ -48,6 +52,14 @@ int Game::gameHandling(int whichGame)
     _sceneManager->drawAll();
     _video->endScene();
     return 2;
+}
+
+int Game::saveGame()
+{
+	std::vector<std::string> files = getFilesfromFolder("./saves");
+	for (int i = 0; i < files.size(); i++)
+		std::cout << files.at(i) << std::endl;
+	return (0);
 }
 
 std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
@@ -68,14 +80,6 @@ std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 	}
 	closedir(dir);
 	return (files);
-}
-
-int Game::saveGame()
-{
-	std::vector<std::string> files = getFilesfromFolder("./saves");
-	for (int i = 0; i < files.size(); i++)
-		std::cout << files.at(i) << std::endl;
-	return (0);
 }
 
 bool Game::is_spawn_area(int x, int y)
