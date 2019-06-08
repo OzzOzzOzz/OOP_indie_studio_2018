@@ -25,14 +25,14 @@ public:
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 
 	void menuHandling();
-    	int buttonHandling();
-    	void initializeButtons();
+	int buttonHandling();
+    void initializeButtons();
 
-    	void loadGames();
-    	int loadGamesButtonsHandling();
+    void loadGames();
+    int loadGamesButtonsHandling();
 
-    	void settings();
-    	int settingsButtonsHandling();
+    void settings();
+    int settingsButtonsHandling();
 
 private:
 	irr::IrrlichtDevice *_window;

@@ -13,6 +13,7 @@ int main()
 	Graphics *bomberman = new Graphics();
 
 	bomberman->getMenu()->menuHandling();
+	bomberman->gameSettings();
 	bomberman->getGame()->createMap();
 	bomberman->getGame()->gameLoop();
 	return 0;

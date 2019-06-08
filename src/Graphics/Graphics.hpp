@@ -20,16 +20,19 @@ public:
 	Graphics();
 	~Graphics();
 
-    irr::IrrlichtDevice *getWindow() {return _window;}
     Menu *getMenu() {return _menu;}
     Game *getGame() {return _game;}
-    bool getStatus() {return _inMenu;}
-    void setStatus(bool newStatus) {_inMenu = newStatus;}
+	void gameSettings();
+
 private:
     irr::IrrlichtDevice *_window;
+	irr::video::IVideoDriver *_video;
+	irr::scene::ISceneManager *_sceneManager;
+	irr::video::ITexture *_background;
+	std::vector<irr::gui::IGUIButton *> _mainButtons;
+
     Menu *_menu;
     Game *_game;
-    bool _inMenu;
     MyEventReceiver *_receiver;
 };
 
