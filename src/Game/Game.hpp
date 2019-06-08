@@ -13,6 +13,7 @@
 #include <vector>
 #include <cstdlib>
 #include "Wall.hpp"
+#include "Bomb.hpp"
 #include "Player.hpp"
 #include "../Menu/GameMenu.hpp"
 
@@ -31,7 +32,7 @@ public:
 	int gameHandling(int whichGame);
 	void gameLoop();
 	void createMap();
-    void MovePlayer(std::vector <Wall *> map);
+    void MovePlayer(std::vector <Wall *> map, std::vector <Bomb *> bombs);
     std::vector<Wall *> getMap() {return _map;}
     Player *_player;
     Player *_player2;
@@ -49,6 +50,7 @@ private:
         irr::video::ITexture *_background;
 		std::vector <Wall *> _map;
 		std::vector <Wall *> _floor;
+        std::vector <Bomb *> _bombs;
 		std::vector<std::string> _txt_map;
 		irr::scene::IMetaTriangleSelector *_metaselector;
 		std::vector<std::string> getFilesfromFolder(const char *folderName);

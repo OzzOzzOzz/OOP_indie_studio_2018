@@ -20,7 +20,6 @@ public:
 
 private:
 	bool _isBreakable;
-	std::string _sprite;
 	irr::scene::IMeshSceneNode* _cube;
 };
 

@@ -19,7 +19,7 @@ class Player {
 public:
 	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2);
 	~Player();
-	int Move(int id, std::vector <Wall *> map);
+	int Move(int id, std::vector <Wall *> map, std::vector<Bomb *> bombs);
 	int colision(std::vector <Wall *> map, irr::EKEY_CODE key);
 	irr::core::vector3df getPosition() {return _player1->getAbsolutePosition();}
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}

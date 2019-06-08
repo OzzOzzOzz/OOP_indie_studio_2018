@@ -42,7 +42,7 @@ void Game::gameLoop()
 				saveGame();
 		}
 		gameHandling(0);
-		MovePlayer(_map);
+		MovePlayer(_map, _bombs);
 	}
 	_window->drop();
 }
@@ -172,9 +172,9 @@ void Game::createMap()
         }
 }
 
-void Game::MovePlayer(std::vector <Wall *> map)
+void Game::MovePlayer(std::vector <Wall *> map, std::vector <Bomb *> bombs)
 {
-    _player->Move(1, map);
+    _player->Move(1, map, bombs);
     if (_nbplayers == 2)
-        _player2->Move(2, map);
+        _player2->Move(2, map, bombs);
 }

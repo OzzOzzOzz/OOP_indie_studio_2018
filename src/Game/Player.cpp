@@ -26,19 +26,21 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
         _keys = {irr::KEY_KEY_Z,
              irr::KEY_KEY_S,
              irr::KEY_KEY_D,
-             irr::KEY_KEY_Q};
+             irr::KEY_KEY_Q,
+             irr::KEY_SPACE};
     else
         _keys = {irr::KEY_UP,
                  irr::KEY_DOWN,
                  irr::KEY_RIGHT,
-                 irr::KEY_LEFT};
+                 irr::KEY_LEFT,
+                 irr::KEY_RETURN};
 }
 
 Player::~Player()
 {
 }
 
-int Player::Move(int id, std::vector <Wall *> map)
+int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> bombs)
 {
     static int i = 0;
     static int n = 0;
@@ -96,8 +98,11 @@ int Player::Move(int id, std::vector <Wall *> map)
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
     }
-    if(_receiver->IsKeyDown(irr::KEY_ESCAPE))
-        exit (0);
+    if(_receiver->IsKeyDown(_keys[4])) {
+            bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
+            bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
+        return (0);
+    }
     _player1->setPosition(nodePosition);
     if (i == 1 && id == 1) {
         _player1->setFrameLoop(0, 95);
