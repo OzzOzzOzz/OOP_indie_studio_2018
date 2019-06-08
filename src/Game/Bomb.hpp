@@ -17,7 +17,8 @@ class Bomb {
         Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, std::string _texture);
         ~Bomb();
     private:
-        irr::scene::IMeshSceneNode* _bomb;
+        irr::scene::IAnimatedMesh *_mesh;
+        irr::scene::IAnimatedMeshSceneNode *_bomb;
 };
 
 
