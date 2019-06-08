@@ -136,7 +136,7 @@ void Menu::loadGames()
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_loadGamesBackground, irr::core::position2d<irr::s32>(0, 0));
 		for (std::size_t i = 0; i < _savedGames.size(); i++, height += 170)
-			_video->draw2DImage(_savedGames[i], irr::core::position2d<irr::s32>(1000, height));
+			_video->draw2DImage(_savedGames[i], irr::core::position2d<irr::s32>(1000, height), irr::core::rect<irr::s32>(0,0,700,400), 0, irr::video::SColor(255,255,255,255), true);
 		height = 400;
 		_sceneManager->drawAll();
 		game = loadGamesButtonsHandling();
