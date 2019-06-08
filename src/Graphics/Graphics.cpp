@@ -93,29 +93,35 @@ int Graphics::buttonsHandling()
 
 	if (_plusButtons[1]->isPressed()) {
 		if (!_secondButtonActivated) {
-			if (_bots == 0) {
+			if (_bots == 0)
 				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
-			}
-			if (_bots == 1) {
+			if (_bots == 1)
 				_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
-			}
 			_bots++;
 			_secondButtonActivated = true;
 		} else {
-			_secondBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+			if (_thirdButtonActivated) {
+				if (_bots == 0)
+					_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+				if (_bots == 1)
+					_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+				_thirdBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+				_thirdButtonActivated = false;
+			} else {
+				_secondBox = _video->getTexture(
+						"assets/menu/buttons/add_player_plus_sign.png");
+				_secondButtonActivated = false;
+			}
 			_bots--;
-			_secondButtonActivated = false;
 		}
 	}
 
 	if (_plusButtons[2]->isPressed()) {
 		if (!_thirdButtonActivated) {
-			if (_bots == 1) {
+			if (_bots == 1)
 				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
-			}
-			if (_bots == 2) {
+			if (_bots == 2)
 				_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
-			}
 			_bots++;
 			_thirdButtonActivated = true;
 		} else {
