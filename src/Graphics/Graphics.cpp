@@ -51,9 +51,9 @@ void Graphics::gameSettings()
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 310));
-		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(950, 310));
-		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(1400, 310));
+		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 325), irr::core::rect<irr::s32>(0,0,700,400), 0, irr::video::SColor(255,255,255,255), true);
+		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(950, 325), irr::core::rect<irr::s32>(0,0,700,400), 0, irr::video::SColor(255,255,255,255), true);
+		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(1400, 325), irr::core::rect<irr::s32>(0,0,700,400), 0, irr::video::SColor(255,255,255,255), true);
 		_sceneManager->drawAll();
 		ret = buttonsHandling();
 		if (ret == 1) {
