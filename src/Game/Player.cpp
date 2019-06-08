@@ -8,7 +8,6 @@
 */
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
-#define SPEED 1.0f
 
 Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2)
 {
@@ -23,7 +22,6 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1->setPosition(irr::core::vector3df(20.0f, 20.0f, 0.0f));
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
-    _previous_dir = (irr::EKEY_CODE)0;
     if (j1orj2 == true)
         _keys = {irr::KEY_KEY_Z,
              irr::KEY_KEY_S,
@@ -57,7 +55,6 @@ int Player::Move(int id, std::vector <Wall *> map)
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
         nodePosition.Y += SPEED;
         _player1->setPosition(nodePosition);
-        _previous_dir = _keys[0];
         return (0);
     }
     else if(_receiver->IsKeyDown(_keys[1])  && colision(map, _keys[1]) == 0) {
@@ -71,7 +68,6 @@ int Player::Move(int id, std::vector <Wall *> map)
         nodePosition.Y -= SPEED;
         _player1->setRotation(irr::core::vector3df(-90.0f, 180.0f, 0.0f));
         _player1->setPosition(nodePosition);
-        _previous_dir = _keys[1];
         return (0);
     }
     if(_receiver->IsKeyDown(_keys[2]) && colision(map, _keys[2]) == 0) {
@@ -85,7 +81,6 @@ int Player::Move(int id, std::vector <Wall *> map)
         nodePosition.X -= SPEED;
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 90.0f));
         _player1->setPosition(nodePosition);
-        _previous_dir = _keys[2];
         return (0);
     }
     else if(_receiver->IsKeyDown(_keys[3]) && colision(map, _keys[3]) == 0) {
@@ -99,8 +94,6 @@ int Player::Move(int id, std::vector <Wall *> map)
         nodePosition.X += SPEED;
         _player1->setPosition(nodePosition);
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
-        _previous_dir = _keys[3];
-        std::cout << "bite" << std::endl;
         return (0);
     }
     if(_receiver->IsKeyDown(irr::KEY_ESCAPE))
@@ -117,33 +110,18 @@ int Player::Move(int id, std::vector <Wall *> map)
     return (0);
 }
 
-#define OFFSET 2.0f
-#define TRUC 15.0f
-#define OTHER_TRUC 6.0f
-
 int Player::colision(std::vector <Wall *> map, irr::EKEY_CODE key)
 {
     for (auto const &map : map) {
-        if (key == _keys[0] && _player1->getPosition().Y + TRUC + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + TRUC && ((_player1->getPosition().X + TRUC>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + TRUC)))
+        if (key == _keys[0] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
             return 1;
-        if (key == _keys[3] && _player1->getPosition().X + TRUC + SPEED>= map->getPosition().X  && _player1->getPosition().X + SPEED<= map->getPosition().X + TRUC && ((_player1->getPosition().Y + TRUC>= map->getPosition().Y && _player1->getPosition().Y <= map->getPosition().Y + TRUC)))
+        else if (key == _keys[3] && _player1->getPosition().X + PLAYER_SIZE + SPEED>= map->getPosition().X  && _player1->getPosition().X + SPEED<= map->getPosition().X + PLAYER_SIZE && ((_player1->getPosition().Y + PLAYER_SIZE>= map->getPosition().Y && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE)))
             return 1;
-        if (key == _keys[2] && _player1->getPosition().Y <= map->getPosition().Y + TRUC && _player1->getPosition().Y + TRUC >= map->getPosition().Y && ((_player1->getPosition().X  - SPEED + TRUC >= map->getPosition().X && _player1->getPosition().X - SPEED <= map->getPosition().X + TRUC)))
+        else if (key == _keys[2] && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE && _player1->getPosition().Y + PLAYER_SIZE >= map->getPosition().Y && ((_player1->getPosition().X  - SPEED + PLAYER_SIZE >= map->getPosition().X && _player1->getPosition().X - SPEED <= map->getPosition().X + PLAYER_SIZE)))
             return 1;
-        if (key == _keys[1] && _player1->getPosition().X <= map->getPosition().X + TRUC && _player1->getPosition().X + TRUC>= map->getPosition().X && ((_player1->getPosition().Y  - SPEED + TRUC >= map->getPosition().Y && _player1->getPosition().Y - SPEED <= map->getPosition().Y + TRUC)))
+        else if (key == _keys[1] && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE && _player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && ((_player1->getPosition().Y  - SPEED + PLAYER_SIZE >= map->getPosition().Y && _player1->getPosition().Y - SPEED <= map->getPosition().Y + PLAYER_SIZE)))
             return 1;
     }
     return 0;
-//    if (key != _previous_dir)
-//        return (0);
-//    for (int i = 0; map.size() > i; i++) {
-//        if (_player1->getPosition().X + OFFSET <= map[i]->getPosition().X + 20 &&
-//            _player1->getPosition().X + 20 + OFFSET>= map[i]->getPosition().X  &&
-//            _player1->getPosition().Y  - 1<= map[i]->getPosition().Y + 17 &&
-//            17 + _player1->getPosition().Y - 1>= map[i]->getPosition().Y) {
-//            std::cout << "colision" << std::endl;
-//            return 1;
-//        }
-//    }
-//    return 0;
+
 }
