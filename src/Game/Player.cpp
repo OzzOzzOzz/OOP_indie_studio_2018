@@ -40,7 +40,7 @@ Player::~Player()
 {
 }
 
-int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> bombs)
+int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
 {
     static int i = 0;
     static int n = 0;
@@ -99,6 +99,11 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> bombs)
         _player1->setPosition(nodePosition);
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
+    }
+    std::cout << bombs.size() << std::endl;
+    if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
+        bombs[bombs.size() - 1]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
+        //bombs.erase(bombs.end());
     }
     _player1->setPosition(nodePosition);
     if (i == 1 && id == 1) {

@@ -172,7 +172,7 @@ void Game::createMap()
         }
 }
 
-void Game::MovePlayer(std::vector <Wall *> map, std::vector <Bomb *> bombs)
+void Game::MovePlayer(std::vector <Wall *> map, std::vector<Bomb *> &bombs)
 {
     _player->Move(1, map, bombs);
     if (_nbplayers == 2)

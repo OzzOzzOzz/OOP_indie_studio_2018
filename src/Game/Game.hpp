@@ -32,7 +32,7 @@ public:
 	int gameHandling(int whichGame);
 	void gameLoop();
 	void createMap();
-    void MovePlayer(std::vector <Wall *> map, std::vector <Bomb *> bombs);
+    void MovePlayer(std::vector <Wall *> map, std::vector<Bomb *> &bombs);
     std::vector<Wall *> getMap() {return _map;}
     Player *_player;
     Player *_player2;

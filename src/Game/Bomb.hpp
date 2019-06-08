@@ -16,9 +16,10 @@ class Bomb {
     public:
         Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, std::string _texture);
         ~Bomb();
+        irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
     private:
-        irr::scene::IAnimatedMesh *_mesh;
         irr::scene::IAnimatedMeshSceneNode *_bomb;
+        irr::scene::IAnimatedMesh *_mesh;
 };
 
 
