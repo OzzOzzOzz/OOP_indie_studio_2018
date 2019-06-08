@@ -23,7 +23,11 @@ Graphics::~Graphics()
 
 void Graphics::buttonsInitialize()
 {
+	int size = 580;
+
 	_startButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(735, 910, 735 + 500, 910 + 120), nullptr, 0, L"START");
+	for (int i = 0; i < 3; i++, size += 450)
+		_plusButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(size, 410, size + 250, 410 + 220), nullptr, 0, L"PLUS"));
 }
 
 void Graphics::gameSettings()
@@ -44,11 +48,11 @@ void Graphics::gameSettings()
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(0, 0));
+		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 310));
+		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(950, 310));
+		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(1400, 310));
 		_sceneManager->drawAll();
-//		ret = buttonsHandling();
+		ret = buttonsHandling();
 		if (ret == 1) {
 			_game = new Game(_window, _receiver, _players, _bots);
 			return;
@@ -67,7 +71,7 @@ int Graphics::buttonsHandling()
 		_players++;
 		//disable the button
 	}
-
+/*
 	if (_choosePlayerOrAI->isPressed()) {
 		if (_players == 2) {
 			_players--;
@@ -79,7 +83,7 @@ int Graphics::buttonsHandling()
 			_firstBox = _video->getTexture("assets/menu/buttons/player2_rectangle.png");
 		}
 	}
-
+*/
 	if (_plusButtons[1]->isPressed()) {
 		if (_bots == 0)
 			_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
