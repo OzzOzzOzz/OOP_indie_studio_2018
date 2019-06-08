@@ -24,5 +24,22 @@ void Graphics::gameSettings()
 	int players = 1;
 	int bots = 0;
 
-	_game = new Game(_window, _receiver, players, bots);
+	_video = _window->getVideoDriver();
+	_sceneManager = _window->getSceneManager();
+
+	_background = _video->getTexture("assets/menu/choose_players_menu.png");
+	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
+	_startButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(735, 910, 735 + 500, 910 + 120), nullptr, 0, L"START");
+
+	while (_window->run()) {
+		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
+		_window->getGUIEnvironment()->drawAll();
+		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
+		_sceneManager->drawAll();
+		if (_startButton->isPressed()) {
+			_game = new Game(_window, _receiver, players, bots);
+			return;
+		}
+		_video->endScene();
+	}
 }

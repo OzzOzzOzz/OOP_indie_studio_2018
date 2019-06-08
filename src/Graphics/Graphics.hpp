@@ -29,7 +29,7 @@ private:
 	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
-	std::vector<irr::gui::IGUIButton *> _mainButtons;
+	irr::gui::IGUIButton * _startButton;
 
     Menu *_menu;
     Game *_game;
