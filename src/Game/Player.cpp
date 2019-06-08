@@ -19,7 +19,7 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1->setMD2Animation(irr::scene::EMAT_STAND);
     _player1->setMaterialTexture(0, _window->getVideoDriver()->getTexture("assets/game/ziggs.png"));
     _player1->setFrameLoop(0, 96);
-    _player1->setPosition(irr::core::vector3df(20.0f, 20.0f, 0.0f));
+    _player1->setPosition(irr::core::vector3df(x, y, 0.0f));
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
     if (j1orj2 == true)

@@ -46,6 +46,7 @@ private:
 		irr::IrrlichtDevice *_window;
 		irr::video::IVideoDriver *_video;
 		irr::scene::ISceneManager *_sceneManager;
+        irr::video::ITexture *_background;
 		std::vector <Wall *> _map;
 		std::vector <Wall *> _floor;
 		std::vector<std::string> _txt_map;

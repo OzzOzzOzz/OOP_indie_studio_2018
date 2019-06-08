@@ -15,15 +15,16 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
     _window = window;
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
+    _background = _video->getTexture("assets/game/game_background.png");
     _sceneManager->addCameraSceneNode(0,
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE),
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 100, 100, false);
+	_player = new Player(_window, receiver, 20, 20, false);
     _gameMenu = new GameMenu(_window);
     if (nbplayers == 2)
-        _player2 = new Player(_window, receiver, 0, 0, true);
+        _player2 = new Player(_window, receiver, 380, 380, true);
 }
 
 Game::~Game()
@@ -49,6 +50,7 @@ void Game::gameLoop()
 int Game::gameHandling(int whichGame)
 {
     _video->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));
+    _video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
     _sceneManager->drawAll();
     _video->endScene();
     return 2;
