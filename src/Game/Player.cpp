@@ -46,6 +46,8 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> bombs)
     static int n = 0;
 
     irr::core::vector3df nodePosition = _player1->getPosition();
+    if(_receiver->IsKeyDown(_keys[4]))
+        bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
     if(_receiver->IsKeyDown(_keys[0]) && colision(map, _keys[0]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -96,11 +98,6 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> bombs)
         nodePosition.X += SPEED;
         _player1->setPosition(nodePosition);
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
-        return (0);
-    }
-    if(_receiver->IsKeyDown(_keys[4])) {
-            bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
-            bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
         return (0);
     }
     _player1->setPosition(nodePosition);
