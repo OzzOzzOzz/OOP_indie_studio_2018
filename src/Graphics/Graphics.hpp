@@ -44,8 +44,13 @@ private:
     Menu *_menu;
     Game *_game;
     MyEventReceiver *_receiver;
+
 	int _players;
 	int _bots;
+
+	bool _firstButtonActivated;
+	bool _secondButtonActivated;
+	bool _thirdButtonActivated;
 };
 
 #endif

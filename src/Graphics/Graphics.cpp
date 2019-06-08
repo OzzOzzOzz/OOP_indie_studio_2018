@@ -14,7 +14,10 @@ Graphics::Graphics()
 	_menu = new Menu(_window);
 	_window->setWindowCaption(L"Indie Studio");
 	_players = 1;
-	_bots = 0;
+	_bots = 1;
+	_firstButtonActivated = false;
+	_secondButtonActivated = false;
+	_thirdButtonActivated = false;
 }
 
 Graphics::~Graphics()
@@ -67,38 +70,62 @@ int Graphics::buttonsHandling()
 		return 1;
 
 	if (_plusButtons[0]->isPressed()) {
-		_firstBox = _video->getTexture("assets/menu/buttons/player2_rectangle.png");
-		_players++;
-		//disable the button
-	}
-/*
-	if (_choosePlayerOrAI->isPressed()) {
-		if (_players == 2) {
-			_players--;
-			_bots++;
-			_firstBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
-		} else {
+		if (!_firstButtonActivated) {
 			_players++;
 			_bots--;
 			_firstBox = _video->getTexture("assets/menu/buttons/player2_rectangle.png");
+			_firstButtonActivated = true;
+			if (_secondButtonActivated)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			if (_thirdButtonActivated)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+		} else {
+			_players--;
+			_bots++;
+			_firstBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			_firstButtonActivated = false;
+			if (_secondButtonActivated)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			if (_thirdButtonActivated)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
 		}
 	}
-*/
+
 	if (_plusButtons[1]->isPressed()) {
-		if (_bots == 0)
-			_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
-		else
-			_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
-		_bots++;
-		//disable the button
+		if (!_secondButtonActivated) {
+			if (_bots == 0) {
+				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			}
+			if (_bots == 1) {
+				_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			}
+			_bots++;
+			_secondButtonActivated = true;
+		} else {
+			_secondBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+			_bots--;
+			_secondButtonActivated = false;
+		}
 	}
 
 	if (_plusButtons[2]->isPressed()) {
-		if (_bots == 1)
-			_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
-		else
-			_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
-		_bots++;
-		//disable the button
+		if (!_thirdButtonActivated) {
+			if (_bots == 1) {
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			}
+			if (_bots == 2) {
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
+			}
+			_bots++;
+			_thirdButtonActivated = true;
+		} else {
+			_thirdBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+			_bots--;
+			_thirdButtonActivated = false;
+		}
 	}
+
+	_startButton->setPressed(false);
+	for (int i = 0; i < 3; i++)
+		_plusButtons[i]->setPressed(false);
 }
