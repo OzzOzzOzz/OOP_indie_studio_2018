@@ -54,14 +54,6 @@ int Game::gameHandling(int whichGame)
     return 2;
 }
 
-int Game::saveGame()
-{
-	std::vector<std::string> files = getFilesfromFolder("./saves");
-	for (int i = 0; i < files.size(); i++)
-		std::cout << files.at(i) << std::endl;
-	return (0);
-}
-
 std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 {
 	DIR *dir = opendir(folderName);
@@ -80,6 +72,14 @@ std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 	}
 	closedir(dir);
 	return (files);
+}
+
+int Game::saveGame()
+{
+	std::vector<std::string> files = getFilesfromFolder("./saves");
+	for (int i = 0; i < files.size(); i++)
+		std::cout << files.at(i) << std::endl;
+	return (0);
 }
 
 bool Game::is_spawn_area(int x, int y)

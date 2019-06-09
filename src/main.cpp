@@ -15,5 +15,5 @@ int main()
 	bomberman->getMenu()->menuHandling();
 	bomberman->getGame()->createMap();
 	bomberman->getGame()->gameLoop();
-	return 0;
+	return (0);
 }
