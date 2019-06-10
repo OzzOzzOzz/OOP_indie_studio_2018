@@ -15,7 +15,6 @@
 #define PLAYER_SIZE 15.0f
 #define SPEED 1.0f
 
-
 #define K_UP_ID 0
 #define K_DOWN_ID 1
 #define K_RIGHT_ID 2
@@ -30,6 +29,7 @@ public:
 	int Move(int id, std::vector <Wall *> &map, std::vector<Bomb *> &bombs);
 	int Collision(std::vector <Wall *> &map, irr::EKEY_CODE key);
 	void bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector<Wall *> &map);
+	void removeBombsAround(irr::core::vector3df nodePosition, std::vector<Wall *> &map);
 
 	irr::core::vector3df getPosition() {return _player1->getAbsolutePosition();}
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}
