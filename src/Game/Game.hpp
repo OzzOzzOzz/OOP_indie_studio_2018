@@ -26,7 +26,7 @@
 
 class Game {
 public:
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai, int musicVolume, int soundEffectsVolume);
 	~Game();
 
 	int gameHandling(int whichGame);
@@ -57,6 +57,9 @@ private:
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 	int saveGame();
 	GameMenu *_gameMenu;
+	sf::SoundBuffer _bombBuffer;
+	sf::Sound _bombSound;
+	sf::Music _gameMusic;
 	int _nbplayers;
 	int _nbai;
 };

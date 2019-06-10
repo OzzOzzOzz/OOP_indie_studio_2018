@@ -34,6 +34,9 @@ public:
     void settings();
     int settingsButtonsHandling();
 
+    int getMusicVolume() {return _musicVolume;}
+    int getSoundEffectVolume() {return _soundEffectVolume;}
+    void stopMusic();
 private:
 	irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;
@@ -58,6 +61,8 @@ private:
 	sf::Sound _clickSound;
 	sf::Music _mainMenuMusic;
 
+	int _musicVolume;
+	int _soundEffectVolume;
 };
 
 #endif

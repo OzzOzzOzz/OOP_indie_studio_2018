@@ -15,6 +15,11 @@ GameMenu::GameMenu(irr::IrrlichtDevice *window)
 	_background = _video->getTexture("assets/menu/ingame_menu.png");
 	_htpBackground = _video->getTexture("assets/menu/how_to_play.png");
 	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
+	if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
+		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
+		exit (84);
+	}
+	_clickSound.setBuffer(_clickBuffer);
 }
 
 GameMenu::~GameMenu()
@@ -42,24 +47,32 @@ int GameMenu::gameMenuHandling()
 		ret = buttonsHandling();
 		if (ret == 1 || ret == 2) {
 			_mainButtons.clear();
-			return ret;
+			return (ret);
 		}
 		_video->endScene();
 	}
 	_mainButtons.clear();
-	return(ret);
+	return (ret);
 }
 
 int GameMenu::buttonsHandling()
 {
-	if (_mainButtons[0]->isPressed())
+	if (_mainButtons[0]->isPressed()) {
+		_clickSound.play();
 		return (1);
-	if (_mainButtons[1]->isPressed())
+	}
+	if (_mainButtons[1]->isPressed()) {
+		_clickSound.play();
 		return (2);
-	if (_mainButtons[2]->isPressed())
+	}
+	if (_mainButtons[2]->isPressed()) {
+		_clickSound.play();
 		howToPlay();
-	if (_mainButtons[3]->isPressed())
+	}
+	if (_mainButtons[3]->isPressed()) {
+		_clickSound.play();
 		exit (0);
+	}
 	return (0);
 }
 
@@ -69,8 +82,10 @@ void GameMenu::howToPlay()
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_htpBackground, irr::core::position2d<irr::s32>(0, 0));
-		if (_howToPlayBack->isPressed())
+		if (_howToPlayBack->isPressed()) {
+			_clickSound.play();
 			return;
+		}
 		_video->endScene();
 	}
 }

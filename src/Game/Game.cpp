@@ -8,7 +8,7 @@
 #include "Game.hpp"
 #include "Wall.hpp"
 
-Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai)
+Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai, int musicVolume, int soundEffectsVolume)
 {
     _nbai = nbai;
     _nbplayers = nbplayers;
@@ -16,15 +16,24 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
     _background = _video->getTexture("assets/game/game_background.png");
-    _sceneManager->addCameraSceneNode(0,
-        irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
-            (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE),
-        irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
-            (MAP_SIZE / 2) * CUBE_SIZE, 0));
+    _sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
 	_player = new Player(_window, receiver, 20, 20, false);
     _gameMenu = new GameMenu(_window);
     if (nbplayers == 2)
         _player2 = new Player(_window, receiver, 380, 380, true);
+	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
+		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
+		exit (84);
+	}
+	if (!_gameMusic.openFromFile("assets/sounds/game_music.ogg")) {
+		std::cerr << "Error while loading game_music.ogg" << std::endl;
+		exit (84);
+	}
+	_gameMusic.setLoop(true);
+	_gameMusic.setVolume(musicVolume);
+	_gameMusic.play();
+	_bombSound.setBuffer(_bombBuffer);
+	_bombSound.setVolume(soundEffectsVolume);
 }
 
 Game::~Game()
@@ -137,11 +146,9 @@ void Game::gen_txt_map()
     int x_len = static_cast<int>(sub_map.size());
     int y_len = static_cast<int>(sub_map[0].size());
 
-    for (int x = 0; x < MAP_SIZE; x++) {
+    for (int x = 0; x < MAP_SIZE; x++)
         _txt_map.emplace_back(MAP_SIZE, VOID);
-    }
     for (int x = 0; x < x_len; x++) {
-
         for (int y = 0; y <= y_len; y++) {
             _txt_map[x][y] = sub_map[x][y];
             _txt_map[y][MAP_SIZE - 1 - x] = sub_map[x][y];
@@ -149,27 +156,26 @@ void Game::gen_txt_map()
             _txt_map[MAP_SIZE - 1 - y][x] = sub_map[x][y];
         }
     }
-    _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)]
-            [static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
+    _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
 }
 
 void Game::createMap()
 {
-    for (int x = 0; x <= MAP_SIZE; x++)
-        for (int y = 0; y <= MAP_SIZE; y++)
-            _floor.push_back(new Wall(_window, true,
-                irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE),
-                "assets/game/floor.png"));
+    for (int x = 0; x <= MAP_SIZE; x++) {
+		for (int y = 0; y <= MAP_SIZE; y++)
+			_floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
+    }
     gen_txt_map();
-    for (int x = 0; x < MAP_SIZE; x++)
-        for (int y = 0; y < MAP_SIZE; y++) {
-            if (_txt_map[x][y] == BEDROCK) {
-                _map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
-            } else if(_txt_map[x][y] == WALL) {
-                _map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
+    for (int x = 0; x < MAP_SIZE; x++) {
+		for (int y = 0; y < MAP_SIZE; y++) {
+			if (_txt_map[x][y] == BEDROCK) {
+				_map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
+			} else if(_txt_map[x][y] == WALL) {
+				_map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
 
-            }
-        }
+			}
+		}
+    }
 }
 
 void Game::MovePlayer(std::vector <Wall *> map, std::vector<Bomb *> &bombs)
