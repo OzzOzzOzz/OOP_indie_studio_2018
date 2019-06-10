@@ -9,7 +9,7 @@
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
 
-Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2)
+Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool player1)
 {
     _receiver = receiver;
     _window = window;
@@ -22,18 +22,18 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1->setPosition(irr::core::vector3df(x, y, 0.0f));
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
-    if (j1orj2 == true)
+    if (player1)
         _keys = {irr::KEY_KEY_Z,
              irr::KEY_KEY_S,
              irr::KEY_KEY_D,
              irr::KEY_KEY_Q,
-             irr::KEY_SPACE};
+             irr::KEY_KEY_C};
     else
         _keys = {irr::KEY_UP,
                  irr::KEY_DOWN,
                  irr::KEY_RIGHT,
                  irr::KEY_LEFT,
-                 irr::KEY_RETURN};
+                 irr::KEY_KEY_N};
 }
 
 Player::~Player()
@@ -47,8 +47,8 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
 
     irr::core::vector3df nodePosition = _player1->getPosition();
     if(_receiver->IsKeyDown(_keys[4]))
-        bombs.push_back(new Bomb(_window, irr::core::vector3df( nodePosition.X,  nodePosition.Y, 0.0f), "assets/game/bomb.png"));
-    if(_receiver->IsKeyDown(_keys[0]) && colision(map, _keys[0]) == 0) {
+    	bombHandling(bombs, nodePosition);
+    if(_receiver->IsKeyDown(_keys[0]) && Collision(map, _keys[0]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -61,7 +61,7 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[1])  && colision(map, _keys[1]) == 0) {
+    else if(_receiver->IsKeyDown(_keys[1])  && Collision(map, _keys[1]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -74,7 +74,7 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    if(_receiver->IsKeyDown(_keys[2]) && colision(map, _keys[2]) == 0) {
+    if(_receiver->IsKeyDown(_keys[2]) && Collision(map, _keys[2]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -87,7 +87,7 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[3]) && colision(map, _keys[3]) == 0) {
+    else if(_receiver->IsKeyDown(_keys[3]) && Collision(map, _keys[3]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -117,7 +117,7 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
     return (0);
 }
 
-int Player::colision(std::vector <Wall *> map, irr::EKEY_CODE key)
+int Player::Collision(std::vector<Wall *> map, irr::EKEY_CODE key)
 {
     for (auto const &map : map) {
         if (key == _keys[0] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
@@ -130,5 +130,9 @@ int Player::colision(std::vector <Wall *> map, irr::EKEY_CODE key)
             return 1;
     }
     return 0;
+}
 
+void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition)
+{
+	bombs.push_back(new Bomb(_window, irr::core::vector3df(nodePosition.X, nodePosition.Y, 0.0f), "assets/game/bomb.png"));
 }

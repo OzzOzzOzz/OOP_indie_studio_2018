@@ -15,24 +15,22 @@
 #include <algorithm>
 
 class GameMenu {
-	public:
-		GameMenu(irr::IrrlichtDevice *);
-		~GameMenu();
+public:
+	GameMenu(irr::IrrlichtDevice *);
+	~GameMenu();
 
-		int gameMenuHandling();
-		void initializeButtons();
-		int buttonsHandling();
-		void howToPlay();
-	protected:
+	int gameMenuHandling();
+	void initializeButtons();
+	int buttonsHandling();
+	void howToPlay();
 
-		irr::IrrlichtDevice *_window;
-		irr::video::IVideoDriver *_video;
-		irr::scene::ISceneManager *_sceneManager;
-		irr::video::ITexture *_background;
-		irr::video::ITexture *_htpBackground;
-		std::vector<irr::gui::IGUIButton *> _mainButtons;
-		irr::gui::IGUIButton *_howToPlayBack;
-	private:
-};
+private:
+	irr::IrrlichtDevice *_window;
+	irr::video::IVideoDriver *_video;
+	irr::scene::ISceneManager *_sceneManager;
+	irr::video::ITexture *_background;
+	irr::video::ITexture *_htpBackground;
+	std::vector<irr::gui::IGUIButton *> _mainButtons;
+	irr::gui::IGUIButton *_howToPlayBack;};
 
 #endif /* !GAMEMENU_HPP_ */
