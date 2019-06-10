@@ -26,7 +26,7 @@
 
 class Game {
 public:
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai);
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai, int musicVolume, int soundEffectsVolume);
 	~Game();
 
 	void gameLoop();
@@ -61,6 +61,14 @@ private:
 	std::vector <Bomb *> _bombs;
 
 	GameMenu *_gameMenu;
+
+	sf::SoundBuffer _bombBuffer;
+	sf::Sound _bombSound;
+	sf::Music _gameMusic;
+
+	int _nbplayers;
+	int _nbai;
+
 	Player *_player2;
 	Player *_player;
 
