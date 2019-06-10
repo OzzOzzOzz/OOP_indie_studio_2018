@@ -46,7 +46,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
     irr::core::vector3df nodePosition = _player1->getPosition();
 
     if(_receiver->IsKeyDown(_keys[4]))
-    	bombHandling(bombs, nodePosition, map);
+		bombHandling(bombs, nodePosition, map);
     if(_receiver->IsKeyDown(_keys[0]) && Collision(map, _keys[0]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -135,4 +135,9 @@ int Player::Collision(std::vector<Wall *> &map, irr::EKEY_CODE key)
 void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector <Wall *> &map)
 {
 	bombs.push_back(new Bomb(_window, irr::core::vector3df(nodePosition.X, nodePosition.Y, 0.0f), "assets/game/bomb.png"));
+	for (int i = 0; i < map.size(); i++)
+		if ((nodePosition.X - 30 <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + 30) && (nodePosition.Y - 30 <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + 30) && map[i]->isWallBreakable()) {
+			map[i]->getNode()->remove();
+			map.erase(map.begin()+i);
+		}
 }

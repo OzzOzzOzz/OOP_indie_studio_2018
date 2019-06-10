@@ -66,9 +66,6 @@ private:
 	sf::Sound _bombSound;
 	sf::Music _gameMusic;
 
-	int _nbplayers;
-	int _nbai;
-
 	Player *_player2;
 	Player *_player;
 
