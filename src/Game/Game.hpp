@@ -37,13 +37,14 @@ public:
 	void gen_txt_map();
 	bool is_spawn_area(int ,int);
 
-	void MovePlayer(std::vector <Wall *> map, std::vector<Bomb *> &bombs);
+	void MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs);
 
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 	int saveGame();
 
 	std::vector<Wall *> getMap() {return _map;}
 	MyEventReceiver *getEventReceiver() {return _player->getEventReceiver();}
+
 	void setPlayerNumber(int player) {_playersNumber = player;}
 	void setAINumber(int ai) {_botsNumber = ai;}
 private:
