@@ -39,14 +39,14 @@ Player::~Player()
 {
 }
 
-int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
+int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
 {
     static int i = 0;
     static int n = 0;
     irr::core::vector3df nodePosition = _player1->getPosition();
 
     if(_receiver->IsKeyDown(_keys[4]))
-    	bombHandling(bombs, nodePosition);
+    	bombHandling(bombs, nodePosition, map);
     if(_receiver->IsKeyDown(_keys[0]) && Collision(map, _keys[0]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -101,7 +101,8 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
     }
     std::cout << bombs.size() << std::endl;
     if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
-        bombs[bombs.size() - 1]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
+        bombs[bombs.size()]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
+		bombs.erase(bombs.begin());
         //bombs.erase(bombs.end());
     }
     _player1->setPosition(nodePosition);
@@ -116,7 +117,7 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
     return (0);
 }
 
-int Player::Collision(std::vector<Wall *> map, irr::EKEY_CODE key)
+int Player::Collision(std::vector<Wall *> &map, irr::EKEY_CODE key)
 {
     for (auto const &map : map) {
         if (key == _keys[0] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
@@ -131,7 +132,7 @@ int Player::Collision(std::vector<Wall *> map, irr::EKEY_CODE key)
     return 0;
 }
 
-void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition)
+void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector <Wall *> &map)
 {
 	bombs.push_back(new Bomb(_window, irr::core::vector3df(nodePosition.X, nodePosition.Y, 0.0f), "assets/game/bomb.png"));
 }
