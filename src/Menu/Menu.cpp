@@ -73,13 +73,9 @@ void Menu::initializeButtons()
 	for (int i = 0; i < getFilesfromFolder("./saves").size(); i++, size += 170)
 		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
 	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
-	_musicLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 440, 500 + 180, 440 + 50), nullptr, 0, L"");
-	_musicPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 400, 1330 + 130, 400 + 120), nullptr, 0, L"");
-	_soundLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 755, 500 + 180, 755 + 50), nullptr, 0, L"");
-	_soundPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 715, 1330 + 130, 715 + 120), nullptr, 0, L"");
 }
 
-void Menu::menuHandling()
+int Menu::menuHandling()
 {
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
@@ -87,9 +83,10 @@ void Menu::menuHandling()
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
 		if (buttonHandling() == 1)
-			return;
+			return (0);
 		_video->endScene();
 	}
+	return (-1);
 }
 
 int Menu::buttonHandling()
@@ -157,12 +154,19 @@ void Menu::settings()
 {
 	int ret = 0;
 
+	_musicLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 440, 500 + 180, 440 + 50), nullptr, 0, L"");
+	_musicPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 400, 1330 + 130, 400 + 120), nullptr, 0, L"");
+	_soundLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 755, 500 + 180, 755 + 50), nullptr, 0, L"");
+	_soundPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 715, 1330 + 130, 715 + 120), nullptr, 0, L"");
+
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_settingsBackground, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_musicVolumeBackground, irr::core::position2d<irr::s32>(706, 393));
-		_video->draw2DImage(_soundEffectBackground, irr::core::position2d<irr::s32>(706, 725));
+		if (_soundEffectVolume != 0)
+		_video->draw2DImage(_soundEffectBackground, irr::core::position2d<irr::s32>(706, 725), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+		if (_musicVolume != 0)
+		_video->draw2DImage(_musicVolumeBackground, irr::core::position2d<irr::s32>(706, 393), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
 		_sceneManager->drawAll();
 		ret = settingsButtonsHandling();
 		if (ret == 1)
@@ -187,8 +191,10 @@ int Menu::settingsButtonsHandling()
 	if (_musicLessButton->isPressed() && music >= 25) {
 		_clickSound.play();
 		music -= 25;
-		file = "assets/menu/volume_bar_" + std::to_string(music) + ".png";
-		_musicVolumeBackground = _video->getTexture(file.c_str());
+		if (music != 0) {
+			file = "assets/menu/volume_bar_" + std::to_string(music) + ".png";
+			_musicVolumeBackground = _video->getTexture(file.c_str());
+		}
 	}
 	if (_musicPlusButton->isPressed() && music <= 75) {
 		_clickSound.play();
@@ -199,8 +205,10 @@ int Menu::settingsButtonsHandling()
 	if (_soundLessButton->isPressed() && soundEffect >= 25) {
 		_clickSound.play();
 		soundEffect -= 25;
-		file = "assets/menu/volume_bar_" + std::to_string(soundEffect) + ".png";
-		_soundEffectBackground = _video->getTexture(file.c_str());
+		if (soundEffect != 0) {
+			file = "assets/menu/volume_bar_" + std::to_string(soundEffect) + ".png";
+			_soundEffectBackground = _video->getTexture(file.c_str());
+		}
 	}
 	if (_soundPlusButton->isPressed() && soundEffect <= 75) {
 		_clickSound.play();
@@ -223,4 +231,9 @@ int Menu::settingsButtonsHandling()
 void Menu::stopMusic()
 {
 	_mainMenuMusic.stop();
+}
+
+void Menu::playClickSound()
+{
+	_clickSound.play();
 }

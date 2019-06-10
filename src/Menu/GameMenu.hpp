@@ -24,6 +24,7 @@ public:
 	void initializeButtons();
 	int buttonsHandling();
 	void howToPlay();
+
 private:
 	irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;

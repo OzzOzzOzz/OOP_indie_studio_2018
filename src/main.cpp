@@ -12,9 +12,10 @@ int main()
 {
 	Graphics *bomberman = new Graphics();
 
-	bomberman->getMenu()->menuHandling();
-	bomberman->gameSettings();
-	bomberman->getGame()->createMap();
-	bomberman->getGame()->gameLoop();
+	if (bomberman->getMenu()->menuHandling() != -1) {
+		bomberman->gameSettings();
+		bomberman->getGame()->createMap();
+		bomberman->getGame()->gameLoop();
+	}
 	return (0);
 }

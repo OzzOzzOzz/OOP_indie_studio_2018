@@ -51,7 +51,7 @@ void Graphics::gameSettings()
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
-		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 325), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 325), irr::core::rect<irr::s32>(0, 0, 800, 600), 0, irr::video::SColor(255, 255, 255, 255), true);
 		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(950, 325), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
 		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(1400, 325), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
 		_sceneManager->drawAll();
@@ -67,10 +67,12 @@ void Graphics::gameSettings()
 
 int Graphics::buttonsHandling()
 {
-	if (_startButton->isPressed())
-		return 1;
-
+	if (_startButton->isPressed()) {
+		_menu->playClickSound();
+		return (1);
+	}
 	if (_plusButtons[0]->isPressed()) {
+		_menu->playClickSound();
 		if (!_firstButtonActivated) {
 			_players++;
 			_bots--;
@@ -93,6 +95,7 @@ int Graphics::buttonsHandling()
 	}
 
 	if (_plusButtons[1]->isPressed()) {
+		_menu->playClickSound();
 		if (!_secondButtonActivated) {
 			if (_bots == 0)
 				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
@@ -118,6 +121,7 @@ int Graphics::buttonsHandling()
 	}
 
 	if (_plusButtons[2]->isPressed()) {
+		_menu->playClickSound();
 		if (!_thirdButtonActivated) {
 			if (_bots == 1)
 				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
@@ -135,4 +139,5 @@ int Graphics::buttonsHandling()
 	_startButton->setPressed(false);
 	for (int i = 0; i < 3; i++)
 		_plusButtons[i]->setPressed(false);
+	return (0);
 }

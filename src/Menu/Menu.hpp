@@ -24,7 +24,7 @@ public:
 
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 
-	void menuHandling();
+	int menuHandling();
 	int buttonHandling();
     void initializeButtons();
 
@@ -36,6 +36,7 @@ public:
 
     int getMusicVolume() {return _musicVolume;}
     int getSoundEffectVolume() {return _soundEffectVolume;}
+    void playClickSound();
     void stopMusic();
 private:
 	irr::IrrlichtDevice *_window;
