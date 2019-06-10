@@ -1,11 +1,10 @@
-#include <utility>
-
 /*
 ** EPITECH PROJECT, 2018
 ** File Name: Player.cpp
 ** File description:
 ** Rémi Bisson
 */
+#include <utility>
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
 
@@ -44,8 +43,8 @@ int Player::Move(int id, std::vector <Wall *> map, std::vector <Bomb *> &bombs)
 {
     static int i = 0;
     static int n = 0;
-
     irr::core::vector3df nodePosition = _player1->getPosition();
+
     if(_receiver->IsKeyDown(_keys[4]))
     	bombHandling(bombs, nodePosition);
     if(_receiver->IsKeyDown(_keys[0]) && Collision(map, _keys[0]) == 0) {
