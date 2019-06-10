@@ -134,5 +134,8 @@ int Player::Collision(std::vector<Wall *> map, irr::EKEY_CODE key)
 
 void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition)
 {
-	bombs.push_back(new Bomb(_window, irr::core::vector3df(nodePosition.X, nodePosition.Y, 0.0f), "assets/game/bomb.png"));
+	bombs.push_back(new Bomb(_window, irr::core::vector3df(
+        static_cast<int>(static_cast<int>(nodePosition.X) / CUBE_SIZE) * CUBE_SIZE,
+        static_cast<int>(static_cast<int>(nodePosition.Y) / CUBE_SIZE) * CUBE_SIZE,
+	    0.0f), "assets/game/bomb.png"));
 }
