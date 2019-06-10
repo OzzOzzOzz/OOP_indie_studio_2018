@@ -45,9 +45,9 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
     static int n = 0;
     irr::core::vector3df nodePosition = _player1->getPosition();
 
-    if(_receiver->IsKeyDown(_keys[4]))
-		bombHandling(bombs, nodePosition, map);
-    if(_receiver->IsKeyDown(_keys[0]) && Collision(map, _keys[0]) == 0) {
+    if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
+    	bombHandling(bombs, nodePosition, map);
+    if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(map, _keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -60,7 +60,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[1])  && Collision(map, _keys[1]) == 0) {
+    else if(_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(map, _keys[K_DOWN_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -73,7 +73,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    if(_receiver->IsKeyDown(_keys[2]) && Collision(map, _keys[2]) == 0) {
+    if(_receiver->IsKeyDown(_keys[K_RIGHT_ID]) && Collision(map, _keys[K_RIGHT_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -86,7 +86,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
         _player1->setPosition(nodePosition);
         return (0);
     }
-    else if(_receiver->IsKeyDown(_keys[3]) && Collision(map, _keys[3]) == 0) {
+    else if(_receiver->IsKeyDown(_keys[K_LEFT_ID]) && Collision(map, _keys[K_LEFT_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -120,13 +120,13 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
 int Player::Collision(std::vector<Wall *> &map, irr::EKEY_CODE key)
 {
     for (auto const &map : map) {
-        if (key == _keys[0] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
+        if (key == _keys[K_UP_ID] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= map->getPosition().Y && _player1->getPosition().Y + SPEED<= map->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[3] && _player1->getPosition().X + PLAYER_SIZE + SPEED>= map->getPosition().X  && _player1->getPosition().X + SPEED<= map->getPosition().X + PLAYER_SIZE && ((_player1->getPosition().Y + PLAYER_SIZE>= map->getPosition().Y && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_LEFT_ID] && _player1->getPosition().X + PLAYER_SIZE + SPEED>= map->getPosition().X  && _player1->getPosition().X + SPEED<= map->getPosition().X + PLAYER_SIZE && ((_player1->getPosition().Y + PLAYER_SIZE>= map->getPosition().Y && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[2] && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE && _player1->getPosition().Y + PLAYER_SIZE >= map->getPosition().Y && ((_player1->getPosition().X  - SPEED + PLAYER_SIZE >= map->getPosition().X && _player1->getPosition().X - SPEED <= map->getPosition().X + PLAYER_SIZE)))
+        else if (key == _keys[K_RIGHT_ID] && _player1->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE && _player1->getPosition().Y + PLAYER_SIZE >= map->getPosition().Y && ((_player1->getPosition().X  - SPEED + PLAYER_SIZE >= map->getPosition().X && _player1->getPosition().X - SPEED <= map->getPosition().X + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[1] && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE && _player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && ((_player1->getPosition().Y  - SPEED + PLAYER_SIZE >= map->getPosition().Y && _player1->getPosition().Y - SPEED <= map->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_DOWN_ID] && _player1->getPosition().X <= map->getPosition().X + PLAYER_SIZE && _player1->getPosition().X + PLAYER_SIZE>= map->getPosition().X && ((_player1->getPosition().Y  - SPEED + PLAYER_SIZE >= map->getPosition().Y && _player1->getPosition().Y - SPEED <= map->getPosition().Y + PLAYER_SIZE)))
             return 1;
     }
     return 0;
@@ -134,9 +134,9 @@ int Player::Collision(std::vector<Wall *> &map, irr::EKEY_CODE key)
 
 void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector <Wall *> &map)
 {
-	bombs.push_back(new Bomb(_window, irr::core::vector3df(nodePosition.X, nodePosition.Y, 0.0f), "assets/game/bomb.png"));
+	bombs.push_back(new Bomb(_window, irr::core::vector3df(static_cast<int>(static_cast<int>(nodePosition.X) / CUBE_SIZE) * CUBE_SIZE, static_cast<int>(static_cast<int>(nodePosition.Y) / CUBE_SIZE) * CUBE_SIZE, 0.0f), "assets/game/bomb.png"));
 	for (int i = 0; i < map.size(); i++)
-		if ((nodePosition.X - 30 <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + 30) && (nodePosition.Y - 30 <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + 30) && map[i]->isWallBreakable()) {
+		if ((nodePosition.X - 25 <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + 25) && (nodePosition.Y - 25 <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + 25) && map[i]->isWallBreakable()) {
 			map[i]->getNode()->remove();
 			map.erase(map.begin()+i);
 		}

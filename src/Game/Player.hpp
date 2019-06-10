@@ -15,6 +15,13 @@
 #define PLAYER_SIZE 15.0f
 #define SPEED 1.0f
 
+
+#define K_UP_ID 0
+#define K_DOWN_ID 1
+#define K_RIGHT_ID 2
+#define K_LEFT_ID 3
+#define K_BOMB_ID 4
+
 class Player {
 public:
 	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2);
