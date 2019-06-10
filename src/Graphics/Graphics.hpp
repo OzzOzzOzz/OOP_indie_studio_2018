@@ -20,17 +20,37 @@ public:
 	Graphics();
 	~Graphics();
 
-    irr::IrrlichtDevice *getWindow() {return _window;}
     Menu *getMenu() {return _menu;}
     Game *getGame() {return _game;}
-    bool getStatus() {return _inMenu;}
-    void setStatus(bool newStatus) {_inMenu = newStatus;}
+
+	void gameSettings();
+	int buttonsHandling();
+	void buttonsInitialize();
+
 private:
     irr::IrrlichtDevice *_window;
+	irr::video::IVideoDriver *_video;
+	irr::scene::ISceneManager *_sceneManager;
+
+	irr::video::ITexture *_background;
+	irr::video::ITexture *_firstBox;
+	irr::video::ITexture *_secondBox;
+	irr::video::ITexture *_thirdBox;
+
+	irr::gui::IGUIButton * _startButton;
+	irr::gui::IGUIButton * _choosePlayerOrAI;
+	std::vector<irr::gui::IGUIButton *> _plusButtons;
+
     Menu *_menu;
     Game *_game;
-    bool _inMenu;
     MyEventReceiver *_receiver;
+
+	int _players;
+	int _bots;
+
+	bool _firstButtonActivated;
+	bool _secondButtonActivated;
+	bool _thirdButtonActivated;
 };
 
 #endif

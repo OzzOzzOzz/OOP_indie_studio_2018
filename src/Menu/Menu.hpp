@@ -14,25 +14,46 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <dirent.h>
+#include <string>
 
 class Menu {
 public:
 	Menu(irr::IrrlichtDevice *);
 	~Menu();
 
+	std::vector<std::string> getFilesfromFolder(const char *folderName);
+
 	void menuHandling();
-    int buttonHandling();
+	int buttonHandling();
     void initializeButtons();
+
+    void loadGames();
+    int loadGamesButtonsHandling();
+
     void settings();
     int settingsButtonsHandling();
+
 private:
 	irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
+
 	irr::video::ITexture *_background;
+	irr::video::ITexture *_loadGamesBackground;
+	std::vector<irr::video::ITexture *> _savedGames;
 	irr::video::ITexture *_settingsBackground;
+	irr::video::ITexture *_musicVolumeBackground;
+	irr::video::ITexture *_soundEffectBackground;
+
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
-	std::vector<irr::gui::IGUIButton *> _settingsButtons;
+	std::vector<irr::gui::IGUIButton *> _loadGamesButtons;
+	irr::gui::IGUIButton *_settingsButtonExit;
+	irr::gui::IGUIButton * _musicPlusButton;
+	irr::gui::IGUIButton * _musicLessButton;
+	irr::gui::IGUIButton *_soundPlusButton;
+	irr::gui::IGUIButton * _soundLessButton;
+
 	sf::SoundBuffer _clickBuffer;
 	sf::Sound _clickSound;
 	sf::Music _mainMenuMusic;

@@ -14,6 +14,8 @@ add_executable(bomberman
         src/Game/Player.hpp
         src/Game/Wall.cpp
         src/Game/Wall.hpp
+        src/Game/Bomb.cpp
+        src/Game/Bomb.hpp
         src/Graphics/Graphics.cpp
         src/Graphics/Graphics.hpp
         src/Menu/Menu.cpp

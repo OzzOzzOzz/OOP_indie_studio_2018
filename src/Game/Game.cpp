@@ -15,15 +15,16 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers
     _window = window;
     _video = _window->getVideoDriver();
     _sceneManager = _window->getSceneManager();
+    _background = _video->getTexture("assets/game/game_background.png");
     _sceneManager->addCameraSceneNode(0,
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE),
         irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE,
             (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 100, 100, false);
+	_player = new Player(_window, receiver, 20, 20, false);
     _gameMenu = new GameMenu(_window);
     if (nbplayers == 2)
-        _player2 = new Player(_window, receiver, 0, 0, true);
+        _player2 = new Player(_window, receiver, 380, 380, true);
 }
 
 Game::~Game()
@@ -41,7 +42,7 @@ void Game::gameLoop()
 				saveGame();
 		}
 		gameHandling(0);
-		MovePlayer(_map);
+		MovePlayer(_map, _bombs);
 	}
 	_window->drop();
 }
@@ -49,9 +50,19 @@ void Game::gameLoop()
 int Game::gameHandling(int whichGame)
 {
     _video->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));
+    _video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
     _sceneManager->drawAll();
     _video->endScene();
     return 2;
+}
+
+int Game::saveGame()
+{
+	std::vector<std::string> files = getFilesfromFolder("./saves");
+
+	for (int i = 0; i < files.size(); i++)
+		std::cout << files.at(i) << std::endl;
+	return (0);
 }
 
 std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
@@ -72,14 +83,6 @@ std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 	}
 	closedir(dir);
 	return (files);
-}
-
-int Game::saveGame()
-{
-	std::vector<std::string> files = getFilesfromFolder("./saves");
-	for (int i = 0; i < files.size(); i++)
-		std::cout << files.at(i) << std::endl;
-	return (0);
 }
 
 bool Game::is_spawn_area(int x, int y)
@@ -169,9 +172,9 @@ void Game::createMap()
         }
 }
 
-void Game::MovePlayer(std::vector <Wall *> map)
+void Game::MovePlayer(std::vector <Wall *> map, std::vector<Bomb *> &bombs)
 {
-    _player->Move(1, map);
+    _player->Move(1, map, bombs);
     if (_nbplayers == 2)
-        _player2->Move(2, map);
+        _player2->Move(2, map, bombs);
 }
