@@ -26,9 +26,9 @@ public:
 	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2);
 	~Player();
 
-	int Move(int id, std::vector <Wall *> &map, std::vector<Bomb *> &bombs);
+	int Move(int id, std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> _txt_map);
 	int Collision(std::vector <Wall *> &map, irr::EKEY_CODE key);
-	void bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector<Wall *> &map);
+	void bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector<Wall *> &map, std::vector<std::string> &_txt_map);
 	void removeBombsAround(irr::core::vector3df nodePosition, std::vector<Wall *> &map);
 
 	irr::core::vector3df getPosition() {return _player1->getAbsolutePosition();}

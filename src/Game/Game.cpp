@@ -155,16 +155,16 @@ void Game::gen_txt_map()
 
     for (int x = 0; x < MAP_SIZE; x++)
         _txt_map.emplace_back(MAP_SIZE, VOID);
-    for (int x = 0; x < x_len; x++) {
+    for (int x = 0; x < x_len; x++)
         for (int y = 0; y <= y_len; y++) {
             _txt_map[x][y] = sub_map[x][y];
             _txt_map[y][MAP_SIZE - 1 - x] = sub_map[x][y];
             _txt_map[MAP_SIZE - 1 - x][MAP_SIZE - 1 - y] = sub_map[x][y];
             _txt_map[MAP_SIZE - 1 - y][x] = sub_map[x][y];
         }
-    }
     _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
 }
+
 void Game::createMap()
 {
     for (int x = 0; x <= MAP_SIZE; x++)
@@ -181,9 +181,9 @@ void Game::createMap()
     }
 }
 
-void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs)
+void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> &_txt_map)
 {
-    _player->Move(1, map, bombs);
+    _player->Move(1, map, bombs, _txt_map);
     if (_playersNumber == 2)
-        _player2->Move(2, map, bombs);
+        _player2->Move(2, map, bombs, _txt_map);
 }
