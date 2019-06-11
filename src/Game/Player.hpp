@@ -37,11 +37,14 @@ public:
 	MyEventReceiver *getEventReceiver() {return _receiver;}
 
 private:
+	void deleteMapWall(int x, int y, std::vector<Wall *> &map);
+
     irr::IrrlichtDevice *_window;
     irr::scene::IAnimatedMesh *_mesh;
 	irr::scene::IAnimatedMeshSceneNode *_player1;
 	std::vector<irr::EKEY_CODE> _keys;
 
+	int _range;
 	MyEventReceiver *_receiver;
 };
 
