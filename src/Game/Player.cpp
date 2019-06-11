@@ -142,52 +142,20 @@ void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df node
 	int playerX = static_cast<int>(nodePosition.X / CUBE_SIZE);
 	int playerY = static_cast<int>(nodePosition.Y / CUBE_SIZE);
 
-	std::cout << "player pos:" << playerX << "-" << playerY << std::endl;
-	std::cout << "from " << (playerX - _range < 0 ? 0 : playerX - _range) << " to " << (playerX + _range > MAP_SIZE ? MAP_SIZE : playerX + _range) << std::endl;
-
 	bombs.push_back(new Bomb(_window, irr::core::vector3df(playerX * CUBE_SIZE, playerY * CUBE_SIZE, 0.0f), "assets/game/bomb.png"));
 
-
-
-	for (int x = playerX - _range < 0 ? 0 : playerX - _range; x <= (playerX + _range > MAP_SIZE ? MAP_SIZE : playerX + _range); x++) {
+	for (int x = playerX - _range < 0 ? 0 : playerX - _range; x <= (playerX + _range > MAP_SIZE ? MAP_SIZE : playerX + _range); x++)
 		if (_txtMap[x][playerY] == WALL) {
 			_txtMap[x][playerY] = VOID;
 			deleteMapWall(x, playerY, map);
 		}
-	}
-	for (int y = playerY - _range < 0 ? 0 : playerY - _range; y <= (playerY + _range > MAP_SIZE ? MAP_SIZE : playerY + _range); y++) {
+	for (int y = playerY - _range < 0 ? 0 : playerY - _range; y <= (playerY + _range > MAP_SIZE ? MAP_SIZE : playerY + _range); y++)
 		if (_txtMap[playerX][y] == WALL) {
 			_txtMap[playerX][y] = VOID;
 			deleteMapWall(playerX, y, map);
 		}
-	}
 
-	//	for (int i = 0; i < map.size(); i++) {
-/*
-		if ((nodePosition.X - CUBE_SIZE <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + CUBE_SIZE)
-				&& (nodePosition.Y - CUBE_SIZE <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + CUBE_SIZE)
-				&& map[i]->isWallBreakable()) {
-			removeBombsAround(map[i]->getPosition(), map);
-            _txtMap[map[i]->getTxtPos().X][map[i]->getTxtPos().Y] = VOID;
-			map[i]->getNode()->remove();
-			map.erase(map.begin() + i);
-		}
-	} */
-//	std::cout << "EXPLODE :" << std::endl;
-//    for(int i = 0; i < MAP_SIZE; i++) {
-//        std::cout << _txtMap[i] << std::endl;
-//    }
-//	removing the bombs when they explode but have to implement a timer first
+	//	removing the bombs when they explode but have to implement a timer first
 //	bombs[0]->getNode()->remove();
 //	bombs.erase(bombs.begin() + 0);
 }
-
-
-void Player::removeBombsAround(irr::core::vector3df nodePosition, std::vector<Wall *> &map)
-{
-	for (int i = 0; i < map.size(); i++) {
-		if (map[i]->getPosition().X == nodePosition.X + CUBE_SIZE)
-			std::cout << "HEY" << std::endl;
-	}
-}
-

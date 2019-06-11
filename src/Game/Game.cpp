@@ -165,22 +165,24 @@ void Game::gen_txt_map()
 
 void Game::createMap()
 {
-    for (int x = 0; x <= MAP_SIZE; x++)
+	for (int x = 0; x <= MAP_SIZE; x++)
 		for (int y = 0; y <= MAP_SIZE; y++)
-			_floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
-    gen_txt_map();
-    for (int x = 0; x < MAP_SIZE; x++) {
+			_floor.push_back(new Wall(_window, true,
+				irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE),
+				"assets/game/floor.png"));
+	gen_txt_map();
+	for (int x = 0; x < MAP_SIZE; x++) {
 		for (int y = 0; y < MAP_SIZE; y++) {
 			if (_txtMap[x][y] == BEDROCK)
-				_map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
+				_map.push_back(new Wall(_window, false,
+					irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f),
+					"assets/game/bedrock.png"));
 			else if (_txtMap[x][y] == WALL)
-				_map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
+				_map.push_back(new Wall(_window, true,
+					irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f),
+					"assets/game/planks.png"));
 		}
-    }
-//    std::cout << "GENERATION :" << std::endl;
-//    for(int i = 0; i < MAP_SIZE; i++) {
-//        std::cout << _txtMap[i] << std::endl;
-//    }
+	}
 }
 
 void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> &_txt_map)
