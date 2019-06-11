@@ -177,6 +177,10 @@ void Game::createMap()
 				_map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
 		}
     }
+//    std::cout << "GENERATION :" << std::endl;
+//    for(int i = 0; i < MAP_SIZE; i++) {
+//        std::cout << _txtMap[i] << std::endl;
+//    }
 }
 
 void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> &_txt_map)

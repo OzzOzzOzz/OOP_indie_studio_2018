@@ -144,6 +144,10 @@ void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df node
 			map.erase(map.begin() + i);
 		}
 	}
+//	std::cout << "EXPLODE :" << std::endl;
+//    for(int i = 0; i < MAP_SIZE; i++) {
+//        std::cout << _txtMap[i] << std::endl;
+//    }
 //	removing the bombs when they explode but have to implement a timer first
 //	bombs[0]->getNode()->remove();
 //	bombs.erase(bombs.begin() + 0);
