@@ -20,6 +20,8 @@ public:
 	irr::core::vector3df getPosition() {return _cube->getAbsolutePosition();}
     irr::scene::IMeshSceneNode* getNode() {return _cube;}
 	bool isWallBreakable() {return _isBreakable;}
+    const irr::core::vector2di &getTxtPos() const;
+
 private:
 	irr::scene::IMeshSceneNode* _cube;
     irr::core::vector2di _txtPos;

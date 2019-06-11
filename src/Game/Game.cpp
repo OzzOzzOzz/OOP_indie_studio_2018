@@ -59,7 +59,7 @@ void Game::gameLoop()
 				saveGame();
 		}
 		gameHandling();
-		MovePlayer(_map, _bombs, _txt_map);
+		MovePlayer(_map, _bombs, _txtMap);
 	}
 	_window->drop();
 }
@@ -77,8 +77,6 @@ int Game::saveGame()
 {
 	std::vector<std::string> files = getFilesfromFolder("./saves");
 
-	for (int i = 0; i < files.size(); i++)
-		std::cout << files.at(i) << std::endl;
 	return (0);
 }
 
@@ -154,15 +152,15 @@ void Game::gen_txt_map()
     int y_len = static_cast<int>(sub_map[0].size());
 
     for (int x = 0; x < MAP_SIZE; x++)
-        _txt_map.emplace_back(MAP_SIZE, VOID);
+        _txtMap.emplace_back(MAP_SIZE, VOID);
     for (int x = 0; x < x_len; x++)
         for (int y = 0; y <= y_len; y++) {
-            _txt_map[x][y] = sub_map[x][y];
-            _txt_map[y][MAP_SIZE - 1 - x] = sub_map[x][y];
-            _txt_map[MAP_SIZE - 1 - x][MAP_SIZE - 1 - y] = sub_map[x][y];
-            _txt_map[MAP_SIZE - 1 - y][x] = sub_map[x][y];
+            _txtMap[x][y] = sub_map[x][y];
+            _txtMap[y][MAP_SIZE - 1 - x] = sub_map[x][y];
+            _txtMap[MAP_SIZE - 1 - x][MAP_SIZE - 1 - y] = sub_map[x][y];
+            _txtMap[MAP_SIZE - 1 - y][x] = sub_map[x][y];
         }
-    _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
+    _txtMap[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = BEDROCK;
 }
 
 void Game::createMap()
@@ -173,9 +171,9 @@ void Game::createMap()
     gen_txt_map();
     for (int x = 0; x < MAP_SIZE; x++) {
 		for (int y = 0; y < MAP_SIZE; y++) {
-			if (_txt_map[x][y] == BEDROCK)
+			if (_txtMap[x][y] == BEDROCK)
 				_map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
-			else if (_txt_map[x][y] == WALL)
+			else if (_txtMap[x][y] == WALL)
 				_map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
 		}
     }

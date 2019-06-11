@@ -71,7 +71,7 @@ private:
 
 	int _playersNumber;
 	int _botsNumber;
-	std::vector<std::string> _txt_map;
+	std::vector<std::string> _txtMap;
 };
 
 #endif

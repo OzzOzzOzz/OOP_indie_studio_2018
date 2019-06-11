@@ -20,3 +20,7 @@ Wall::Wall(irr::IrrlichtDevice *window, bool isBreakable, irr::core::vector3df p
 Wall::~Wall()
 {
 }
+const irr::core::vector2di &Wall::getTxtPos() const
+{
+    return _txtPos;
+}
