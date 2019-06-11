@@ -59,7 +59,7 @@ void Game::gameLoop()
 				saveGame();
 		}
 		gameHandling();
-		MovePlayer(_map, _bombs);
+		MovePlayer(_map, _bombs, _txt_map);
 	}
 	_window->drop();
 }

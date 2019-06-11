@@ -46,7 +46,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
     irr::core::vector3df nodePosition = _player1->getPosition();
 
     if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
-    	bombHandling(bombs, nodePosition, map);
+    	bombHandling(bombs, nodePosition, map, _txtMap);
     if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(map, _keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -133,10 +133,9 @@ void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df node
 
 	for (int i = 0; i < map.size(); i++) {
 		if ((nodePosition.X - 25 <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + 25) && (nodePosition.Y - 25 <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + 25) && map[i]->isWallBreakable()) {
-			removeBombsAround(map[i]->getPosition(), map);
+//			removeBombsAround(map[i]->getPosition(), map);
 			map[i]->getNode()->remove();
 			map.erase(map.begin() + i);
-			_txtMap[i][] = 0;
 		}
 	}
 //	removing the bombs when they explode but have to implement a timer first
