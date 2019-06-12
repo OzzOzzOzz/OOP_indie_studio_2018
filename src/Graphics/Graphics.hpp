@@ -27,6 +27,9 @@ public:
 	int buttonsHandling();
 	void buttonsInitialize();
 
+	void loadGame(int SaveFileNumber);
+	std::vector<std::string> getFileContent(std::string fileName);
+
 private:
     irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;

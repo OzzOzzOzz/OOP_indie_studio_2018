@@ -21,18 +21,11 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1->setPosition(irr::core::vector3df(x, y, 0.0f));
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
+	_bombNumber = 1;
     if (player1)
-        _keys = {irr::KEY_KEY_Z,
-             irr::KEY_KEY_S,
-             irr::KEY_KEY_D,
-             irr::KEY_KEY_Q,
-             irr::KEY_KEY_C};
+        _keys = {irr::KEY_KEY_Z, irr::KEY_KEY_S, irr::KEY_KEY_D, irr::KEY_KEY_Q, irr::KEY_KEY_C};
     else
-        _keys = {irr::KEY_UP,
-                 irr::KEY_DOWN,
-                 irr::KEY_RIGHT,
-                 irr::KEY_LEFT,
-                 irr::KEY_KEY_N};
+        _keys = {irr::KEY_UP, irr::KEY_DOWN, irr::KEY_RIGHT, irr::KEY_LEFT, irr::KEY_KEY_N};
 }
 
 Player::~Player()
@@ -99,7 +92,6 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
     }
-    std::cout << bombs.size() << std::endl;
     if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
         bombs[bombs.size()]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
 		bombs.erase(bombs.begin());

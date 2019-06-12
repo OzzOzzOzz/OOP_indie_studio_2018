@@ -11,11 +11,18 @@
 int main()
 {
 	Graphics *bomberman = new Graphics();
+	int menu_return = bomberman->getMenu()->menuHandling();
 
-	if (bomberman->getMenu()->menuHandling() != -1) {
-		bomberman->gameSettings();
-		bomberman->getGame()->createMap();
-		bomberman->getGame()->gameLoop();
+	if (menu_return == -1) {
+		return (84);
 	}
+	if (menu_return != -42) {
+		bomberman->loadGame(menu_return);
+	} else {
+		bomberman->gameSettings();
+		bomberman->getGame()->gen_txt_map();
+	}
+	bomberman->getGame()->createMap();
+	bomberman->getGame()->gameLoop();
 	return (0);
 }

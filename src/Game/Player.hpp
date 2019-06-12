@@ -15,7 +15,6 @@
 #define PLAYER_SIZE 15.0f
 #define SPEED 1.0f
 
-
 #define K_UP_ID 0
 #define K_DOWN_ID 1
 #define K_RIGHT_ID 2
@@ -35,12 +34,14 @@ public:
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}
     irr::scene::IAnimatedMeshSceneNode *getNode() {return _player1;}
 	MyEventReceiver *getEventReceiver() {return _receiver;}
+	int getBombNumber() {return _bombNumber;}
 
 private:
     irr::IrrlichtDevice *_window;
     irr::scene::IAnimatedMesh *_mesh;
 	irr::scene::IAnimatedMeshSceneNode *_player1;
 	std::vector<irr::EKEY_CODE> _keys;
+	int _bombNumber;
 
 	MyEventReceiver *_receiver;
 };

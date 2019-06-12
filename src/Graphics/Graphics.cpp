@@ -5,6 +5,7 @@
 ** Graphics.cpp
 */
 
+#include <fstream>
 #include "Graphics.hpp"
 
 Graphics::Graphics()
@@ -22,6 +23,8 @@ Graphics::Graphics()
 
 Graphics::~Graphics()
 {
+	delete(_game);
+	delete(_menu);
 }
 
 void Graphics::buttonsInitialize()
@@ -140,4 +143,42 @@ int Graphics::buttonsHandling()
 	for (int i = 0; i < 3; i++)
 		_plusButtons[i]->setPressed(false);
 	return (0);
+}
+
+std::vector<std::string> Graphics::getFileContent(std::string fileName)
+{
+	std::vector<std::string> fileContent;
+	std::ifstream file(fileName);
+	std::string line;
+
+	if (!file.is_open())
+		return (fileContent);
+	while (getline(file, line)) {
+		fileContent.emplace_back(line);
+	}
+	file.close();
+	return (fileContent);
+}
+
+void Graphics::loadGame(int SaveFileNumber)
+{
+	std::vector<std::string> fileContent = getFileContent("./saves/save" + std::to_string(SaveFileNumber));
+	std::vector<std::string> map;
+	int i = 0;
+	int playerNumber = 0;
+	int aiNumber = 0;
+
+	for (i; i < fileContent.size(); i++) {
+		std::cerr << "I:" << i << " " << fileContent[i] << std::endl;
+		if (fileContent[i][0] == 'P') {
+			playerNumber += 1;
+		} else if (fileContent[i][0] == 'A') {
+			aiNumber += 1;
+		} else {
+			map.push_back(fileContent[i]);
+		}
+	}
+	std::cerr << playerNumber << std::endl;
+	std::cerr << aiNumber << std::endl;
+	_game = new Game(_window, _receiver, map, playerNumber, aiNumber, _menu->getMusicVolume(), _menu->getSoundEffectVolume());
 }

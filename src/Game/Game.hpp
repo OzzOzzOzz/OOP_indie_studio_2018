@@ -26,7 +26,8 @@
 
 class Game {
 public:
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int nbplayers, int nbai, int musicVolume, int soundEffectsVolume);
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume);
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<std::string> txtMap, int playersNumber, int aiNumber, int musicVolume, int soundEffectsVolume);
 	~Game();
 
 	void gameLoop();

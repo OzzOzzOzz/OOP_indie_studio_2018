@@ -65,25 +65,29 @@ std::vector<std::string> Menu::getFilesfromFolder(const char *folderName)
 void Menu::initializeButtons()
 {
 	int size = 350;
+	std::vector<std::string> saveFiles = getFilesfromFolder("./saves");
 
 	for (int i = 0; i < 4; i++, size += 170)
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
 	_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(70, 900, 70 + 250, 900 + 120), nullptr, 0, L""));
 	size = 400;
-	for (int i = 0; i < getFilesfromFolder("./saves").size(); i++, size += 170)
+	for (int i = 0; i < saveFiles.size(); i++, size += 170)
 		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
 	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 }
 
 int Menu::menuHandling()
 {
+	int ret = 0;
+
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
-		if (buttonHandling() == 1)
-			return (0);
+		ret = buttonHandling();
+		if (ret != 0)
+			return (ret);
 		_video->endScene();
 	}
 	return (-1);
@@ -94,12 +98,12 @@ int Menu::buttonHandling()
 	if (_mainButtons[0]->isPressed()) {
 		_mainButtons[0]->setPressed(false);
 		_clickSound.play();
-		return (1);
+		return (-42);
 	}
 	if (_mainButtons[1]->isPressed()) {
 		_mainButtons[1]->setPressed(false);
 		_clickSound.play();
-		loadGames();
+		return (loadGames());
 	}
 	if (_mainButtons[2]->isPressed()) {
 		_mainButtons[2]->setPressed(false);
@@ -114,7 +118,7 @@ int Menu::buttonHandling()
 	return (0);
 }
 
-void Menu::loadGames()
+int Menu::loadGames()
 {
 	int game = 0;
 	int height = 350;
@@ -128,10 +132,11 @@ void Menu::loadGames()
 		height = 400;
 		_sceneManager->drawAll();
 		game = loadGamesButtonsHandling();
-		if (game == -1)
-			return;
+		if (game != 0)
+			return (game);
 		_video->endScene();
 	}
+	return (0);
 }
 
 int Menu::loadGamesButtonsHandling()
@@ -147,7 +152,7 @@ int Menu::loadGamesButtonsHandling()
 			return (i);
 		}
 	}
-	return 0;
+	return (0);
 }
 
 void Menu::settings()

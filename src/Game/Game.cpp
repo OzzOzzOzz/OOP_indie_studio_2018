@@ -5,6 +5,7 @@
 ** Game.cpp
 */
 #include <dirent.h>
+#include <fstream>
 #include "Game.hpp"
 #include "Wall.hpp"
 
@@ -44,6 +45,43 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNu
 	_playersNumber = playersNumber;
 }
 
+Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<std::string> txtMap, int playersNumber, int aiNumber, int musicVolume, int soundEffectsVolume)
+{
+	_window = window;
+	_video = _window->getVideoDriver();
+	_sceneManager = _window->getSceneManager();
+	_background = _video->getTexture("assets/game/game_background.png");
+	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
+	_player = new Player(_window, receiver, 20, 20, false);
+	_gameMenu = new GameMenu(_window);
+	if (playersNumber == 2)
+		_player2 = new Player(_window, receiver, 380, 380, true);
+	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
+		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
+		exit (84);
+	}
+	if (!_gameMusic.openFromFile("assets/sounds/game_music.ogg")) {
+		std::cerr << "Error while loading game_music.ogg" << std::endl;
+		exit (84);
+	}
+	_gameMusic.setLoop(true);
+	_gameMusic.setVolume(musicVolume);
+	_gameMusic.play();
+	_bombSound.setBuffer(_bombBuffer);
+	_bombSound.setVolume(soundEffectsVolume);
+	_video = _window->getVideoDriver();
+	_sceneManager = _window->getSceneManager();
+	_background = _video->getTexture("assets/game/game_background.png");
+	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
+	_player = new Player(_window, receiver, 20, 20, false);
+	_gameMenu = new GameMenu(_window);
+	if (playersNumber == 2)
+		_player2 = new Player(_window, receiver, 380, 380, true);
+	_botsNumber = aiNumber;
+	_playersNumber = playersNumber;
+	_txt_map = txtMap;
+}
+
 Game::~Game()
 {
 }
@@ -55,8 +93,9 @@ void Game::gameLoop()
 	while(_window->run()) {
 		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE)) {
 			ret = _gameMenu->gameMenuHandling();
-			if (ret == 2)
+			if (ret == 2) {
 				saveGame();
+			}
 		}
 		gameHandling();
 		MovePlayer(_map, _bombs);
@@ -73,15 +112,6 @@ int Game::gameHandling()
     return (2);
 }
 
-int Game::saveGame()
-{
-	std::vector<std::string> files = getFilesfromFolder("./saves");
-
-	for (int i = 0; i < files.size(); i++)
-		std::cout << files.at(i) << std::endl;
-	return (0);
-}
-
 std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 {
 	DIR *dir = opendir(folderName);
@@ -94,12 +124,37 @@ std::vector<std::string> Game::getFilesfromFolder(const char *folderName)
 	}
 	ent = readdir(dir);
 	while (ent != nullptr) {
-		if (ent->d_name[0] != '.')
+		if (ent->d_name[0] != '.' && strlen(ent->d_name) == 5)
 			files.emplace_back(ent->d_name);
 		ent = readdir(dir);
 	}
 	closedir(dir);
 	return (files);
+}
+
+int Game::saveGame()
+{
+	std::vector<std::string> files = getFilesfromFolder("./saves");
+	std::string newFileName = "save1";
+	std::ofstream file;
+	int i = 0;
+
+	while (i <= files.size())
+		i++;
+	if (i <= 5)
+		newFileName = "save" + std::to_string(i);
+	file.open("./saves/" + newFileName);
+	for (int i = 0; i < _txt_map.size(); i++)
+		file << _txt_map.at(i) << std::endl;
+
+	file << "P "  << _player->getBombNumber() << " " << _player->getPosition().X << " " << _player->getPosition().Y << std::endl;
+	if (_playersNumber == 2)
+		file << "P "  << _player2->getBombNumber() << " " << _player2->getPosition().X << " " << _player2->getPosition().Y << std::endl;
+
+	for (int i = 0; i < _botsNumber; i++)
+		file << "A " << "1" << " " << "0" << " " << "0" << std::endl;
+	file.close();
+	return (0);
 }
 
 bool Game::is_spawn_area(int x, int y)
@@ -129,7 +184,6 @@ std::vector<std::string> Game::gen_sub_map()
     int y_len = static_cast<int>(floor(MAP_SIZE / 2));
     std::vector<std::string> sub_map;
 
-    std::cout << "submap:" << std::endl;
     for (int x = 0; x < x_len; x++) {
         sub_map.emplace_back(y_len, VOID);
         for (int y = 0; y < y_len; y++) {
@@ -165,12 +219,12 @@ void Game::gen_txt_map()
     }
     _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
 }
+
 void Game::createMap()
 {
     for (int x = 0; x <= MAP_SIZE; x++)
 		for (int y = 0; y <= MAP_SIZE; y++)
 			_floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
-    gen_txt_map();
     for (int x = 0; x < MAP_SIZE; x++) {
 		for (int y = 0; y < MAP_SIZE; y++) {
 			if (_txt_map[x][y] == BEDROCK)

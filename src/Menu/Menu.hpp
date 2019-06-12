@@ -28,7 +28,7 @@ public:
 	int buttonHandling();
     void initializeButtons();
 
-    void loadGames();
+    int loadGames();
     int loadGamesButtonsHandling();
 
     void settings();
