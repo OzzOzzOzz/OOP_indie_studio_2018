@@ -79,7 +79,7 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<s
 		_player2 = new Player(_window, receiver, 380, 380, true);
 	_botsNumber = aiNumber;
 	_playersNumber = playersNumber;
-	_txt_map = txtMap;
+	_txtMap = txtMap;
 }
 
 Game::~Game()
@@ -98,7 +98,7 @@ void Game::gameLoop()
 			}
 		}
 		gameHandling();
-		MovePlayer(_map, _bombs);
+		MovePlayer(_map, _bombs, _txtMap);
 	}
 	_window->drop();
 }
@@ -144,8 +144,8 @@ int Game::saveGame()
 	if (i <= 5)
 		newFileName = "save" + std::to_string(i);
 	file.open("./saves/" + newFileName);
-	for (int i = 0; i < _txt_map.size(); i++)
-		file << _txt_map.at(i) << std::endl;
+	for (int i = 0; i < _txtMap.size(); i++)
+		file << _txtMap.at(i) << std::endl;
 
 	file << "P "  << _player->getBombNumber() << " " << _player->getPosition().X << " " << _player->getPosition().Y << std::endl;
 	if (_playersNumber == 2)
@@ -208,36 +208,35 @@ void Game::gen_txt_map()
     int y_len = static_cast<int>(sub_map[0].size());
 
     for (int x = 0; x < MAP_SIZE; x++)
-        _txt_map.emplace_back(MAP_SIZE, VOID);
-    for (int x = 0; x < x_len; x++) {
+        _txtMap.emplace_back(MAP_SIZE, VOID);
+    for (int x = 0; x < x_len; x++)
         for (int y = 0; y <= y_len; y++) {
-            _txt_map[x][y] = sub_map[x][y];
-            _txt_map[y][MAP_SIZE - 1 - x] = sub_map[x][y];
-            _txt_map[MAP_SIZE - 1 - x][MAP_SIZE - 1 - y] = sub_map[x][y];
-            _txt_map[MAP_SIZE - 1 - y][x] = sub_map[x][y];
+            _txtMap[x][y] = sub_map[x][y];
+            _txtMap[y][MAP_SIZE - 1 - x] = sub_map[x][y];
+            _txtMap[MAP_SIZE - 1 - x][MAP_SIZE - 1 - y] = sub_map[x][y];
+            _txtMap[MAP_SIZE - 1 - y][x] = sub_map[x][y];
         }
-    }
-    _txt_map[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = 'x';
+    _txtMap[static_cast<int>(ceil(MAP_SIZE / 2) - 1)][static_cast<int>(ceil(MAP_SIZE / 2) - 1)] = BEDROCK;
 }
 
 void Game::createMap()
 {
-    for (int x = 0; x <= MAP_SIZE; x++)
+	for (int x = 0; x <= MAP_SIZE; x++)
 		for (int y = 0; y <= MAP_SIZE; y++)
 			_floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
-    for (int x = 0; x < MAP_SIZE; x++) {
+	for (int x = 0; x < MAP_SIZE; x++) {
 		for (int y = 0; y < MAP_SIZE; y++) {
-			if (_txt_map[x][y] == BEDROCK)
+			if (_txtMap[x][y] == BEDROCK)
 				_map.push_back(new Wall(_window, false, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/bedrock.png"));
-			else if (_txt_map[x][y] == WALL)
+			else if (_txtMap[x][y] == WALL)
 				_map.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, 0.0f), "assets/game/planks.png"));
 		}
-    }
+	}
 }
 
-void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs)
+void Game::MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> &_txt_map)
 {
-    _player->Move(1, map, bombs);
+    _player->Move(1, map, bombs, _txt_map);
     if (_playersNumber == 2)
-        _player2->Move(2, map, bombs);
+        _player2->Move(2, map, bombs, _txt_map);
 }

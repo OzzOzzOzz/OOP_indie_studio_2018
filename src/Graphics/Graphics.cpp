@@ -181,4 +181,5 @@ void Graphics::loadGame(int SaveFileNumber)
 	std::cerr << playerNumber << std::endl;
 	std::cerr << aiNumber << std::endl;
 	_game = new Game(_window, _receiver, map, playerNumber, aiNumber, _menu->getMusicVolume(), _menu->getSoundEffectVolume());
+	_menu->stopMusic();
 }

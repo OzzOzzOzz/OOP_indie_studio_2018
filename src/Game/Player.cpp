@@ -22,24 +22,26 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, in
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
 	_bombNumber = 1;
+
     if (player1)
         _keys = {irr::KEY_KEY_Z, irr::KEY_KEY_S, irr::KEY_KEY_D, irr::KEY_KEY_Q, irr::KEY_KEY_C};
     else
         _keys = {irr::KEY_UP, irr::KEY_DOWN, irr::KEY_RIGHT, irr::KEY_LEFT, irr::KEY_KEY_N};
+    _range = 2;
 }
 
 Player::~Player()
 {
 }
 
-int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
+int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs, std::vector<std::string> _txtMap)
 {
     static int i = 0;
     static int n = 0;
     irr::core::vector3df nodePosition = _player1->getPosition();
 
     if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
-    	bombHandling(bombs, nodePosition, map);
+    	bombHandling(bombs, nodePosition, map, _txtMap);
     if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(map, _keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -95,7 +97,6 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs)
     if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
         bombs[bombs.size()]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
 		bombs.erase(bombs.begin());
-        //bombs.erase(bombs.end());
     }
     _player1->setPosition(nodePosition);
     if (i == 1 && id == 1) {
@@ -124,12 +125,34 @@ int Player::Collision(std::vector<Wall *> &map, irr::EKEY_CODE key)
     return 0;
 }
 
-void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector <Wall *> &map)
+void Player::deleteMapWall(int x, int y, std::vector<Wall *> &map)
 {
-	bombs.push_back(new Bomb(_window, irr::core::vector3df(static_cast<int>(static_cast<int>(nodePosition.X) / CUBE_SIZE) * CUBE_SIZE, static_cast<int>(static_cast<int>(nodePosition.Y) / CUBE_SIZE) * CUBE_SIZE, 0.0f), "assets/game/bomb.png"));
 	for (int i = 0; i < map.size(); i++)
-		if ((nodePosition.X - 25 <= map[i]->getPosition().X && map[i]->getPosition().X <= nodePosition.X + 25) && (nodePosition.Y - 25 <= map[i]->getPosition().Y && map[i]->getPosition().Y <= nodePosition.Y + 25) && map[i]->isWallBreakable()) {
+		if (map[i]->getTxtPos().X == x && map[i]->getTxtPos().Y == y) {
 			map[i]->getNode()->remove();
-			map.erase(map.begin()+i);
+			map.erase(map.begin() + i);
 		}
+}
+
+void Player::bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector <Wall *> &map, std::vector<std::string> &_txtMap)
+{
+	int playerX = static_cast<int>(nodePosition.X / CUBE_SIZE);
+	int playerY = static_cast<int>(nodePosition.Y / CUBE_SIZE);
+
+	bombs.push_back(new Bomb(_window, irr::core::vector3df(playerX * CUBE_SIZE, playerY * CUBE_SIZE, 0.0f), "assets/game/bomb.png"));
+
+	for (int x = playerX - _range < 0 ? 0 : playerX - _range; x <= (playerX + _range > MAP_SIZE ? MAP_SIZE : playerX + _range); x++)
+		if (_txtMap[x][playerY] == WALL) {
+			_txtMap[x][playerY] = VOID;
+			deleteMapWall(x, playerY, map);
+		}
+	for (int y = playerY - _range < 0 ? 0 : playerY - _range; y <= (playerY + _range > MAP_SIZE ? MAP_SIZE : playerY + _range); y++)
+		if (_txtMap[playerX][y] == WALL) {
+			_txtMap[playerX][y] = VOID;
+			deleteMapWall(playerX, y, map);
+		}
+
+	//	removing the bombs when they explode but have to implement a timer first
+//	bombs[0]->getNode()->remove();
+//	bombs.erase(bombs.begin() + 0);
 }
