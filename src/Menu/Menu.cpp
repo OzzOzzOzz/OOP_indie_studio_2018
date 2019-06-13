@@ -127,20 +127,20 @@ int Menu::loadGames()
 {
 	int game = 0;
 	int height = 350;
-	int size = 400;
+	int size = 300;
 	std::vector<std::string> saveFiles = getFilesfromFolder("./saves");
 
 	for (int i = 0; i < saveFiles.size(); i++, size += 170)
-		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
+		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 140), nullptr, 0, L""));
 	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_loadGamesBackground, irr::core::position2d<irr::s32>(0, 0));
-		for (std::size_t i = 0; i < _savedGames.size(); i++, height += 170)
+		for (std::size_t i = 0; i < _savedGames.size(); i++, height += 140)
 			_video->draw2DImage(_savedGames[i], irr::core::position2d<irr::s32>(1000, height), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
-		height = 400;
+		height = 300;
 		_sceneManager->drawAll();
 		game = loadGamesButtonsHandling();
 		if (game != 0)
