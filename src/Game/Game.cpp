@@ -16,10 +16,12 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNu
     _sceneManager = _window->getSceneManager();
     _background = _video->getTexture("assets/game/game_background.png");
     _sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 20, 20, false);
     _gameMenu = new GameMenu(_window);
+
+	_player = new Player(_window, receiver, 20, 20, false);
     if (playersNumber == 2)
         _player2 = new Player(_window, receiver, 380, 380, true);
+
 	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
 		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
 		exit (84);
@@ -33,29 +35,24 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNu
 	_gameMusic.play();
 	_bombSound.setBuffer(_bombBuffer);
 	_bombSound.setVolume(soundEffectsVolume);
-	_video = _window->getVideoDriver();
-	_sceneManager = _window->getSceneManager();
-	_background = _video->getTexture("assets/game/game_background.png");
-	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 20, 20, false);
-	_gameMenu = new GameMenu(_window);
-	if (playersNumber == 2)
-		_player2 = new Player(_window, receiver, 380, 380, true);
+
 	_botsNumber = aiNumber;
 	_playersNumber = playersNumber;
 }
 
-Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<std::string> txtMap, int playersNumber, int aiNumber, int musicVolume, int soundEffectsVolume)
+Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<std::string> txtMap, int playersNumber, int aiNumber, const irr::core::vector2di player1Pos, const irr::core::vector2di player2Pos, int musicVolume, int soundEffectsVolume)
 {
 	_window = window;
 	_video = _window->getVideoDriver();
 	_sceneManager = _window->getSceneManager();
 	_background = _video->getTexture("assets/game/game_background.png");
 	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 20, 20, false);
 	_gameMenu = new GameMenu(_window);
+
+	_player = new Player(_window, receiver, player1Pos.X, player1Pos.Y, false);
 	if (playersNumber == 2)
-		_player2 = new Player(_window, receiver, 380, 380, true);
+		_player2 = new Player(_window, receiver, player2Pos.X, player2Pos.Y, true);
+
 	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
 		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
 		exit (84);
@@ -69,16 +66,10 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<s
 	_gameMusic.play();
 	_bombSound.setBuffer(_bombBuffer);
 	_bombSound.setVolume(soundEffectsVolume);
-	_video = _window->getVideoDriver();
-	_sceneManager = _window->getSceneManager();
-	_background = _video->getTexture("assets/game/game_background.png");
-	_sceneManager->addCameraSceneNode(0, irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 3) * CUBE_SIZE, (MAP_SIZE) * CUBE_SIZE), irr::core::vector3df((MAP_SIZE / 2) * CUBE_SIZE, (MAP_SIZE / 2) * CUBE_SIZE, 0));
-	_player = new Player(_window, receiver, 20, 20, false);
-	_gameMenu = new GameMenu(_window);
-	if (playersNumber == 2)
-		_player2 = new Player(_window, receiver, 380, 380, true);
+
 	_botsNumber = aiNumber;
 	_playersNumber = playersNumber;
+
 	_txtMap = txtMap;
 }
 
@@ -198,7 +189,7 @@ std::vector<std::string> Game::gen_sub_map()
                 sub_map[x][y] = VOID;
         }
     }
-    return sub_map;
+    return (sub_map);
 }
 
 void Game::gen_txt_map()
