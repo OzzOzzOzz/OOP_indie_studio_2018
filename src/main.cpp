@@ -19,7 +19,7 @@ int main()
 	if (menu_return != -42) {
 		bomberman->loadGame(menu_return);
 	} else {
-		bomberman->gameSettings();
+		bomberman->setGame();
 		bomberman->getGame()->gen_txt_map();
 	}
 	bomberman->getGame()->createMap();

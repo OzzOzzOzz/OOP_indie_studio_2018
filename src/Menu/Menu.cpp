@@ -36,6 +36,12 @@ Menu::Menu(irr::IrrlichtDevice *window)
     _mainMenuMusic.setLoop(true);
     _mainMenuMusic.play();
     _clickSound.setBuffer(_clickBuffer);
+
+	_players = 1;
+	_bots = 1;
+	_firstButtonActivated = false;
+	_secondButtonActivated = false;
+	_thirdButtonActivated = false;
 }
 
 Menu::~Menu()
@@ -65,15 +71,10 @@ std::vector<std::string> Menu::getFilesfromFolder(const char *folderName)
 void Menu::initializeButtons()
 {
 	int size = 350;
-	std::vector<std::string> saveFiles = getFilesfromFolder("./saves");
 
 	for (int i = 0; i < 4; i++, size += 170)
 		_mainButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(330, size, 330 + 500, size + 120), nullptr, 0, L""));
 	_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(70, 900, 70 + 250, 900 + 120), nullptr, 0, L""));
-	size = 400;
-	for (int i = 0; i < saveFiles.size(); i++, size += 170)
-		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
-	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 }
 
 int Menu::menuHandling()
@@ -86,7 +87,9 @@ int Menu::menuHandling()
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
 		ret = buttonHandling();
-		if (ret != 0)
+		if (ret == -42 && gameSettings() == -42)
+			return -42;
+		else if (ret != 0)
 			return (ret);
 		_video->endScene();
 	}
@@ -122,6 +125,12 @@ int Menu::loadGames()
 {
 	int game = 0;
 	int height = 350;
+	int size = 400;
+	std::vector<std::string> saveFiles = getFilesfromFolder("./saves");
+
+	for (int i = 0; i < saveFiles.size(); i++, size += 170)
+		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 120), nullptr, 0, L""));
+	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
@@ -145,13 +154,12 @@ int Menu::loadGamesButtonsHandling()
 		_loadGamesButtons[0]->setPressed(false);
 		return -1;
 	}
-	for (std::size_t i = 0; i < _loadGamesButtons.size(); i++) {
+	for (std::size_t i = 0; i < _loadGamesButtons.size(); i++)
 		if (_loadGamesButtons[i]->isPressed()) {
 			_loadGamesButtons[i]->setPressed(false);
 			_clickSound.play();
 			return (i);
 		}
-	}
 	return (0);
 }
 
@@ -169,9 +177,9 @@ void Menu::settings()
 		_window->getGUIEnvironment()->drawAll();
 		_video->draw2DImage(_settingsBackground, irr::core::position2d<irr::s32>(0, 0));
 		if (_soundEffectVolume != 0)
-		_video->draw2DImage(_soundEffectBackground, irr::core::position2d<irr::s32>(706, 725), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+			_video->draw2DImage(_soundEffectBackground, irr::core::position2d<irr::s32>(706, 725), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
 		if (_musicVolume != 0)
-		_video->draw2DImage(_musicVolumeBackground, irr::core::position2d<irr::s32>(706, 393), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+			_video->draw2DImage(_musicVolumeBackground, irr::core::position2d<irr::s32>(706, 393), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
 		_sceneManager->drawAll();
 		ret = settingsButtonsHandling();
 		if (ret == 1)
@@ -241,4 +249,121 @@ void Menu::stopMusic()
 void Menu::playClickSound()
 {
 	_clickSound.play();
+}
+
+int Menu::gameSettings()
+{
+	int ret = 0;
+	int size = 580;
+
+	_gamesSettingsBackground = _video->getTexture("assets/menu/choose_players_menu.png");
+	_firstBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+	_secondBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+	_thirdBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+	_returnArrow = _video->getTexture("assets/menu/buttons/back_arrow.png");
+	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
+
+	_startButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(735, 910, 735 + 500, 910 + 120), nullptr, 0, L"START");
+	for (int i = 0; i < 3; i++, size += 450)
+		_plusButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(size, 410, size + 250, 410 + 220), nullptr, 0, L"PLUS"));
+	_returnButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(100, 50, 100 + 280, 50 + 130), nullptr, 0, L"BACK");
+
+	while (_window->run()) {
+		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
+		_window->getGUIEnvironment()->drawAll();
+		_video->draw2DImage(_gamesSettingsBackground, irr::core::position2d<irr::s32>(0, 0));
+		_video->draw2DImage(_firstBox, irr::core::position2d<irr::s32>(500, 325), irr::core::rect<irr::s32>(0, 0, 800, 600), 0, irr::video::SColor(255, 255, 255, 255), true);
+		_video->draw2DImage(_secondBox, irr::core::position2d<irr::s32>(950, 325), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+		_video->draw2DImage(_thirdBox, irr::core::position2d<irr::s32>(1400, 325), irr::core::rect<irr::s32>(0, 0, 700, 400), 0, irr::video::SColor(255, 255, 255, 255), true);
+		_video->draw2DImage(_returnArrow, irr::core::position2d<irr::s32>(100, 50), irr::core::rect<irr::s32>(0, 0, 800, 600), 0, irr::video::SColor(255, 255, 255, 255), true);
+		_sceneManager->drawAll();
+		ret = gamesSettingsButtonsHandling();
+		if (ret == 1) {
+			stopMusic();
+			return (-42);
+		}
+		if (ret == -1)
+			return (0);
+		_video->endScene();
+	}
+	return (0);
+}
+
+int Menu::gamesSettingsButtonsHandling()
+{
+	if (_startButton->isPressed()) {
+		playClickSound();
+		return (1);
+	}
+	if (_returnButton->isPressed())
+		return (-1);
+
+	if (_plusButtons[0]->isPressed()) {
+		playClickSound();
+		if (!_firstButtonActivated) {
+			_players++;
+			_bots--;
+			_firstBox = _video->getTexture("assets/menu/buttons/player2_rectangle.png");
+			_firstButtonActivated = true;
+			if (_secondButtonActivated)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			if (_thirdButtonActivated)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+		} else {
+			_players--;
+			_bots++;
+			_firstBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			_firstButtonActivated = false;
+			if (_secondButtonActivated)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			if (_thirdButtonActivated)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
+		}
+	}
+
+	if (_plusButtons[1]->isPressed()) {
+		playClickSound();
+		if (!_secondButtonActivated) {
+			if (_bots == 0)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+			if (_bots == 1)
+				_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			_bots++;
+			_secondButtonActivated = true;
+		} else {
+			if (_thirdButtonActivated) {
+				if (_bots == 0)
+					_secondBox = _video->getTexture("assets/menu/buttons/AI1_rectangle.png");
+				if (_bots == 1)
+					_secondBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+				_thirdBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+				_thirdButtonActivated = false;
+			} else {
+				_secondBox = _video->getTexture(
+					"assets/menu/buttons/add_player_plus_sign.png");
+				_secondButtonActivated = false;
+			}
+			_bots--;
+		}
+	}
+	if (_plusButtons[2]->isPressed()) {
+		playClickSound();
+		if (!_thirdButtonActivated) {
+			if (_bots == 1)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI2_rectangle.png");
+			if (_bots == 2)
+				_thirdBox = _video->getTexture("assets/menu/buttons/AI3_rectangle.png");
+			_bots++;
+			_thirdButtonActivated = true;
+		} else {
+			_thirdBox = _video->getTexture("assets/menu/buttons/add_player_plus_sign.png");
+			_bots--;
+			_thirdButtonActivated = false;
+		}
+	}
+
+	_startButton->setPressed(false);
+	for (int i = 0; i < 3; i++)
+		_plusButtons[i]->setPressed(false);
+	return (0);
 }
