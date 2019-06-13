@@ -23,6 +23,7 @@ Graphics::Graphics()
 
 Graphics::~Graphics()
 {
+	_window->closeDevice();
 	delete(_game);
 	delete(_menu);
 }
@@ -162,16 +163,15 @@ std::vector<std::string> Graphics::getFileContent(std::string fileName)
 
 irr::core::vector2di getPlayerPosition(const std::string line)
 {
+	std::istringstream tokenStream(line);
 	std::vector<std::string> tokens;
 	irr::core::vector2di pos;
 	std::string token;
-	std::istringstream tokenStream(line);
 
 	while (std::getline(tokenStream, token, ' '))
 		tokens.push_back(token);
 	pos.X = std::atoi(tokens[2].c_str());
 	pos.Y = std::atoi(tokens[3].c_str());
-	std::cerr << pos.X << " " << pos.Y << std::endl;
 	return (pos);
 }
 

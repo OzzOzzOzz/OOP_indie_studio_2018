@@ -13,9 +13,8 @@ int main()
 	Graphics *bomberman = new Graphics();
 	int menu_return = bomberman->getMenu()->menuHandling();
 
-	if (menu_return == -1) {
-		return (84);
-	}
+	if (menu_return == -1)
+		return (0);
 	if (menu_return != -42) {
 		bomberman->loadGame(menu_return);
 	} else {
@@ -24,5 +23,6 @@ int main()
 	}
 	bomberman->getGame()->createMap();
 	bomberman->getGame()->gameLoop();
+	delete(bomberman);
 	return (0);
 }

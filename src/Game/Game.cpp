@@ -75,6 +75,10 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<s
 
 Game::~Game()
 {
+	delete(_gameMenu);
+	delete(_player);
+	if (_playersNumber == 2)
+		delete(_player2);
 }
 
 void Game::gameLoop()
