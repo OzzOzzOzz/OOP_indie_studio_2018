@@ -100,7 +100,7 @@ void Game::gameLoop()
 
 int Game::gameHandling()
 {
-    _video->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));
+    _video->beginScene(true, true, 0);
     _video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
     _sceneManager->drawAll();
     _video->endScene();
