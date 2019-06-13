@@ -87,8 +87,10 @@ int Menu::menuHandling()
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
 		ret = buttonHandling();
-		if (ret == -42 && gameSettings() == -42)
-			return -42;
+		if (ret == -42) {
+			if (gameSettings() == -42)
+				return -42;
+		}
 		else if (ret != 0)
 			return (ret);
 		_video->endScene();
