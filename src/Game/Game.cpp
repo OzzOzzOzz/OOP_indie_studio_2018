@@ -6,6 +6,8 @@
 */
 #include <dirent.h>
 #include <fstream>
+#include <chrono>
+#include <chrono>
 #include "Game.hpp"
 #include "Wall.hpp"
 
@@ -83,14 +85,13 @@ Game::~Game()
 
 void Game::gameLoop()
 {
-	int ret;
+	int ret = 0;
 
 	while(_window->run()) {
 		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE)) {
 			ret = _gameMenu->gameMenuHandling();
-			if (ret == 2) {
+			if (ret == 2)
 				saveGame();
-			}
 		}
 		gameHandling();
 		MovePlayer(_map, _bombs, _txtMap);
@@ -133,11 +134,15 @@ int Game::saveGame()
 	std::string newFileName = "save1";
 	std::ofstream file;
 	int i = 0;
+	std::string gameSave = "assets/menu/game_saved_popup";
 
 	while (i <= files.size())
 		i++;
-	if (i <= 5)
+	if (i <= 5) {
 		newFileName = "save" + std::to_string(i);
+		gameSave = gameSave + std::to_string(i) + ".png";
+	} else
+		gameSave = gameSave + "1.png";
 	file.open("./saves/" + newFileName);
 	for (int i = 0; i < _txtMap.size(); i++)
 		file << _txtMap.at(i) << std::endl;
@@ -149,7 +154,26 @@ int Game::saveGame()
 	for (int i = 0; i < _botsNumber; i++)
 		file << "A " << "1" << " " << "0" << " " << "0" << std::endl;
 	file.close();
+	displaySaveGameImage(gameSave);
 	return (0);
+}
+
+void Game::displaySaveGameImage(std::string fileName)
+{
+	auto start = std::chrono::high_resolution_clock::now();
+	auto end = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> elapsed = end - start;
+
+	_savedGame = _video->getTexture(fileName.c_str());
+	while (1) {
+		end = std::chrono::high_resolution_clock::now();
+		elapsed = end - start;
+		if (elapsed.count() >= 3000.0)
+			break;
+		_video->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));
+		_video->draw2DImage(_savedGame, irr::core::position2d<irr::s32>(0, 0));
+		_video->endScene();
+	}
 }
 
 bool Game::is_spawn_area(int x, int y)

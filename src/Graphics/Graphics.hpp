@@ -23,9 +23,7 @@ public:
     Menu *getMenu() {return _menu;}
     Game *getGame() {return _game;}
 
-	void gameSettings();
-	int buttonsHandling();
-	void buttonsInitialize();
+    void setGame();
 
 	void loadGame(int SaveFileNumber);
 	std::vector<std::string> getFileContent(std::string fileName);
@@ -35,25 +33,9 @@ private:
 	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 
-	irr::video::ITexture *_background;
-	irr::video::ITexture *_firstBox;
-	irr::video::ITexture *_secondBox;
-	irr::video::ITexture *_thirdBox;
-
-	irr::gui::IGUIButton * _startButton;
-	irr::gui::IGUIButton * _choosePlayerOrAI;
-	std::vector<irr::gui::IGUIButton *> _plusButtons;
-
-    Menu *_menu;
-    Game *_game;
-    MyEventReceiver *_receiver;
-
-	int _players;
-	int _bots;
-
-	bool _firstButtonActivated;
-	bool _secondButtonActivated;
-	bool _thirdButtonActivated;
+	Menu *_menu;
+	Game *_game;
+	MyEventReceiver *_receiver;
 };
 
 #endif

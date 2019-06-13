@@ -42,6 +42,7 @@ public:
 
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 	int saveGame();
+	void displaySaveGameImage(std::string);
 
 	std::vector<Wall *> getMap() {return _map;}
 	MyEventReceiver *getEventReceiver() {return _player->getEventReceiver();}
@@ -54,6 +55,7 @@ private:
 	irr::video::IVideoDriver *_video;
 	irr::scene::ISceneManager *_sceneManager;
 	irr::video::ITexture *_background;
+	irr::video::ITexture *_savedGame;
 	irr::scene::IMetaTriangleSelector *_metaselector;
 	irr::EKEY_CODE _key;
 

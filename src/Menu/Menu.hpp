@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <dirent.h>
 #include <string>
+#include "../Game/Game.hpp"
 
 class Menu {
 public:
@@ -34,10 +35,17 @@ public:
     void settings();
     int settingsButtonsHandling();
 
+	int gameSettings();
+	int gamesSettingsButtonsHandling();
+
+	int getPlayers() {return _players;}
+	int getIA() {return _bots;}
+
     int getMusicVolume() {return _musicVolume;}
     int getSoundEffectVolume() {return _soundEffectVolume;}
     void playClickSound();
     void stopMusic();
+
 private:
 	irr::IrrlichtDevice *_window;
 	irr::video::IVideoDriver *_video;
@@ -49,6 +57,11 @@ private:
 	irr::video::ITexture *_settingsBackground;
 	irr::video::ITexture *_musicVolumeBackground;
 	irr::video::ITexture *_soundEffectBackground;
+	irr::video::ITexture *_gamesSettingsBackground;
+	irr::video::ITexture *_returnArrow;
+	irr::video::ITexture *_firstBox;
+	irr::video::ITexture *_secondBox;
+	irr::video::ITexture *_thirdBox;
 
 	std::vector<irr::gui::IGUIButton *> _mainButtons;
 	std::vector<irr::gui::IGUIButton *> _loadGamesButtons;
@@ -57,13 +70,24 @@ private:
 	irr::gui::IGUIButton * _musicLessButton;
 	irr::gui::IGUIButton *_soundPlusButton;
 	irr::gui::IGUIButton * _soundLessButton;
+	irr::gui::IGUIButton * _startButton;
+	irr::gui::IGUIButton * _returnButton;
+	std::vector<irr::gui::IGUIButton *> _plusButtons;
 
 	sf::SoundBuffer _clickBuffer;
 	sf::Sound _clickSound;
 	sf::Music _mainMenuMusic;
-
 	int _musicVolume;
+
+	Game *_game;
+
 	int _soundEffectVolume;
+	int _players;
+	int _bots;
+
+	bool _firstButtonActivated;
+	bool _secondButtonActivated;
+	bool _thirdButtonActivated;
 };
 
 #endif
