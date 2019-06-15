@@ -15,6 +15,7 @@ int main()
 
 	if (menu_return == -1)
 		return (0);
+	srand(time(nullptr));
 	if (menu_return != -42) {
 		bomberman->loadGame(menu_return);
 	} else {

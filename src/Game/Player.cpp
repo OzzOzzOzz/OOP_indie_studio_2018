@@ -40,9 +40,9 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
     static int n = 0;
     irr::core::vector3df nodePosition = _player1->getPosition();
 
-    if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
+    if (_receiver->IsKeyDown(_keys[K_BOMB_ID]))
     	bombHandling(bombs, nodePosition, map, _txtMap);
-    if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(map, _keys[K_UP_ID]) == 0) {
+    if (_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(map, _keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -54,8 +54,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
         nodePosition.Y += SPEED;
         _player1->setPosition(nodePosition);
         return (0);
-    }
-    else if(_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(map, _keys[K_DOWN_ID]) == 0) {
+    } else if (_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(map, _keys[K_DOWN_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -68,7 +67,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
         _player1->setPosition(nodePosition);
         return (0);
     }
-    if(_receiver->IsKeyDown(_keys[K_RIGHT_ID]) && Collision(map, _keys[K_RIGHT_ID]) == 0) {
+    if (_receiver->IsKeyDown(_keys[K_RIGHT_ID]) && Collision(map, _keys[K_RIGHT_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -80,8 +79,7 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 90.0f));
         _player1->setPosition(nodePosition);
         return (0);
-    }
-    else if(_receiver->IsKeyDown(_keys[K_LEFT_ID]) && Collision(map, _keys[K_LEFT_ID]) == 0) {
+    } else if (_receiver->IsKeyDown(_keys[K_LEFT_ID]) && Collision(map, _keys[K_LEFT_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;
@@ -93,10 +91,6 @@ int Player::Move(int id, std::vector <Wall *> &map, std::vector <Bomb *> &bombs,
         _player1->setPosition(nodePosition);
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
-    }
-    if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
-        bombs[bombs.size()]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
-		bombs.erase(bombs.begin());
     }
     _player1->setPosition(nodePosition);
     if (i == 1 && id == 1) {

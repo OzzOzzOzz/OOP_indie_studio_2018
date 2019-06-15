@@ -8,6 +8,8 @@ include("FindIrrlicht.cmake")
 
 add_executable(bomberman
         src/main.cpp
+        src/Game/Ai.cpp
+        src/Game/Ai.hpp
         src/Game/Game.cpp
         src/Game/Game.hpp
         src/Game/Player.cpp

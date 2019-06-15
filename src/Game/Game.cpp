@@ -21,7 +21,8 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNu
 	_player = new Player(_window, receiver, 20, 20, false);
     if (playersNumber == 2)
         _player2 = new Player(_window, receiver, 380, 380, true);
-
+    for (int i = 0; i < aiNumber; i++)
+    	_ai.push_back(new AI(_window, 20, 20));
 	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
 		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
 		exit (84);
@@ -53,6 +54,9 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<s
 	if (playersNumber == 2)
 		_player2 = new Player(_window, receiver, player2Pos.X, player2Pos.Y, true);
 
+	for (int i = 0; i < aiNumber; i++)
+		_ai.push_back(new AI(_window, 20, 20));
+
 	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
 		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
 		exit (84);
@@ -79,6 +83,8 @@ Game::~Game()
 	delete(_player);
 	if (_playersNumber == 2)
 		delete(_player2);
+	for (int i = 0; i < _botsNumber; i++)
+		delete(_ai[i]);
 }
 
 void Game::gameLoop()
@@ -94,6 +100,9 @@ void Game::gameLoop()
 		}
 		gameHandling();
 		MovePlayer(_map, _bombs, _txtMap);
+		for (int i = 0; i < _botsNumber; i++) {
+			_ai[i]->checkForBombs(_map);
+		}
 	}
 	_window->drop();
 }

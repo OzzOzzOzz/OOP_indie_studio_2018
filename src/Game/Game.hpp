@@ -16,6 +16,7 @@
 #include "Bomb.hpp"
 #include "Player.hpp"
 #include "../Menu/GameMenu.hpp"
+#include "Ai.hpp"
 
 #define MAP_SIZE 21.0f
 #define CUBE_SIZE 20.0f
@@ -69,6 +70,8 @@ private:
 
 	Player *_player2;
 	Player *_player;
+
+	std::vector<AI *> _ai;
 
 	int _playersNumber;
 	int _botsNumber;
