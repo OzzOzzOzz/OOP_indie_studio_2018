@@ -74,8 +74,8 @@ void Map::gen_txt_map()
 
 void Map::createMap()
 {
-    for (int x = 0; x <= MAP_SIZE; x++)
-        for (int y = 0; y <= MAP_SIZE; y++)
+    for (int x = 0; x < MAP_SIZE; x++)
+        for (int y = 0; y < MAP_SIZE; y++)
             _floor.push_back(new Wall(_window, true, irr::core::vector3df(x * CUBE_SIZE, y * CUBE_SIZE, -CUBE_SIZE), "assets/game/floor.png"));
     for (int x = 0; x < MAP_SIZE; x++) {
         for (int y = 0; y < MAP_SIZE; y++) {
