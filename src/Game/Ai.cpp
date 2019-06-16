@@ -192,6 +192,7 @@ int AI::oppositeDirection(int direction)
 		return (RIGHT);
 	if (direction == RIGHT)
 		return (LEFT);
+	return (0);
 }
 
 void AI::findNearestPlayer()
