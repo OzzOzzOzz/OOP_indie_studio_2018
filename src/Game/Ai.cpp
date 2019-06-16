@@ -7,8 +7,11 @@
 #include <zconf.h>
 #include "Ai.hpp"
 
-AI::AI(irr::IrrlichtDevice *window, Map &map, int x, int y) : _map(map)
+AI::AI(irr::IrrlichtDevice *window, Map *map, int x, int y) :
+    _map(map)
 {
+    _txtPos.X = static_cast<int>(x / CUBE_SIZE);
+    _txtPos.Y = static_cast<int>(y / CUBE_SIZE);
 	_window = window;
 	_mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
 	_ai = _window->getSceneManager()->addAnimatedMeshSceneNode(_mesh);
@@ -116,7 +119,7 @@ int AI::collision(int direction)
 	auto aiX = _ai->getPosition().X;
 	auto aiY = _ai->getPosition().Y;
 
-	for (auto const &wall : _map.getWalls()) {
+	for (auto const &wall : _map->getWalls()) {
 		auto wallX = wall->getPosition().X;
 		auto wallY = wall->getPosition().Y;
 
@@ -203,5 +206,5 @@ void AI::tryToKill()
 
 void AI::placeBomb()
 {
-	_map.spawnBomb(_ai->getPosition(), _range);
+	_map->spawnBomb(_ai->getPosition(), _range);
 }

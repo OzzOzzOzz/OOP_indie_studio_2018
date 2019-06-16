@@ -7,9 +7,12 @@
 #include <utility>
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
+#include "PowerUp.hpp"
 
-Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool player1) : _map(map)
+Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map *map, int x, int y, bool player1) : _map(map)
 {
+    _txtPos.X = static_cast<int>(x / CUBE_SIZE);
+    _txtPos.Y = static_cast<int>(y / CUBE_SIZE);
 	_window = window;
 	_receiver = receiver;
     _mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
@@ -22,6 +25,7 @@ Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map,
     _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
     _player1->setScale(irr::core::vector3df(0.9f, 0.9f, 0.9f));
 	_bombNumber = 1;
+	_then = window->getTimer()->getTime();
 
     if (player1)
         _keys = {irr::KEY_KEY_Z, irr::KEY_KEY_S, irr::KEY_KEY_D, irr::KEY_KEY_Q, irr::KEY_KEY_C};
@@ -39,9 +43,15 @@ int Player::Move(int id)
     static int i = 0;
     static int n = 0;
     irr::core::vector3df nodePosition = _player1->getPosition();
+    _now = _window->getTimer()->getTime();
+    const irr::f32 frameDeltaTime = (irr::f32)(_now - _then) / 100.f;
+    _framedeltatime = frameDeltaTime;
+    _then = _now;
 
     if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
-        _map.spawnBomb(nodePosition, _range);
+        _map->spawnBomb(nodePosition, _range);
+    if(_receiver->IsKeyDown(irr::KEY_KEY_X))
+        new PowerUp(_window, irr::core::vector3df(20, 20, 0), 0);
     if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(_keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -51,7 +61,7 @@ int Player::Move(int id)
             n = 1;
         }
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 0.0f));
-        nodePosition.Y += SPEED;
+        nodePosition.Y += PLAYERSPEED * frameDeltaTime;
         _player1->setPosition(nodePosition);
         return (0);
     } else if (_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(_keys[K_DOWN_ID]) == 0) {
@@ -62,7 +72,7 @@ int Player::Move(int id)
             _player1->setFrameLoop(96, 96 + 96);
             n = 1;
         }
-        nodePosition.Y -= SPEED;
+        nodePosition.Y -= PLAYERSPEED* frameDeltaTime;
         _player1->setRotation(irr::core::vector3df(-90.0f, 180.0f, 0.0f));
         _player1->setPosition(nodePosition);
         return (0);
@@ -75,7 +85,7 @@ int Player::Move(int id)
             _player1->setFrameLoop(96, 96 + 96);
             n = 1;
         }
-        nodePosition.X -= SPEED;
+        nodePosition.X -= PLAYERSPEED * frameDeltaTime;
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, 90.0f));
         _player1->setPosition(nodePosition);
         return (0);
@@ -88,7 +98,7 @@ int Player::Move(int id)
             _player1->setFrameLoop(96, 96 + 96);
             n = 1;
         }
-        nodePosition.X += SPEED;
+        nodePosition.X += PLAYERSPEED * frameDeltaTime;
         _player1->setPosition(nodePosition);
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
@@ -107,14 +117,18 @@ int Player::Move(int id)
 
 int Player::Collision(irr::EKEY_CODE key)
 {
-    for (auto const &wall : _map.getWalls()) {
-        if (key == _keys[K_UP_ID] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= wall->getPosition().Y && _player1->getPosition().Y + SPEED<= wall->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= wall->getPosition().X && _player1->getPosition().X <= wall->getPosition().X + PLAYER_SIZE)))
+    auto playerX = _player1->getPosition().X;
+    auto playerY = _player1->getPosition().Y;
+    for (auto const &wall : _map->getWalls()) {
+        auto wallX = wall->getPosition().X;
+        auto wallY = wall->getPosition().Y;
+        if (key == _keys[K_UP_ID] && playerY + PLAYER_SIZE + SPEED>= wallY && playerY + SPEED<= wallY + PLAYER_SIZE && ((playerX + PLAYER_SIZE>= wallX && playerX <= wallX + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_LEFT_ID] && _player1->getPosition().X + PLAYER_SIZE + SPEED>= wall->getPosition().X  && _player1->getPosition().X + SPEED<= wall->getPosition().X + PLAYER_SIZE && ((_player1->getPosition().Y + PLAYER_SIZE>= wall->getPosition().Y && _player1->getPosition().Y <= wall->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_LEFT_ID] && playerX + PLAYER_SIZE + SPEED>= wallX  && playerX + SPEED<= wallX + PLAYER_SIZE && ((playerY + PLAYER_SIZE>= wallY && playerY <= wallY + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_RIGHT_ID] && _player1->getPosition().Y <= wall->getPosition().Y + PLAYER_SIZE && _player1->getPosition().Y + PLAYER_SIZE >= wall->getPosition().Y && ((_player1->getPosition().X  - SPEED + PLAYER_SIZE >= wall->getPosition().X && _player1->getPosition().X - SPEED <= wall->getPosition().X + PLAYER_SIZE)))
+        else if (key == _keys[K_RIGHT_ID] && playerY <= wallY + PLAYER_SIZE && playerY + PLAYER_SIZE >= wallY && ((playerX  - SPEED + PLAYER_SIZE >= wallX && playerX - SPEED <= wallX + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_DOWN_ID] && _player1->getPosition().X <= wall->getPosition().X + PLAYER_SIZE && _player1->getPosition().X + PLAYER_SIZE>= wall->getPosition().X && ((_player1->getPosition().Y  - SPEED + PLAYER_SIZE >= wall->getPosition().Y && _player1->getPosition().Y - SPEED <= wall->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_DOWN_ID] && playerX <= wallX + PLAYER_SIZE && playerX + PLAYER_SIZE>= wallX && ((playerY  - SPEED + PLAYER_SIZE >= wallY && playerY - SPEED <= wallY + PLAYER_SIZE)))
             return 1;
     }
     return 0;

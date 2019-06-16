@@ -22,7 +22,7 @@
 
 class AI {
 public:
-	AI(irr::IrrlichtDevice *window, Map &map, int x, int y);
+	AI(irr::IrrlichtDevice *window, Map *map, int x, int y);
 	~AI();
 
 	void move();
@@ -33,7 +33,7 @@ public:
 	void moveDown();
 
 	irr::core::vector3df getPosition(){return _ai->getPosition();}
-	Map getMap(){return _map;}
+	irr::core::vector2di getTxtPos(){return _txtPos;}
 
 	void checkForBombs();
 	int collision(int direction);
@@ -56,8 +56,9 @@ private:
 	int _goalPositionY;
 
 	bool nearBedrock;
+	irr::core::vector2di _txtPos;
 
-	Map _map;
+	Map *_map;
 };
 
 #endif

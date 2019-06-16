@@ -14,7 +14,7 @@
 #include "Map.hpp"
 
 #define PLAYER_SIZE 15.0f
-#define SPEED 1.0f
+#define PLAYERSPEED 5.0f
 
 #define K_UP_ID 0
 #define K_DOWN_ID 1
@@ -24,7 +24,7 @@
 
 class Player {
 public:
-	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool j1orj2);
+	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map *map, int x, int y, bool j1orj2);
 	~Player();
 
 	int Move(int id);
@@ -35,6 +35,7 @@ public:
     irr::scene::IAnimatedMeshSceneNode *getNode() {return _player1;}
 	MyEventReceiver *getEventReceiver() {return _receiver;}
 	int getBombNumber() {return _bombNumber;}
+    irr::core::vector2di getTxtPos(){return _txtPos;}
 
 private:
 
@@ -43,11 +44,15 @@ private:
 	irr::scene::IAnimatedMeshSceneNode *_player1;
 	std::vector<irr::EKEY_CODE> _keys;
 	int _bombNumber;
+    irr::core::vector2di _txtPos;
 
-	Map _map;
+	Map *_map;
 
 	int _range;
 	MyEventReceiver *_receiver;
+	irr::u32 _now;
+	irr::u32 _then;
+	irr::f32 _framedeltatime;
 };
 
 #endif

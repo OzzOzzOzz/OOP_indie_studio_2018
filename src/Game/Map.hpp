@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "Wall.hpp"
-#include "Bomb.hpp"
+
 
 #define MAP_SIZE 21.0f
 #define CUBE_SIZE 20.0f
@@ -20,6 +20,7 @@
 #define WALL '1'
 #define BEDROCK '2'
 
+class Bomb;
 
 class Map {
 public:
@@ -28,9 +29,12 @@ public:
 
     void spawnBomb(irr::core::vector3df pos, int range);
 
+    std::vector<irr::core::vector2di> update();
+
     const std::vector<std::string> &getTxtMap() const;
+    const char getTxtMapItem(const irr::core::vector2di& pos) const;
     const std::vector<Wall *> &getWalls() const;
-    void deleteMapWall(int x, int y);
+    void deleteMapWall(const irr::core::vector2di& pos);
 
 private:
     std::vector<std::string> gen_sub_map();

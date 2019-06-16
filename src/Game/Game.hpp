@@ -39,6 +39,7 @@ public:
 	int gameHandling();
 
 	void AIHandling();
+	void playerBombCollision(const std::vector<irr::core::vector2di>& hits);
 
 	void MovePlayer();
 
