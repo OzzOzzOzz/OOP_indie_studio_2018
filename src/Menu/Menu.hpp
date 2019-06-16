@@ -18,6 +18,13 @@
 #include <string>
 #include "../Game/Game.hpp"
 
+#define MENU_PLAY 0
+#define MENU_LOAD 1
+#define MENU_SETTINGS 2
+#define MENU_EXIT 3
+#define PLAY_CODE -42
+#define CODE_ERR_EXIT 84
+
 class Menu {
 public:
 	Menu(irr::IrrlichtDevice *);

@@ -15,13 +15,11 @@ int main()
 
 	if (menu_return == -1)
 		return (0);
-	if (menu_return != -42) {
+	if (menu_return != PLAY_CODE) {
 		bomberman->loadGame(menu_return);
 	} else {
 		bomberman->setGame();
-		bomberman->getGame()->gen_txt_map();
 	}
-	bomberman->getGame()->createMap();
 	bomberman->getGame()->gameLoop();
 	delete(bomberman);
 	return (0);

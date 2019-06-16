@@ -17,7 +17,7 @@ GameMenu::GameMenu(irr::IrrlichtDevice *window)
 	_video->makeColorKeyTexture(_background, irr::core::position2d<irr::s32>(0, 0));
 	if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
 		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
 	}
 	_clickSound.setBuffer(_clickBuffer);
 }

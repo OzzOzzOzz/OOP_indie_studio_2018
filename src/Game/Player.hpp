@@ -11,6 +11,7 @@
 #include <iostream>
 #include <irrlicht/irrlicht.h>
 #include "../Graphics/eventreceiver.hpp"
+#include "Map.hpp"
 
 #define PLAYER_SIZE 15.0f
 #define SPEED 1.0f
@@ -23,12 +24,11 @@
 
 class Player {
 public:
-	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int x, int y, bool j1orj2);
+	Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool j1orj2);
 	~Player();
 
-	int Move(int id, std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> _txt_map);
-	int Collision(std::vector <Wall *> &map, irr::EKEY_CODE key);
-	void bombHandling(std::vector <Bomb *> &bombs, irr::core::vector3df nodePosition, std::vector<Wall *> &map, std::vector<std::string> &_txt_map);
+	int Move(int id);
+	int Collision(irr::EKEY_CODE key);
 
 	irr::core::vector3df getPosition() {return _player1->getAbsolutePosition();}
     irr::scene::IAnimatedMesh *getMesh() {return _mesh;}
@@ -37,13 +37,14 @@ public:
 	int getBombNumber() {return _bombNumber;}
 
 private:
-	void deleteMapWall(int x, int y, std::vector<Wall *> &map);
 
     irr::IrrlichtDevice *_window;
     irr::scene::IAnimatedMesh *_mesh;
 	irr::scene::IAnimatedMeshSceneNode *_player1;
 	std::vector<irr::EKEY_CODE> _keys;
 	int _bombNumber;
+
+	Map _map;
 
 	int _range;
 	MyEventReceiver *_receiver;

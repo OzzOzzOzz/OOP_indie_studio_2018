@@ -27,14 +27,14 @@ Menu::Menu(irr::IrrlichtDevice *window)
     initializeButtons();
     if (!_clickBuffer.loadFromFile("assets/sounds/mouse_click.ogg")) {
 		std::cerr << "Error while loading mouse_click.ogg" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
     }
     if (!_mainMenuMusic.openFromFile("assets/sounds/main_menu_music.ogg")) {
 		std::cerr << "Error while loading main_menu_music.ogg" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
     }
     _mainMenuMusic.setLoop(true);
-    _mainMenuMusic.play();
+    //_mainMenuMusic.play();
     _clickSound.setBuffer(_clickBuffer);
 
 	_players = 1;
@@ -56,7 +56,7 @@ std::vector<std::string> Menu::getFilesfromFolder(const char *folderName)
 
 	if (!dir) {
 		std::cerr << "Could not open saves directory" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
 	}
 	ent = readdir(dir);
 	while (ent != nullptr) {
@@ -87,9 +87,9 @@ int Menu::menuHandling()
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
 		ret = buttonHandling();
-		if (ret == -42) {
-			if (gameSettings() == -42)
-				return -42;
+		if (ret == PLAY_CODE) {
+			if (gameSettings() == PLAY_CODE)
+				return PLAY_CODE;
 		}
 		else if (ret != 0)
 			return (ret);
@@ -100,23 +100,23 @@ int Menu::menuHandling()
 
 int Menu::buttonHandling()
 {
-	if (_mainButtons[0]->isPressed()) {
-		_mainButtons[0]->setPressed(false);
+	if (_mainButtons[MENU_PLAY]->isPressed()) {
+		_mainButtons[MENU_PLAY]->setPressed(false);
 		_clickSound.play();
-		return (-42);
+		return (PLAY_CODE);
 	}
-	if (_mainButtons[1]->isPressed()) {
-		_mainButtons[1]->setPressed(false);
+	if (_mainButtons[MENU_LOAD]->isPressed()) {
+		_mainButtons[MENU_LOAD]->setPressed(false);
 		_clickSound.play();
 		return (loadGames());
 	}
-	if (_mainButtons[2]->isPressed()) {
-		_mainButtons[2]->setPressed(false);
+	if (_mainButtons[MENU_SETTINGS]->isPressed()) {
+		_mainButtons[MENU_SETTINGS]->setPressed(false);
 		_clickSound.play();
 		settings();
 	}
-	if (_mainButtons[3]->isPressed()) {
-		_mainButtons[3]->setPressed(false);
+	if (_mainButtons[MENU_EXIT]->isPressed()) {
+		_mainButtons[MENU_EXIT]->setPressed(false);
 		_clickSound.play();
 		exit(0);
 	}

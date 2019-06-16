@@ -13,14 +13,17 @@
 #define BOMB_SIZE 25.0f
 
 class Bomb {
-    public:
-        Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, std::string _texture);
-        ~Bomb();
+public:
+    Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, int range);
+    ~Bomb();
+    irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
 
-        irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
-    private:
-        irr::scene::IAnimatedMeshSceneNode *_bomb;
-        irr::scene::IAnimatedMesh *_mesh;
+private:
+    irr::IrrlichtDevice *_window;
+    irr::scene::IAnimatedMeshSceneNode *_bomb;
+    irr::scene::IAnimatedMesh *_mesh;
+
+    int _range;
 };
 
 

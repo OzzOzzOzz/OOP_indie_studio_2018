@@ -80,6 +80,8 @@ void Graphics::loadGame(int SaveFileNumber)
 			map.push_back(fileContent[i]);
 		}
 	}
-	_game = new Game(_window, _receiver, map, playerNumber, aiNumber, player1Pos, player2Pos, _menu->getMusicVolume(), _menu->getSoundEffectVolume());
+	_game = new Game(_window, _receiver, playerNumber, aiNumber,
+        _menu->getMusicVolume(),
+        _menu->getSoundEffectVolume(), player1Pos, player2Pos, map);
 	_menu->stopMusic();
 }

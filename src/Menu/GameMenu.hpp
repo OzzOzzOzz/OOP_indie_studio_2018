@@ -15,6 +15,8 @@
 #include <vector>
 #include <algorithm>
 
+#define CODE_ERR_EXIT 84
+
 class GameMenu {
 public:
 	GameMenu(irr::IrrlichtDevice *);

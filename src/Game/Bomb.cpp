@@ -7,7 +7,9 @@ Mathieu Gery
 
 #include "Bomb.hpp"
 
-Bomb::Bomb(irr::IrrlichtDevice *window, irr::core::vector3df pos, std::string _texture)
+Bomb::Bomb(irr::IrrlichtDevice *window, irr::core::vector3df pos, int range) :
+    _window(window),
+    _range(range)
 {
     _mesh = window->getSceneManager()->getMesh("assets/game/bomb.3DS");
     _bomb = window->getSceneManager()->addAnimatedMeshSceneNode(_mesh);

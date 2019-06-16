@@ -15,7 +15,10 @@
 #include "Wall.hpp"
 #include "Bomb.hpp"
 #include "Player.hpp"
+#include "Map.hpp"
 #include "../Menu/GameMenu.hpp"
+
+#define CODE_ERR_EXIT 84
 
 #define MAP_SIZE 21.0f
 #define CUBE_SIZE 20.0f
@@ -26,25 +29,29 @@
 
 class Game {
 public:
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume);
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, std::vector<std::string> txtMap, int playersNumber, int aiNumber, const irr::core::vector2di player1Pos, const irr::core::vector2di player2Pos, int musicVolume, int soundEffectsVolume);
+    //NEW GAME
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber,
+        int musicVolume, int soundEffectsVolume);
+	//GAME LOAD
+    Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNumber, int aiNumber,
+        int musicVolume, int soundEffectsVolume,
+        const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos,
+        std::vector<std::string> &txtMap);
 	~Game();
+
+	void initGame(irr::IrrlichtDevice *window, MyEventReceiver *receiver,
+        int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume
+        , const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos);
 
 	void gameLoop();
 	int gameHandling();
 
-	void createMap();
-	std::vector<std::string> gen_sub_map();
-	void gen_txt_map();
-	bool is_spawn_area(int ,int);
-
-	void MovePlayer(std::vector <Wall *> &map, std::vector<Bomb *> &bombs, std::vector<std::string> &_txt_map);
+	void MovePlayer();
 
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 	int saveGame();
 	void displaySaveGameImage(std::string);
 
-	std::vector<Wall *> getMap() {return _map;}
 	MyEventReceiver *getEventReceiver() {return _player->getEventReceiver();}
 
 	void setPlayerNumber(int player) {_playersNumber = player;}
@@ -59,9 +66,7 @@ private:
 	irr::scene::IMetaTriangleSelector *_metaselector;
 	irr::EKEY_CODE _key;
 
-	std::vector <Wall *> _map;
-	std::vector <Wall *> _floor;
-	std::vector <Bomb *> _bombs;
+    Map *_map;
 
 	GameMenu *_gameMenu;
 
@@ -74,7 +79,6 @@ private:
 
 	int _playersNumber;
 	int _botsNumber;
-	std::vector<std::string> _txtMap;
 };
 
 #endif
