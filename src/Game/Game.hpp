@@ -17,6 +17,7 @@
 #include "Player.hpp"
 #include "Map.hpp"
 #include "../Menu/GameMenu.hpp"
+#include "Ai.hpp"
 
 #define CODE_ERR_EXIT 84
 
@@ -38,10 +39,6 @@ public:
         const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos,
         std::vector<std::string> &txtMap);
 	~Game();
-
-	void initGame(irr::IrrlichtDevice *window, MyEventReceiver *receiver,
-        int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume
-        , const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos);
 
 	void gameLoop();
 	int gameHandling();
@@ -76,6 +73,8 @@ private:
 
 	Player *_player2;
 	Player *_player;
+
+	std::vector<AI *> _ai;
 
 	int _playersNumber;
 	int _botsNumber;

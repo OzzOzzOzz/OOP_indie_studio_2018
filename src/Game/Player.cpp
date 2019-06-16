@@ -55,8 +55,7 @@ int Player::Move(int id)
         nodePosition.Y += SPEED;
         _player1->setPosition(nodePosition);
         return (0);
-    }
-    else if(_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(_keys[K_DOWN_ID]) == 0) {
+    } else if (_receiver->IsKeyDown(_keys[K_DOWN_ID])  && Collision(_keys[K_DOWN_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
             i = 1;

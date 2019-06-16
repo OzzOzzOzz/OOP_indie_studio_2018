@@ -10,11 +10,12 @@
 
 int main()
 {
-	Graphics *bomberman = new Graphics();
+    auto bomberman = new Graphics();
 	int menu_return = bomberman->getMenu()->menuHandling();
 
 	if (menu_return == -1)
 		return (0);
+	srand(time(nullptr));
 	if (menu_return != PLAY_CODE) {
 		bomberman->loadGame(menu_return);
 	} else {
