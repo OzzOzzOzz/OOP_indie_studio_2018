@@ -26,6 +26,7 @@ public:
 	~AI();
 
 	void move();
+	void move(int direction);
 	void moveRight();
 	void moveLeft();
 	void moveUp();
@@ -35,7 +36,8 @@ public:
 	Map getMap(){return _map;}
 
 	void checkForBombs();
-	int collision();
+	int collision(int direction);
+	int oppositeDirection(int direction);
 	void findNearestPlayer();
 	void tryToKill();
 	void placeBomb();
@@ -46,9 +48,13 @@ private:
 	irr::scene::IAnimatedMeshSceneNode *_ai;
 
 	irr::core::vector3df _nearestPlayer;
+
 	int _bombNumber;
 	int _range;
 	int _dir;
+	int _goalPositionX;
+	int _goalPositionY;
+
 	bool nearBedrock;
 
 	Map _map;
