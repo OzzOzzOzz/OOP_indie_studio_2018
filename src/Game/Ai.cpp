@@ -84,33 +84,51 @@ int AI::collision()
 {
 	auto aiX = _ai->getPosition().X;
 	auto aiY = _ai->getPosition().Y;
-	std::cout << "AI [" << aiX << "][" << aiY << "]" << std::endl;
+
 	for (auto const &wall : _map.getWalls()) {
 		auto wallX = wall->getPosition().X;
 		auto wallY = wall->getPosition().Y;
 
-		std::cout << "WALL [" << wallX << "][" << wallY << "]" << std::endl;
-
-		if (_dir == UP && aiY + PLAYER_SIZE + SPEED>= wallY && aiY + SPEED<= wallY + PLAYER_SIZE
-		&& ((aiX + PLAYER_SIZE>= wallX && aiX <= wallX + PLAYER_SIZE)))
-			return 1;
-		else if (_dir == LEFT && aiX + PLAYER_SIZE + SPEED>= wallX  && aiX + SPEED<= wallX + PLAYER_SIZE
-		&& ((aiY + PLAYER_SIZE>= wallY && aiY <= wallY + PLAYER_SIZE)))
-			return 1;
-		else if (_dir == RIGHT && aiY <= wallY + PLAYER_SIZE && aiY + PLAYER_SIZE >= wallY
-		&& ((aiX  - SPEED + PLAYER_SIZE >= wallX && aiX - SPEED <= wallX + PLAYER_SIZE)))
-			return 1;
-		else if (_dir == DOWN && aiX <= wallX + PLAYER_SIZE && aiX + PLAYER_SIZE>= wallX
-		&& ((aiY  - SPEED + PLAYER_SIZE >= wallY && aiY - SPEED <= wallY + PLAYER_SIZE)))
-			return 1;
+		if (_dir == UP && aiY + PLAYER_SIZE + SPEED >= wallY &&
+			aiY + SPEED <= wallY + PLAYER_SIZE &&
+			((aiX + PLAYER_SIZE >= wallX && aiX <= wallX + PLAYER_SIZE))) {
+			if (wall->isWallBreakable())
+				nearBedrock = false;
+			return (1);
+		} else if (_dir == LEFT && aiX + PLAYER_SIZE + SPEED >= wallX &&
+				   aiX + SPEED <= wallX + PLAYER_SIZE &&
+				   ((aiY + PLAYER_SIZE >= wallY &&
+					 aiY <= wallY + PLAYER_SIZE))) {
+			if (wall->isWallBreakable())
+				nearBedrock = false;
+			return (1);
+		} else if (_dir == RIGHT && aiY <= wallY + PLAYER_SIZE &&
+				   aiY + PLAYER_SIZE >= wallY &&
+				   ((aiX - SPEED + PLAYER_SIZE >= wallX &&
+					 aiX - SPEED <= wallX + PLAYER_SIZE))) {
+			if (wall->isWallBreakable())
+				nearBedrock = false;
+			return (1);
+		} else if (_dir == DOWN && aiX <= wallX + PLAYER_SIZE &&
+				   aiX + PLAYER_SIZE >= wallX &&
+				   ((aiY - SPEED + PLAYER_SIZE >= wallY &&
+					 aiY - SPEED <= wallY + PLAYER_SIZE))) {
+			if (wall->isWallBreakable())
+				nearBedrock = false;
+			return (1);
+		}
 	}
-	return 0;
+	return (0);
 }
 
 void AI::checkForBombs()
 {
-	if (collision() != 0)
-		_dir = rand() % 4 + 1;
+	if (collision() != 0) {
+		if (nearBedrock)
+			_dir = rand() % 4 + 1;
+		else
+			placeBomb();
+	}
 	move();
 }
 
@@ -126,5 +144,5 @@ void AI::tryToKill()
 
 void AI::placeBomb()
 {
-
+	_map.spawnBomb(_ai->getPosition(), _range);
 }

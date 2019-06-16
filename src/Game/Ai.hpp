@@ -49,6 +49,7 @@ private:
 	int _bombNumber;
 	int _range;
 	int _dir;
+	bool nearBedrock;
 
 	Map _map;
 };
