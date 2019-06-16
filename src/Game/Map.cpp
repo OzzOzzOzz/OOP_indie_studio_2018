@@ -88,7 +88,24 @@ void Map::createMap()
     }
 }
 
-void Map::deleteMapWall(int x, int y)
+std::vector<irr::core::vector2di> Map::update()
+{
+    std::vector<irr::core::vector2di> hits;
+    std::vector<irr::core::vector2di> tmp;
+
+    if (_bombs.empty())
+        return hits;
+    for(int i = 0; i < _bombs.size(); i++) {
+        tmp =_bombs[i]->update();
+        hits.insert(hits.end(), tmp.begin(), tmp.end());
+
+        if (_bombs[i]->isExploded())
+            _bombs.erase(_bombs.begin() + i);
+    }
+    return hits;
+}
+
+void Map::deleteMapWall(const irr::core::vector2di& pos)
 {
     for (int i = 0; i < _walls.size(); i++)
         if (_walls[i]->getTxtPos().X == pos.X && _walls[i]->getTxtPos().Y == pos.Y) {
@@ -114,4 +131,9 @@ void Map::spawnBomb(irr::core::vector3df pos, int range)
 //			_txtMap[playerX][y] = VOID;
 //			deleteMapWall(playerX, y);
 //		}
+}
+
+const char Map::getTxtMapItem(const irr::core::vector2di& pos) const
+{
+    return _txtMap[pos.X][pos.Y];
 }

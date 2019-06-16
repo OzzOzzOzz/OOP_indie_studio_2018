@@ -28,3 +28,43 @@ Bomb::Bomb(irr::IrrlichtDevice *window, Map *map, const irr::core::vector3df &po
 Bomb::~Bomb()
 {
 }
+
+bool Bomb::isExploded() const
+{
+    return _exploded;
+}
+
+std::vector<irr::core::vector2di> Bomb::bombRay(const irr::core::vector2di& dir)
+{
+    std::vector<irr::core::vector2di> hits;
+    for (int i = 0; i <= _range; i++) {
+        if (_map->getTxtMapItem(_txtPos + (dir * i)) == WALL) {
+            _map->deleteMapWall(_txtPos + (dir * i));
+            hits.emplace_back(_txtPos + (dir * i));
+        }
+        else if (_map->getTxtMapItem(_txtPos + (dir * i)) == BEDROCK)
+            return hits;
+    }
+    return hits;
+}
+
+std::vector<irr::core::vector2di> Bomb::update()
+{
+    std::vector<irr::core::vector2di> hits;
+    std::vector<irr::core::vector2di> tmp;
+
+    if (std::time(nullptr) - _spawnTime > BOMB_TIMER) {
+        _exploded = true;
+        tmp = (bombRay(irr::core::vector2di(0, 0)));
+        hits.insert(hits.end(), tmp.begin(), tmp.end());
+        tmp = (bombRay(irr::core::vector2di(1, 0)));
+        hits.insert(hits.end(), tmp.begin(), tmp.end());
+        tmp = (bombRay(irr::core::vector2di(0, 1)));
+        hits.insert(hits.end(), tmp.begin(), tmp.end());
+        tmp = (bombRay(irr::core::vector2di(1, 1)));
+        hits.insert(hits.end(), tmp.begin(), tmp.end());
+        _bomb->remove();
+
+    }
+    return hits;
+}

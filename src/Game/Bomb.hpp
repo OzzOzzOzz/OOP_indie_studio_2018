@@ -8,6 +8,9 @@
 #define OOP_INDIE_STUDIO_2018_BOMB_HPP
 
 #include <string>
+#include <ctime>
+#include <iostream>
+#include <vector>
 #include "irrlicht/irrlicht.h"
 #include "Map.hpp"
 
@@ -19,7 +22,9 @@ public:
     Bomb(irr::IrrlichtDevice *window, Map *map, const irr::core::vector3df& vector, int range);
     ~Bomb();
 
-    irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
+    std::vector<irr::core::vector2di> update();
+    std::vector<irr::core::vector2di> bombRay(const irr::core::vector2di& dir);
+    bool isExploded() const;
 
 private:
     irr::IrrlichtDevice *_window;

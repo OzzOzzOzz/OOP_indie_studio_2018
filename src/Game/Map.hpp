@@ -29,9 +29,12 @@ public:
 
     void spawnBomb(irr::core::vector3df pos, int range);
 
+    std::vector<irr::core::vector2di> update();
+
     const std::vector<std::string> &getTxtMap() const;
+    const char getTxtMapItem(const irr::core::vector2di& pos) const;
     const std::vector<Wall *> &getWalls() const;
-    void deleteMapWall(int x, int y);
+    void deleteMapWall(const irr::core::vector2di& pos);
 
 private:
     std::vector<std::string> gen_sub_map();

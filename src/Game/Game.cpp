@@ -84,6 +84,25 @@ Game::~Game()
 		delete(_ai[i]);
 }
 
+void Game::playerBombCollision(const std::vector<irr::core::vector2di>& hits)
+{
+    std::vector<irr::core::vector2di> playersPos;
+
+    playersPos.reserve(_botsNumber + _playersNumber);
+    for (int i = 0; i < _botsNumber; i++)
+        playersPos.emplace_back(_ai[i]->getTxtPos());
+    playersPos.emplace_back(_player->getTxtPos());
+    if (_playersNumber == 2)
+        playersPos.emplace_back(_player2->getTxtPos());
+
+    for (int i_hits = 0; i_hits < hits.size(); i_hits++) {
+        for (int i_player = 0; i_player < hits.size(); i_player++) {
+            if (hits[i_hits].X == playersPos[i_player].X && hits[i_hits].Y == playersPos[i_player].Y)
+                std::cout << "PLAYER " << i_player << "IS DEAD" << std::endl;
+        }
+    }
+}
+
 void Game::gameLoop()
 {
     int ret = 0;
@@ -94,6 +113,7 @@ void Game::gameLoop()
 			if (ret == 2)
 				saveGame();
 		}
+		playerBombCollision(_map->update());
 		gameHandling();
 		MovePlayer();
 		AIHandling();
