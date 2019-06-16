@@ -23,7 +23,6 @@ private:
     irr::IrrlichtDevice *_window;
     irr::scene::IAnimatedMeshSceneNode *_bomb;
     irr::scene::IAnimatedMesh *_mesh;
-
     int _range;
 };
 

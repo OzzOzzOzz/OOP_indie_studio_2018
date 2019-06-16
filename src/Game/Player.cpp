@@ -7,6 +7,7 @@
 #include <utility>
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
+#include "PowerUp.hpp"
 
 Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool player1) : _map(map)
 {
@@ -47,6 +48,8 @@ int Player::Move(int id)
 
     if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
         _map.spawnBomb(nodePosition, _range);
+    if(_receiver->IsKeyDown(irr::KEY_KEY_X))
+        new PowerUp(_window, irr::core::vector3df(100, 100, 0), 0);
     if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(_keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
