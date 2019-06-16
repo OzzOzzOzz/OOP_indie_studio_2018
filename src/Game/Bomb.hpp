@@ -16,6 +16,7 @@ class Bomb {
 public:
     Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, int range);
     ~Bomb();
+
     irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
 
 private:

@@ -112,8 +112,8 @@ void Game::gameLoop()
 		}
 		gameHandling();
 		MovePlayer();
-		for (int i = 0; i < _botsNumber; i++)
-			_ai[i]->checkForBombs(_map->getWalls());
+		//for (int i = 0; i < _botsNumber; i++)
+		//	_ai[i]->checkForBombs(_map->getWalls());
 	}
 	_window->drop();
 }

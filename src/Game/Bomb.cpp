@@ -18,7 +18,6 @@ Bomb::Bomb(irr::IrrlichtDevice *window, irr::core::vector3df pos, int range) :
     _bomb->setPosition(pos);
     _bomb->setScale(irr::core::vector3df(0.3f, 0.3f, 0.3f));
     _bomb->setMaterialTexture(0, window->getVideoDriver()->getTexture("assets/game/bomb.png"));
-    //_bomb->setMaterialTexture(0, window->getVideoDriver()->getTexture(_texture.c_str()));
 }
 
 Bomb::~Bomb()

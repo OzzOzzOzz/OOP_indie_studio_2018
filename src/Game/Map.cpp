@@ -107,16 +107,18 @@ void Map::spawnBomb(irr::core::vector3df pos, int range)
     pos = irr::core::vector3df(playerX * CUBE_SIZE, playerY * CUBE_SIZE, 0.0f);
 
     _bombs.push_back(new Bomb(_window, pos, range));
-//
-//    for (int x = playerX - _range < 0 ? 0 : playerX - _range; x <= (playerX + _range > MAP_SIZE ? MAP_SIZE : playerX + _range); x++)
-//        if (_txtMap[x][playerY] == WALL) {
-//            _txtMap[x][playerY] = VOID;
-//            deleteMapWall(x, playerY, map);
-//        }
-//    for (int y = playerY - _range < 0 ? 0 : playerY - _range; y <= (playerY + _range > MAP_SIZE ? MAP_SIZE : playerY + _range); y++)
-//        if (_txtMap[playerX][y] == WALL) {
-//            _txtMap[playerX][y] = VOID;
-//            deleteMapWall(playerX, y, map);
-//        }
 
+    for (int x = playerX - range < 0 ? 0 : playerX - range; x <= (playerX + range > MAP_SIZE ? MAP_SIZE : playerX + range); x++)
+        if (_txtMap[x][playerY] == WALL) {
+            _txtMap[x][playerY] = VOID;
+            deleteMapWall(x, playerY);
+        }
+    for (int y = playerY - range < 0 ? 0 : playerY - range; y <= (playerY + range > MAP_SIZE ? MAP_SIZE : playerY + range); y++)
+        if (_txtMap[playerX][y] == WALL) {
+			_txtMap[playerX][y] = VOID;
+			deleteMapWall(playerX, y);
+		}
+
+	_bombs[0]->getNode()->remove();
+	_bombs.clear();
 }

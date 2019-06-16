@@ -94,10 +94,6 @@ int Player::Move(int id)
         _player1->setRotation(irr::core::vector3df(90.0f, 0.0f, -90.0f));
         return (0);
     }
-//    if (_receiver->IsKeyDown(irr::KEY_KEY_T)) {
-//        bombs[bombs.size()]->getNode()->setPosition(irr::core::vector3df(-200.0f, 200.0f, 0.0f));
-//		bombs.erase(bombs.begin());
-//    }
     _player1->setPosition(nodePosition);
     if (i == 1 && id == 1) {
         _player1->setFrameLoop(0, 95);
