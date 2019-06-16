@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>
 #include "Map.hpp"
+#include "Bomb.hpp"
 
 Map::Map(irr::IrrlichtDevice *window) : _window(window)
 {
@@ -90,7 +91,7 @@ void Map::createMap()
 void Map::deleteMapWall(int x, int y)
 {
     for (int i = 0; i < _walls.size(); i++)
-        if (_walls[i]->getTxtPos().X == x && _walls[i]->getTxtPos().Y == y) {
+        if (_walls[i]->getTxtPos().X == pos.X && _walls[i]->getTxtPos().Y == pos.Y) {
             _walls[i]->getNode()->remove();
             _walls.erase(_walls.begin() + i);
         }
@@ -102,17 +103,15 @@ void Map::spawnBomb(irr::core::vector3df pos, int range)
     int playerY = static_cast<int>(pos.Y / CUBE_SIZE);
 
     pos = irr::core::vector3df(playerX * CUBE_SIZE, playerY * CUBE_SIZE, 0.0f);
-    _bombs.push_back(new Bomb(_window, pos, range));
-    for (int x = playerX - range < 0 ? 0 : playerX - range; x <= (playerX + range > MAP_SIZE ? MAP_SIZE : playerX + range); x++)
-        if (_txtMap[x][playerY] == WALL) {
-            _txtMap[x][playerY] = VOID;
-           // deleteMapWall(x, playerY);
-        }
-    for (int y = playerY - range < 0 ? 0 : playerY - range; y <= (playerY + range > MAP_SIZE ? MAP_SIZE : playerY + range); y++)
-        if (_txtMap[playerX][y] == WALL) {
-			_txtMap[playerX][y] = VOID;
-		//	deleteMapWall(playerX, y);
-		}
-//	_bombs[0]->getNode()->remove();
-//	_bombs.clear();
+    _bombs.emplace_back(new Bomb(_window, this, pos, range));
+//    for (int x = playerX - range < 0 ? 0 : playerX - range; x <= (playerX + range > MAP_SIZE ? MAP_SIZE : playerX + range); x++)
+//        if (_txtMap[x][playerY] == WALL) {
+//            _txtMap[x][playerY] = VOID;
+//            deleteMapWall(x, playerY);
+//        }
+//    for (int y = playerY - range < 0 ? 0 : playerY - range; y <= (playerY + range > MAP_SIZE ? MAP_SIZE : playerY + range); y++)
+//        if (_txtMap[playerX][y] == WALL) {
+//			_txtMap[playerX][y] = VOID;
+//			deleteMapWall(playerX, y);
+//		}
 }

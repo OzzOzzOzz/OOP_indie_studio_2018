@@ -8,8 +8,10 @@
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
 
-Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool player1) : _map(map)
+Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map *map, int x, int y, bool player1) : _map(map)
 {
+    _txtPos.X = static_cast<int>(x / CUBE_SIZE);
+    _txtPos.Y = static_cast<int>(y / CUBE_SIZE);
 	_window = window;
 	_receiver = receiver;
     _mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
@@ -41,7 +43,7 @@ int Player::Move(int id)
     irr::core::vector3df nodePosition = _player1->getPosition();
 
     if(_receiver->IsKeyDown(_keys[K_BOMB_ID]))
-        _map.spawnBomb(nodePosition, _range);
+        _map->spawnBomb(nodePosition, _range);
     if(_receiver->IsKeyDown(_keys[K_UP_ID]) && Collision(_keys[K_UP_ID]) == 0) {
         if (i == 0 && id == 1) {
             _player1->setFrameLoop(96, 96 + 96);
@@ -107,14 +109,18 @@ int Player::Move(int id)
 
 int Player::Collision(irr::EKEY_CODE key)
 {
-    for (auto const &wall : _map.getWalls()) {
-        if (key == _keys[K_UP_ID] && _player1->getPosition().Y + PLAYER_SIZE + SPEED>= wall->getPosition().Y && _player1->getPosition().Y + SPEED<= wall->getPosition().Y + PLAYER_SIZE && ((_player1->getPosition().X + PLAYER_SIZE>= wall->getPosition().X && _player1->getPosition().X <= wall->getPosition().X + PLAYER_SIZE)))
+    auto playerX = _player1->getPosition().X;
+    auto playerY = _player1->getPosition().Y;
+    for (auto const &wall : _map->getWalls()) {
+        auto wallX = wall->getPosition().X;
+        auto wallY = wall->getPosition().Y;
+        if (key == _keys[K_UP_ID] && playerY + PLAYER_SIZE + SPEED>= wallY && playerY + SPEED<= wallY + PLAYER_SIZE && ((playerX + PLAYER_SIZE>= wallX && playerX <= wallX + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_LEFT_ID] && _player1->getPosition().X + PLAYER_SIZE + SPEED>= wall->getPosition().X  && _player1->getPosition().X + SPEED<= wall->getPosition().X + PLAYER_SIZE && ((_player1->getPosition().Y + PLAYER_SIZE>= wall->getPosition().Y && _player1->getPosition().Y <= wall->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_LEFT_ID] && playerX + PLAYER_SIZE + SPEED>= wallX  && playerX + SPEED<= wallX + PLAYER_SIZE && ((playerY + PLAYER_SIZE>= wallY && playerY <= wallY + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_RIGHT_ID] && _player1->getPosition().Y <= wall->getPosition().Y + PLAYER_SIZE && _player1->getPosition().Y + PLAYER_SIZE >= wall->getPosition().Y && ((_player1->getPosition().X  - SPEED + PLAYER_SIZE >= wall->getPosition().X && _player1->getPosition().X - SPEED <= wall->getPosition().X + PLAYER_SIZE)))
+        else if (key == _keys[K_RIGHT_ID] && playerY <= wallY + PLAYER_SIZE && playerY + PLAYER_SIZE >= wallY && ((playerX  - SPEED + PLAYER_SIZE >= wallX && playerX - SPEED <= wallX + PLAYER_SIZE)))
             return 1;
-        else if (key == _keys[K_DOWN_ID] && _player1->getPosition().X <= wall->getPosition().X + PLAYER_SIZE && _player1->getPosition().X + PLAYER_SIZE>= wall->getPosition().X && ((_player1->getPosition().Y  - SPEED + PLAYER_SIZE >= wall->getPosition().Y && _player1->getPosition().Y - SPEED <= wall->getPosition().Y + PLAYER_SIZE)))
+        else if (key == _keys[K_DOWN_ID] && playerX <= wallX + PLAYER_SIZE && playerX + PLAYER_SIZE>= wallX && ((playerY  - SPEED + PLAYER_SIZE >= wallY && playerY - SPEED <= wallY + PLAYER_SIZE)))
             return 1;
     }
     return 0;

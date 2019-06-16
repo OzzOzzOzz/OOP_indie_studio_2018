@@ -7,8 +7,11 @@
 #include <zconf.h>
 #include "Ai.hpp"
 
-AI::AI(irr::IrrlichtDevice *window, Map &map, int x, int y) : _map(map)
+AI::AI(irr::IrrlichtDevice *window, Map *map, int x, int y) :
+    _map(map)
 {
+    _txtPos.X = static_cast<int>(x / CUBE_SIZE);
+    _txtPos.Y = static_cast<int>(y / CUBE_SIZE);
 	_window = window;
 	_mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
 	_ai = _window->getSceneManager()->addAnimatedMeshSceneNode(_mesh);
@@ -84,12 +87,9 @@ int AI::collision()
 {
 	auto aiX = _ai->getPosition().X;
 	auto aiY = _ai->getPosition().Y;
-	std::cout << "AI [" << aiX << "][" << aiY << "]" << std::endl;
-	for (auto const &wall : _map.getWalls()) {
+	for (auto const &wall : _map->getWalls()) {
 		auto wallX = wall->getPosition().X;
 		auto wallY = wall->getPosition().Y;
-
-		std::cout << "WALL [" << wallX << "][" << wallY << "]" << std::endl;
 
 		if (_dir == UP && aiY + PLAYER_SIZE + SPEED>= wallY && aiY + SPEED<= wallY + PLAYER_SIZE
 		&& ((aiX + PLAYER_SIZE>= wallX && aiX <= wallX + PLAYER_SIZE)))

@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "Wall.hpp"
-#include "Bomb.hpp"
+
 
 #define MAP_SIZE 21.0f
 #define CUBE_SIZE 20.0f
@@ -20,6 +20,7 @@
 #define WALL '1'
 #define BEDROCK '2'
 
+class Bomb;
 
 class Map {
 public:

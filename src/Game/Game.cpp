@@ -16,9 +16,9 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNum
 	_map = new Map(window);
 	gameConstructor(window, playerNumber, aiNumber, musicVolume, soundEffectsVolume);
 
-	_player = new Player(_window, receiver, *_map, 20, 20, false);
+	_player = new Player(_window, receiver, _map, 20, 20, false);
 	if (playerNumber == 2)
-		_player2 = new Player(_window, receiver, *_map, 380, 380, true);
+		_player2 = new Player(_window, receiver, _map, 380, 380, true);
 }
 
 Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume, const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos, std::vector<std::string> &txtMap)
@@ -26,9 +26,9 @@ Game::Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNum
 	_map = new Map(window, txtMap);
 	gameConstructor(window, playerNumber, aiNumber, musicVolume, soundEffectsVolume);
 
-	_player = new Player(_window, receiver, *_map, player1Pos.X, player1Pos.Y, false);
+	_player = new Player(_window, receiver, _map, player1Pos.X, player1Pos.Y, false);
 	if (playerNumber == 2)
-		_player2 = new Player(_window, receiver, *_map, player2Pos.X, player2Pos.Y, true);
+		_player2 = new Player(_window, receiver, _map, player2Pos.X, player2Pos.Y, true);
 }
 
 void Game::gameConstructor(irr::IrrlichtDevice *window, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume)
@@ -52,23 +52,23 @@ void Game::gameConstructor(irr::IrrlichtDevice *window, int playerNumber, int ai
 			aiSpawnPosX = 380;
 			aiSpawnPosY = 380;
 		}
-		_ai.push_back(new AI(_window, *_map, aiSpawnPosX, aiSpawnPosY));
+		_ai.push_back(new AI(_window, _map, aiSpawnPosX, aiSpawnPosY));
 	}
 
 	if (!_bombBuffer.loadFromFile("assets/sounds/bomb_explosion.ogg")) {
 		std::cerr << "Error while loading bomb_explosion.ogg" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
 	}
 	_bombSound.setBuffer(_bombBuffer);
 	_bombSound.setVolume(soundEffectsVolume);
 
 	if (!_gameMusic.openFromFile("assets/sounds/game_music.ogg")) {
 		std::cerr << "Error while loading game_music.ogg" << std::endl;
-		exit (84);
+		exit (CODE_ERR_EXIT);
 	}
 	_gameMusic.setLoop(true);
 	_gameMusic.setVolume(musicVolume);
-	_gameMusic.play();
+	//_gameMusic.play();
 
 	_botsNumber = aiNumber;
 	_playersNumber = playerNumber;
@@ -86,7 +86,7 @@ Game::~Game()
 
 void Game::gameLoop()
 {
-	int ret = 0;
+    int ret = 0;
 
 	while (_window->run()) {
 		if (_player->getEventReceiver()->IsKeyDown(irr::KEY_ESCAPE)) {

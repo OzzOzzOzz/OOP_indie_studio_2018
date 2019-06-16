@@ -9,12 +9,14 @@
 
 #include <string>
 #include "irrlicht/irrlicht.h"
+#include "Map.hpp"
 
-#define BOMB_SIZE 25.0f
+#define BOMB_SIZE irr::core::vector3df(0.3f, 0.3f, 0.3f)
+#define BOMB_TIMER 2
 
 class Bomb {
 public:
-    Bomb(irr::IrrlichtDevice *window, irr::core::vector3df vector, int range);
+    Bomb(irr::IrrlichtDevice *window, Map *map, const irr::core::vector3df& vector, int range);
     ~Bomb();
 
     irr::scene::IAnimatedMeshSceneNode* getNode() {return _bomb;}
@@ -23,6 +25,11 @@ private:
     irr::IrrlichtDevice *_window;
     irr::scene::IAnimatedMeshSceneNode *_bomb;
     irr::scene::IAnimatedMesh *_mesh;
+    irr::core::vector2di _txtPos;
+
+    Map *_map;
+    std::time_t _spawnTime;
+    bool _exploded;
 
     int _range;
 };

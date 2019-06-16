@@ -34,7 +34,7 @@ Menu::Menu(irr::IrrlichtDevice *window)
 		exit (CODE_ERR_EXIT);
     }
     _mainMenuMusic.setLoop(true);
-    _mainMenuMusic.play();
+    //_mainMenuMusic.play();
     _clickSound.setBuffer(_clickBuffer);
 
 	_soundEffectVolume = 100;
