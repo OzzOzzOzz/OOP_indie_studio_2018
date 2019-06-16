@@ -14,7 +14,7 @@
 #include "Map.hpp"
 
 #define PLAYER_SIZE 15.0f
-#define SPEED 1.0f
+#define PLAYERSPEED 5.0f
 
 #define K_UP_ID 0
 #define K_DOWN_ID 1
@@ -48,6 +48,9 @@ private:
 
 	int _range;
 	MyEventReceiver *_receiver;
+	irr::u32 _now;
+	irr::u32 _then;
+	irr::f32 _framedeltatime;
 };
 
 #endif
