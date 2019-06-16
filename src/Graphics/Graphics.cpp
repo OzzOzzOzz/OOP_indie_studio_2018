@@ -18,7 +18,7 @@ Graphics::Graphics()
 
 Graphics::~Graphics()
 {
-	_window->closeDevice();
+	//_window->closeDevice();
 	delete(_game);
 	delete(_menu);
 }

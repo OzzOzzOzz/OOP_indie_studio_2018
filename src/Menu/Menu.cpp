@@ -34,9 +34,11 @@ Menu::Menu(irr::IrrlichtDevice *window)
 		exit (CODE_ERR_EXIT);
     }
     _mainMenuMusic.setLoop(true);
-    //_mainMenuMusic.play();
+    _mainMenuMusic.play();
     _clickSound.setBuffer(_clickBuffer);
 
+	_soundEffectVolume = 100;
+	_musicVolume = 100;
 	_players = 1;
 	_bots = 1;
 	_firstButtonActivated = false;
@@ -87,10 +89,9 @@ int Menu::menuHandling()
 		_video->draw2DImage(_background, irr::core::position2d<irr::s32>(0, 0));
 		_sceneManager->drawAll();
 		ret = buttonHandling();
-		if (ret == PLAY_CODE) {
+		if (ret == PLAY_CODE)
 			if (gameSettings() == PLAY_CODE)
 				return PLAY_CODE;
-		}
 		else if (ret != 0)
 			return (ret);
 		_video->endScene();
@@ -132,7 +133,6 @@ int Menu::loadGames()
 
 	for (int i = 0; i < saveFiles.size(); i++, size += 170)
 		_loadGamesButtons.push_back(_window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1000, size, 1000 + 450, size + 140), nullptr, 0, L""));
-	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
@@ -143,6 +143,8 @@ int Menu::loadGames()
 		height = 300;
 		_sceneManager->drawAll();
 		game = loadGamesButtonsHandling();
+		if (game == -1)
+			return (0);
 		if (game != 0)
 			return (game);
 		_video->endScene();
@@ -154,6 +156,7 @@ int Menu::loadGamesButtonsHandling()
 {
 	if (_loadGamesButtons[0]->isPressed()) {
 		_loadGamesButtons[0]->setPressed(false);
+		_clickSound.play();
 		return -1;
 	}
 	for (std::size_t i = 0; i < _loadGamesButtons.size(); i++)
@@ -173,6 +176,7 @@ void Menu::settings()
 	_musicPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 400, 1330 + 130, 400 + 120), nullptr, 0, L"");
 	_soundLessButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(500, 755, 500 + 180, 755 + 50), nullptr, 0, L"");
 	_soundPlusButton = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(1330, 715, 1330 + 130, 715 + 120), nullptr, 0, L"");
+	_settingsButtonExit = _window->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(75, 70, 75 + 220, 70 + 120), nullptr, 0, L"");
 
 	while (_window->run()) {
 		_video->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
@@ -192,54 +196,47 @@ void Menu::settings()
 
 int Menu::settingsButtonsHandling()
 {
-	static int music = 100;
-	static int soundEffect = 100;
-	std::string file;
+	std::string file = "empty";
 
 	if (_settingsButtonExit->isPressed()) {
 		_clickSound.play();
 		_settingsButtonExit->setPressed(false);
-		_musicVolume = music;
-		_soundEffectVolume = soundEffect;
 		return (1);
 	}
-	if (_musicLessButton->isPressed() && music >= 25) {
+	if (_musicLessButton->isPressed() && _musicVolume >= 25) {
 		_clickSound.play();
-		music -= 25;
-		if (music != 0) {
-			file = "assets/menu/volume_bar_" + std::to_string(music) + ".png";
+		_musicVolume -= 25;
+		if (_musicVolume != 0) {
+			file = "assets/menu/volume_bar_" + std::to_string(_musicVolume) + ".png";
 			_musicVolumeBackground = _video->getTexture(file.c_str());
 		}
 	}
-	if (_musicPlusButton->isPressed() && music <= 75) {
+	if (_musicPlusButton->isPressed() && _musicVolume <= 75) {
 		_clickSound.play();
-		music += 25;
-		file = "assets/menu/volume_bar_" + std::to_string(music) + ".png";
+		_musicVolume += 25;
+		file = "assets/menu/volume_bar_" + std::to_string(_musicVolume) + ".png";
 		_musicVolumeBackground = _video->getTexture(file.c_str());
 	}
-	if (_soundLessButton->isPressed() && soundEffect >= 25) {
+	if (_soundLessButton->isPressed() && _soundEffectVolume >= 25) {
 		_clickSound.play();
-		soundEffect -= 25;
-		if (soundEffect != 0) {
-			file = "assets/menu/volume_bar_" + std::to_string(soundEffect) + ".png";
+		_soundEffectVolume -= 25;
+		if (_soundEffectVolume != 0) {
+			file = "assets/menu/volume_bar_" + std::to_string(_soundEffectVolume) + ".png";
 			_soundEffectBackground = _video->getTexture(file.c_str());
 		}
 	}
-	if (_soundPlusButton->isPressed() && soundEffect <= 75) {
+	if (_soundPlusButton->isPressed() && _soundEffectVolume <= 75) {
 		_clickSound.play();
-		soundEffect += 25;
-		file = "assets/menu/volume_bar_" + std::to_string(soundEffect) + ".png";
+		_soundEffectVolume += 25;
+		file = "assets/menu/volume_bar_" + std::to_string(_soundEffectVolume) + ".png";
 		_soundEffectBackground = _video->getTexture(file.c_str());
 	}
-	_mainMenuMusic.setVolume(music);
-	_clickSound.setVolume(soundEffect);
+	_mainMenuMusic.setVolume(_musicVolume);
+	_clickSound.setVolume(_soundEffectVolume);
 	_musicLessButton->setPressed(false);
 	_musicPlusButton->setPressed(false);
 	_soundLessButton->setPressed(false);
 	_soundPlusButton->setPressed(false);
-	_musicVolume = music;
-	_soundEffectVolume = soundEffect;
-
 	return (0);
 }
 

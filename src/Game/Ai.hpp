@@ -10,6 +10,7 @@
 #include <irrlicht/irrlicht.h>
 #include <vector>
 #include "Wall.hpp"
+#include "Map.hpp"
 
 #define SPEED 1.0f
 #define PLAYER_SIZE 15.0f
@@ -21,7 +22,7 @@
 
 class AI {
 public:
-	AI(irr::IrrlichtDevice *window, int x, int y);
+	AI(irr::IrrlichtDevice *window, Map &map, int x, int y);
 	~AI();
 
 	void move();
@@ -30,11 +31,13 @@ public:
 	void moveUp();
 	void moveDown();
 
-	void checkForBombs(const std::vector <Wall *> &map);
-	int collision(const std::vector <Wall *> &map);
+	irr::core::vector3df getPosition(){return _ai->getPosition();}
+	Map getMap(){return _map;}
+
+	void checkForBombs();
+	int collision();
 	void findNearestPlayer();
 	void tryToKill();
-
 	void placeBomb();
 
 private:
@@ -46,6 +49,8 @@ private:
 	int _bombNumber;
 	int _range;
 	int _dir;
+
+	Map _map;
 };
 
 #endif

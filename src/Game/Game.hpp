@@ -30,29 +30,21 @@
 
 class Game {
 public:
-    //NEW GAME
-	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber,
-        int musicVolume, int soundEffectsVolume);
-	//GAME LOAD
-    Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNumber, int aiNumber,
-        int musicVolume, int soundEffectsVolume,
-        const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos,
-        std::vector<std::string> &txtMap);
+	Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume);
+    Game(irr::IrrlichtDevice *window, MyEventReceiver *receiver, int playersNumber, int aiNumber, int musicVolume, int soundEffectsVolume, const irr::core::vector2di &player1Pos, const irr::core::vector2di &player2Pos, std::vector<std::string> &txtMap);
+	void gameConstructor(irr::IrrlichtDevice *window, int playerNumber, int aiNumber, int musicVolume, int soundEffectsVolume);
 	~Game();
 
 	void gameLoop();
 	int gameHandling();
+
+	void AIHandling();
 
 	void MovePlayer();
 
 	std::vector<std::string> getFilesfromFolder(const char *folderName);
 	int saveGame();
 	void displaySaveGameImage(std::string);
-
-	MyEventReceiver *getEventReceiver() {return _player->getEventReceiver();}
-
-	void setPlayerNumber(int player) {_playersNumber = player;}
-	void setAINumber(int ai) {_botsNumber = ai;}
 private:
 
 	irr::IrrlichtDevice *_window;

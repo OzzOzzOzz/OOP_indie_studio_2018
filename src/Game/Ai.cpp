@@ -7,7 +7,7 @@
 #include <zconf.h>
 #include "Ai.hpp"
 
-AI::AI(irr::IrrlichtDevice *window, int x, int y)
+AI::AI(irr::IrrlichtDevice *window, Map &map, int x, int y) : _map(map)
 {
 	_window = window;
 	_mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
@@ -80,24 +80,36 @@ void AI::moveDown()
 	_dir = DOWN;
 }
 
-int AI::collision(const std::vector <Wall *> &map)
+int AI::collision()
 {
-	for (auto const &map : map) {
-		if (_dir == UP && _ai->getPosition().Y + PLAYER_SIZE + SPEED >= map->getPosition().Y && _ai->getPosition().Y + SPEED <= map->getPosition().Y + PLAYER_SIZE && ((_ai->getPosition().X + PLAYER_SIZE >= map->getPosition().X && _ai->getPosition().X <= map->getPosition().X + PLAYER_SIZE)))
-			return (-1);
-		else if (_dir == LEFT && _ai->getPosition().X + PLAYER_SIZE + SPEED >= map->getPosition().X  && _ai->getPosition().X + SPEED <= map->getPosition().X + PLAYER_SIZE && ((_ai->getPosition().Y + PLAYER_SIZE >= map->getPosition().Y && _ai->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE)))
-			return (-1);
-		else if (_dir == RIGHT && _ai->getPosition().Y <= map->getPosition().Y + PLAYER_SIZE && _ai->getPosition().Y + PLAYER_SIZE >= map->getPosition().Y && ((_ai->getPosition().X  - SPEED + PLAYER_SIZE >= map->getPosition().X && _ai->getPosition().X - SPEED <= map->getPosition().X + PLAYER_SIZE)))
-			return (-1);
-		else if (_dir == DOWN && _ai->getPosition().X <= map->getPosition().X + PLAYER_SIZE && _ai->getPosition().X + PLAYER_SIZE >= map->getPosition().X && ((_ai->getPosition().Y  - SPEED + PLAYER_SIZE >= map->getPosition().Y && _ai->getPosition().Y - SPEED <= map->getPosition().Y + PLAYER_SIZE)))
-			return (-1);
+	auto aiX = _ai->getPosition().X;
+	auto aiY = _ai->getPosition().Y;
+	std::cout << "AI [" << aiX << "][" << aiY << "]" << std::endl;
+	for (auto const &wall : _map.getWalls()) {
+		auto wallX = wall->getPosition().X;
+		auto wallY = wall->getPosition().Y;
+
+		std::cout << "WALL [" << wallX << "][" << wallY << "]" << std::endl;
+
+		if (_dir == UP && aiY + PLAYER_SIZE + SPEED>= wallY && aiY + SPEED<= wallY + PLAYER_SIZE
+		&& ((aiX + PLAYER_SIZE>= wallX && aiX <= wallX + PLAYER_SIZE)))
+			return 1;
+		else if (_dir == LEFT && aiX + PLAYER_SIZE + SPEED>= wallX  && aiX + SPEED<= wallX + PLAYER_SIZE
+		&& ((aiY + PLAYER_SIZE>= wallY && aiY <= wallY + PLAYER_SIZE)))
+			return 1;
+		else if (_dir == RIGHT && aiY <= wallY + PLAYER_SIZE && aiY + PLAYER_SIZE >= wallY
+		&& ((aiX  - SPEED + PLAYER_SIZE >= wallX && aiX - SPEED <= wallX + PLAYER_SIZE)))
+			return 1;
+		else if (_dir == DOWN && aiX <= wallX + PLAYER_SIZE && aiX + PLAYER_SIZE>= wallX
+		&& ((aiY  - SPEED + PLAYER_SIZE >= wallY && aiY - SPEED <= wallY + PLAYER_SIZE)))
+			return 1;
 	}
-	return (0);
+	return 0;
 }
 
-void AI::checkForBombs(const std::vector <Wall *> &map)
+void AI::checkForBombs()
 {
-	if (collision(map) != 0)
+	if (collision() != 0)
 		_dir = rand() % 4 + 1;
 	move();
 }

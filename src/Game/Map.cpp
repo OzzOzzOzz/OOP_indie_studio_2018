@@ -10,16 +10,13 @@
 #include <iostream>
 #include "Map.hpp"
 
-Map::Map(irr::IrrlichtDevice *window) :
-    _window(window)
+Map::Map(irr::IrrlichtDevice *window) : _window(window)
 {
     gen_txt_map();
     createMap();
 }
 
-Map::Map(irr::IrrlichtDevice *window, std::vector<std::string> txtMap) :
-    _window(window),
-    _txtMap(std::move(txtMap))
+Map::Map(irr::IrrlichtDevice *window, std::vector<std::string> txtMap) : _window(window), _txtMap(std::move(txtMap))
 {
     createMap();
 }
@@ -105,20 +102,17 @@ void Map::spawnBomb(irr::core::vector3df pos, int range)
     int playerY = static_cast<int>(pos.Y / CUBE_SIZE);
 
     pos = irr::core::vector3df(playerX * CUBE_SIZE, playerY * CUBE_SIZE, 0.0f);
-
     _bombs.push_back(new Bomb(_window, pos, range));
-
     for (int x = playerX - range < 0 ? 0 : playerX - range; x <= (playerX + range > MAP_SIZE ? MAP_SIZE : playerX + range); x++)
         if (_txtMap[x][playerY] == WALL) {
             _txtMap[x][playerY] = VOID;
-            deleteMapWall(x, playerY);
+           // deleteMapWall(x, playerY);
         }
     for (int y = playerY - range < 0 ? 0 : playerY - range; y <= (playerY + range > MAP_SIZE ? MAP_SIZE : playerY + range); y++)
         if (_txtMap[playerX][y] == WALL) {
 			_txtMap[playerX][y] = VOID;
-			deleteMapWall(playerX, y);
+		//	deleteMapWall(playerX, y);
 		}
-
-	_bombs[0]->getNode()->remove();
-	_bombs.clear();
+//	_bombs[0]->getNode()->remove();
+//	_bombs.clear();
 }

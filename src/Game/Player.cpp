@@ -8,11 +8,10 @@
 #include <Graphics/Graphics.hpp>
 #include "Player.hpp"
 
-Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool player1) :
-    _window(window),
-    _receiver(receiver),
-    _map(map)
+Player::Player(irr::IrrlichtDevice *window, MyEventReceiver *receiver, Map &map, int x, int y, bool player1) : _map(map)
 {
+	_window = window;
+	_receiver = receiver;
     _mesh = _window->getSceneManager()->getMesh("assets/game/ziggs.md3");
     _player1 = _window->getSceneManager()->addAnimatedMeshSceneNode(_mesh);
     _player1->setMaterialFlag(irr::video::EMF_LIGHTING, false);
